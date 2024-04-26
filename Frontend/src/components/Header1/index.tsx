@@ -1,11 +1,13 @@
 import React from "react";
 import { Button, Img } from "./..";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
   className?: string;
 }
 
 export default function Header1({ ...props }: Props) {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
     <header {...props}>
       <div className="flex w-full flex-col items-center">
@@ -21,7 +23,9 @@ export default function Header1({ ...props }: Props) {
                 <Img src="images/img_cart.svg" alt="cart_one" className="h-[24px] w-[24px]" />
                 <Img src="images/img_email_gray_800.svg" alt="email_one" className="h-[24px] w-[24px]" />
               </div>
-              <Button shape="square" className="min-w-[107px] font-medium sm:px-5">
+              
+              <Button shape="square" className="min-w-[107px] font-medium sm:px-5"
+                onClick={async () => await loginWithRedirect()}>
                 Login
               </Button>
             </div>

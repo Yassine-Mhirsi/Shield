@@ -210,7 +210,7 @@ export default function CartPage() {
               >
                 Continue Shopping
               </Button>
-              <a href="https://www.youtube.com/embed/bv8Fxk0sz7I" target="_blank">
+              <a href="" target="_blank">
                 <Button shape="square" className="min-w-[171px] font-medium sm:px-5">
                   Checkout
                 </Button>

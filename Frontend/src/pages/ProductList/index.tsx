@@ -197,7 +197,7 @@ export default function ProductListPage() {
                   <Img src="images/img_arrow_down.svg" alt="arrowdown_three" className="h-[24px] w-[24px] self-start" />
                 </div>
               </div>
-              <a href="https://www.youtube.com/embed/bv8Fxk0sz7I" target="_blank">
+              <a href="" target="_blank">
                 <div className="flex flex-col items-center gap-[55px] sm:gap-[27px]">
                   <div className="grid grid-cols-5 justify-center gap-8 self-stretch md:grid-cols-3 sm:grid-cols-1">
                     {data.map((d, index) => (

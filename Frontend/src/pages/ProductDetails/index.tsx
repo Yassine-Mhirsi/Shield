@@ -95,7 +95,7 @@ export default function ProductDetailsPage() {
                   </div>
                 </div>
               </div>
-              <a href="https://www.youtube.com/embed/bv8Fxk0sz7I" target="_blank">
+              <a href="" target="_blank">
                 <Button
                   size="6xl"
                   shape="square"

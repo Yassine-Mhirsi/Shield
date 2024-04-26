@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { CloseSVG } from "../../assets/images";
 import { Button, Img, Input } from "./..";
@@ -8,7 +9,7 @@ interface Props {
 
 export default function Header({ ...props }: Props) {
   const [searchBarValue, setSearchBarValue] = React.useState("");
-
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
     <header {...props}>
       <div className="container-sm flex items-center justify-between gap-5 md:flex-col md:p-5">
@@ -46,7 +47,12 @@ export default function Header({ ...props }: Props) {
               <Img src="images/img_cart.svg" alt="cart_one" className="h-[24px] w-[24px]" />
               <Img src="images/img_email_gray_800.svg" alt="email_one" className="h-[24px] w-[24px]" />
             </div>
-            <Button size="md" shape="square" className="min-w-[107px] font-bold sm:px-5">
+            <Button
+              size="md"
+              shape="square"
+              className="min-w-[107px] font-bold sm:px-5"
+              onClick={async () => await loginWithRedirect()}
+            >
               Login
             </Button>
           </div>

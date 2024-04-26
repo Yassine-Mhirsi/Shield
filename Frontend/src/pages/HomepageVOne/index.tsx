@@ -1,7 +1,9 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { Text, Img, Heading, Input, RatingBar, Button, Slider } from "../../components";
-import AliceCarousel, { EventObject, DotsItem } from "react-alice-carousel";
+import AliceCarousel, { EventObject, DotsItem, Link } from "react-alice-carousel";
+import { useAuth0 } from "@auth0/auth0-react";
+import UsernameMenu from "components/UsernameMenu";
 
 const data = [
   { jacketone: "images/img_sweater.svg", jackettwo: "Jacket" },
@@ -52,47 +54,47 @@ export default function HomepageVOnePage() {
   const sliderRef = React.useRef<AliceCarousel>(null);
   const [sliderState1, setSliderState1] = React.useState(0);
   const sliderRef1 = React.useRef<AliceCarousel>(null);
-
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
     <>
       <Helmet>
-        <title>react</title>
+        <title>Shield</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="flex w-full flex-col items-center bg-white-A700">
-        <header className="flex items-center justify-center self-stretch bg-white-A700 py-[17px]">
+        <header className="flex items-center justify-center self-stretch bg-black py-[17px]">
           <div className="container-sm flex items-center justify-between gap-5 md:flex-col md:p-5">
             <Img
-              src="images/img_header_logo.png"
+              src="images/img_header_logoo.png"
               alt="headerlogo_one"
-              className="h-[36px] w-[7%] object-cover md:w-full"
+              className="h-[50px] w-[15%] object-cover md:w-full"
             />
             <div className="flex w-[69%] items-center justify-between gap-5 md:w-full md:flex-col">
               <ul className="flex flex-wrap gap-20 md:gap-5">
                 <li>
                   <a href="#" className="self-end">
-                    <Text as="p" className="!font-medium !text-gray-800">
+                    <Text as="p" className="!font-medium !text-white-800">
                       Categories
                     </Text>
                   </a>
                 </li>
                 <li>
                   <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium !text-gray-800">
+                    <Text as="p" className="!font-medium !text-white-800">
                       New Arrival
                     </Text>
                   </a>
                 </li>
                 <li>
                   <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium !text-gray-800">
+                    <Text as="p" className="!font-medium !text-white-800">
                       Features
                     </Text>
                   </a>
                 </li>
                 <li>
                   <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium !text-gray-800">
+                    <Text as="p" className="!font-medium !text-white-800">
                       Collections
                     </Text>
                   </a>
@@ -103,9 +105,28 @@ export default function HomepageVOnePage() {
                   <Img src="images/img_search.svg" alt="search_one" className="h-[24px] w-[24px]" />
                   <Img src="images/img_cart.svg" alt="cart_one" className="h-[24px] w-[24px]" />
                 </div>
-                <Button size="5xl" shape="square" className="min-w-[107px] font-bold sm:px-5">
+                
+                <span className="flex space-x-2 items-center">
+                  {isAuthenticated ? (
+                    <>
+                      <Link className="font-bold hover:text-orange-500">
+                        Status
+                      </Link>
+                      <UsernameMenu />
+                    </>
+                  ) : (
+                    <Button
+                      size="5xl" shape="square" color="white_800" className="min-w-[107px] font-bold sm:px-5"
+                      onClick={async () => await loginWithRedirect()}>
+                      Log In
+                    </Button>
+                  )}
+                </span>
+
+                {/* <Button size="5xl" shape="square" color="white_800" className="min-w-[107px] font-bold sm:px-5"
+                  onClick={async () => await loginWithRedirect()}>
                   Login
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ const variants = {
     blue_gray_100: "border-blue_gray-100 border border-solid text-gray-800",
   },
   fill: {
-    gray_800: "bg-gray-800 text-white-A700",
+    white_800: "text-white-A700",
     white_A700: "bg-white-A700 text-gray-800",
   },
 } as const;
