@@ -54,6 +54,7 @@ export default function HomepageVOnePage() {
   const sliderRef = React.useRef<AliceCarousel>(null);
   const [sliderState1, setSliderState1] = React.useState(0);
   const sliderRef1 = React.useRef<AliceCarousel>(null);
+  
   const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
     <>
@@ -73,34 +74,34 @@ export default function HomepageVOnePage() {
               <ul className="flex flex-wrap gap-20 md:gap-5">
                 <li>
                   <a href="#" className="self-end">
-                    <Text as="p" className="!font-medium !text-white-800">
+                    <Text as="p" className="!font-medium">
                       Categories
                     </Text>
                   </a>
                 </li>
                 <li>
                   <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium !text-white-800">
+                    <Text as="p" className="!font-medium">
                       New Arrival
                     </Text>
                   </a>
                 </li>
                 <li>
                   <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium !text-white-800">
+                    <Text as="p" className="!font-medium">
                       Features
                     </Text>
                   </a>
                 </li>
                 <li>
                   <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium !text-white-800">
+                    <Text as="p" className="!font-medium">
                       Collections
                     </Text>
                   </a>
                 </li>
               </ul>
-              <div className="flex w-[22%] items-center justify-between gap-5 md:w-full">
+              <div className="flex w-[22%] items-center justify-between gap-40 md:w-full">
                 <div className="flex w-[33%] justify-between gap-5">
                   <Img src="images/img_search.svg" alt="search_one" className="h-[24px] w-[24px]" />
                   <Img src="images/img_cart.svg" alt="cart_one" className="h-[24px] w-[24px]" />
@@ -110,13 +111,13 @@ export default function HomepageVOnePage() {
                   {isAuthenticated ? (
                     <>
                       <Link className="font-bold hover:text-orange-500">
-                        Status
+                        
                       </Link>
                       <UsernameMenu />
                     </>
                   ) : (
                     <Button
-                      size="5xl" shape="square" color="white_800" className="min-w-[107px] font-bold sm:px-5"
+                      shape="square" className="min-w-[150px] font-bold sm:px-5 text-[#ffffff]"
                       onClick={async () => await loginWithRedirect()}>
                       Log In
                     </Button>

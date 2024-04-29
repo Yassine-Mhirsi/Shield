@@ -25,7 +25,7 @@ const Text: React.FC<React.PropsWithChildren<TextProps>> = ({
   const Component = as || "p";
 
   return (
-    <Component className={`text-gray-500 font-poppins ${className} ${sizes[size]}`} {...restProps}>
+    <Component className={`text-[#ffffff] font-poppins ${className} ${sizes[size]}`} {...restProps}>
       {children}
     </Component>
   );
