@@ -24,4 +24,3 @@ app.use("/api/my/user", myUserRoute);
 app.listen(7800, () => {
   console.log("server started on localhost:7800");
 });
-
