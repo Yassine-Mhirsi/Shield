@@ -12,6 +12,13 @@ export default function Header({ ...props }: Props) {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
     <header {...props}>
+      {/* <div className="d-flex align-items-center justify-content-between">
+        <a href="index.html" className="logo d-flex align-items-center">
+          <img src="/template/assets/img/logo.png" alt="" />
+          <span className="d-none d-lg-block">MY Garage</span>
+        </a>
+        <i className="bi bi-list toggle-sidebar-btn"></i>
+      </div> */}
       <div className="container-sm flex items-center justify-between gap-5 md:flex-col md:p-5">
         <Img
           src="images/img_header_logo.png"
