@@ -2,7 +2,8 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
-import myUserRoute from "./src/routes/MyUserRoute";
+import myUserRoute from "./routes/MyUserRoutes";
+import ProductRoute from "./routes/ProductRoutes";
 
 mongoose
   .connect(process.env.MONGO_URI as string)
@@ -20,6 +21,7 @@ app.use(cors());
 //     res.json({message:"hello!"});
 // });
 app.use("/api/my/user", myUserRoute);
+app.use("/api", ProductRoute);
 
 app.listen(7800, () => {
   console.log("server started on localhost:7800");

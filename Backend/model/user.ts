@@ -1,26 +1,19 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    auth0Id: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    name: {
-        type: String,
-    },
-    adressLine1: {
-        type: String,
-    },
-    city: {
-        type: String,
-    },
-    country: {
-        type: String,
-    },
+    _id: mongoose.Schema.Types.ObjectId,
+    connection: String,
+    client_id: String,
+    email: String,
+    password: String,
+    is_signup: Boolean,
+    tenant: String,
+    transaction: mongoose.Schema.Types.Mixed,
+    form: mongoose.Schema.Types.Mixed,
+    request_language: String,
+    usePasskey: Boolean,
+    email_verified: Boolean,
+    role: String,
 });
 
 const User = mongoose.model("User", userSchema);
