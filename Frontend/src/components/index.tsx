@@ -1,11 +1,14 @@
 import { Img } from "./Img";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import { Button1 } from "./Button1";
 import { Text } from "./Text";
 import { Heading } from "./Heading";
 import { Slider } from "./Slider";
 import { RatingBar } from "./RatingBar";
 import { CheckBox } from "./CheckBox";
+import { TextArea } from "./TextArea";
+import { Switch } from "./Switch";
 import { ReactTable } from "./ReactTable";
 import { SelectBox } from "./SelectBox";
-export { Img, Input, Button, Text, Heading, Slider, RatingBar, CheckBox, ReactTable, SelectBox };
+export { Img, Input, Button,Button1, Text, Heading, Slider, RatingBar, CheckBox,TextArea, Switch, ReactTable, SelectBox };

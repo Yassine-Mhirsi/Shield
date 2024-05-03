@@ -6,6 +6,7 @@ const sizes = {
   s: "text-lg font-normal",
   xl: "text-8xl font-normal md:text-5xl",
   md: "text-2xl font-medium md:text-[22px]",
+  "3xl": "text-xl font-medium",
 };
 
 export type TextProps = Partial<{

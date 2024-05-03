@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Text, Img, Heading, Input, RatingBar, Button, Slider } from "../../components";
 import AliceCarousel, { EventObject, DotsItem, Link } from "react-alice-carousel";
 import { useAuth0 } from "@auth0/auth0-react";
 import UsernameMenu from "components/UsernameMenu";
+
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@radix-ui/react-dropdown-menu";
 
 const data = [
   { jacketone: "images/img_sweater.svg", jackettwo: "Jacket" },
@@ -54,8 +61,84 @@ export default function HomepageVOnePage() {
   const sliderRef = React.useRef<AliceCarousel>(null);
   const [sliderState1, setSliderState1] = React.useState(0);
   const sliderRef1 = React.useRef<AliceCarousel>(null);
-  
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
+
+  const { user, loginWithRedirect, isAuthenticated } = useAuth0();
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/api/my/user');
+        const allUsers = await response.json();
+        // console.log("All users:", allUsers);
+        const currentUser = allUsers.find((u: { email: string; }) => u.email === user.email);
+        // console.log("Current user:", currentUser);
+        if (currentUser) {
+          // Assuming currentUser contains role information
+          setUserRole(currentUser.role);
+        } else {
+          setUserRole('Role not found');
+        }
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+        setUserRole('Error fetching role');
+      }
+    };
+
+    if (user) {
+      fetchUserRole();
+    }
+  }, [user]);
+
+
+  // Define menu items based on user role
+  const getMenuItems = () => {
+    if (!isAuthenticated) {
+      return [
+        { label: "Home", link: "/" },
+        { label: "Shops", link: "/productlist" },
+        { label: "Repair Shop", link: "/repair-shop" },
+        { label: "Insurance", dropdown: ["Process Reports", "Manage Reports"] }
+      ]; // Return an empty array if user is not authenticated
+    }
+
+    switch (userRole) {
+      case "client":
+        return [
+          { label: "Home", link: "/" },
+          { label: "Shops", link: "/productlist" },
+          { label: "Insurance", dropdown: ["Submit Report", "Manage Reports"] }
+        ];
+      case "shop":
+        return [
+          { label: "Home", link: "/" },
+          { label: "Shops", link: "/productlist" }
+        ];
+      case "repair-shop":
+        return [
+          { label: "Home", link: "/" },
+          { label: "Shops", link: "/productlist" },
+          { label: "Repair Shop", link: "#" }
+        ];
+      case "insurance":
+        return [
+          { label: "Home", link: "/" },
+          { label: "Shops", link: "/productlist" },
+          { label: "Repair Shop", link: "#" },
+          { label: "Insurance", dropdown: ["Process Reports", "Manage Reports"] }
+        ];
+
+      default:
+        return [
+          { label: "Home", link: "/" },
+          { label: "Shops", link: "/productlist" },
+          { label: "Repair Shop", link: "#" },
+          { label: "Insurance", dropdown: ["Process Reports", "Manage Reports"] }
+        ];
+    }
+  };
+
+
   return (
     <>
       <Helmet>
@@ -72,47 +155,45 @@ export default function HomepageVOnePage() {
             />
             <div className="flex w-[69%] items-center justify-between gap-5 md:w-full md:flex-col">
               <ul className="flex flex-wrap gap-20 md:gap-5">
-                <li>
-                  <a href="#" className="self-end">
-                    <Text as="p" className="!font-medium">
-                      Categories
-                    </Text>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium">
-                      New Arrival
-                    </Text>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium">
-                      Features
-                    </Text>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="self-start">
-                    <Text as="p" className="!font-medium">
-                      Collections
-                    </Text>
-                  </a>
-                </li>
+                {getMenuItems().map((menuItem, index) => (
+                  <li key={index}>
+                    {menuItem.dropdown ? (
+                      <div className="relative">
+                        <a href={menuItem.link} className="self-start">
+                          <Text as="p" className="!font-medium">
+                            {menuItem.label}
+                          </Text>
+                        </a>
+                        <ul className="absolute top-full left-0 bg-white shadow-md z-10">
+                          {menuItem.dropdown.map((item, idx) => (
+                            <li key={idx}>
+                              <a href="#" className="block px-4 py-2 text-sm text-gray-800">
+                                {item}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <a href={menuItem.link} className="self-start">
+                        <Text as="p" className="!font-medium">
+                          {menuItem.label}
+                        </Text>
+                      </a>
+                    )}
+                  </li>
+                ))}
               </ul>
               <div className="flex w-[22%] items-center justify-between gap-40 md:w-full">
                 <div className="flex w-[33%] justify-between gap-5">
                   <Img src="images/img_search.svg" alt="search_one" className="h-[24px] w-[24px]" />
                   <Img src="images/img_cart.svg" alt="cart_one" className="h-[24px] w-[24px]" />
                 </div>
-                
+
                 <span className="flex space-x-2 items-center">
                   {isAuthenticated ? (
                     <>
-                      <Link className="font-bold hover:text-orange-500">
-                        
-                      </Link>
+                      <Link className="font-bold hover:text-orange-500"></Link>
                       <UsernameMenu />
                     </>
                   ) : (
@@ -123,26 +204,20 @@ export default function HomepageVOnePage() {
                     </Button>
                   )}
                 </span>
-
-                {/* <Button size="5xl" shape="square" color="white_800" className="min-w-[107px] font-bold sm:px-5"
-                  onClick={async () => await loginWithRedirect()}>
-                  Login
-                </Button> */}
               </div>
             </div>
           </div>
         </header>
-        <div className="flex items-center justify-end self-stretch bg-gray-50 md:flex-col">
+        <div className="flex items-center justify-end self-stretch bg-white md:flex-col">
           <div className="relative z-[2] flex w-[29%] flex-col items-start md:w-full md:p-5">
             <Text size="xl" as="p" className="!font-playfairdisplay !text-gray-800">
-              Summer Sale
+              Your Tech Shield Is Here!
             </Text>
-            <Heading size="xl" as="h1" className="!text-gray-800">
+            {/* <Heading size="xl" as="h1" className="!text-gray-800">
               50% Off
-            </Heading>
+            </Heading> */}
             <Text as="p" className="mt-[34px] w-[92%] leading-8 !text-gray-800 md:w-full">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua.{" "}
+              Welcome to our platform! We're dedicated to simplifying the insurance claims management journey. Our comprehensive application brings together all the essential tools you need to effortlessly handle insurance companies, policies, repair services, and sales outlets. Say goodbye to complexity and hello to efficiency with our user-friendly solution.{" "}
             </Text>
             <Button
               size="3xl"
@@ -150,7 +225,7 @@ export default function HomepageVOnePage() {
               rightIcon={<Img src="images/img_arrow.svg" alt="Arrow" className="h-[48px] w-[48px]" />}
               className="mt-14 min-w-[245px] gap-2.5 font-medium sm:px-5"
             >
-              Shop Now
+              Shop Now{userRole}
             </Button>
           </div>
           <div className="relative ml-[-14px] h-[700px] w-[63%] md:ml-0 md:h-auto md:w-full md:p-5">
@@ -230,7 +305,7 @@ export default function HomepageVOnePage() {
                     <Text size="md" as="p" className="!text-gray-800">
                       Purple Warm Jacket
                     </Text>
-                    <Text as="p" className="!font-medium">
+                    <Text as="p" className="!font-medium !text-gray-800">
                       $299
                     </Text>
                   </div>
@@ -272,7 +347,7 @@ export default function HomepageVOnePage() {
             </a>
           </div>
           <div className="grid grid-cols-3 justify-center gap-8 pb-[67px] pr-[67px] md:grid-cols-2 md:pb-5 md:pr-5 sm:grid-cols-1">
-            <div className="flex w-full flex-col items-center gap-[15px] border-2 border-solid border-gray-800 p-[43px] md:p-5">
+            <div className="flex w-full flex-col items-center gap-[15px] border-0 border-solid border-gray-800 p-[43px] md:p-5">
               <Img
                 src="images/img_placeholder_250x250.png"
                 alt="black_briefcase"

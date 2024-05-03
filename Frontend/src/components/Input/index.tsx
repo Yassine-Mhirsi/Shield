@@ -2,6 +2,7 @@ import React from "react";
 
 const shapes = {
   square: "rounded-[0px]",
+  round: "rounded",
 } as const;
 const variants = {
   fill: {

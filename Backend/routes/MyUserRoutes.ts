@@ -4,5 +4,6 @@ import MyUserController from "../controller/MyUserController";
 const router = express.Router();
 
 router.get('/', MyUserController.getAllUsers);
+// router.post('/', MyUserController.createCurrentUser);
 
 export default router;
