@@ -7,22 +7,16 @@ import ProductRoute from "./routes/ProductRoutes";
 
 mongoose
   .connect(process.env.MONGO_URI as string)
-  .then(() => console.log("Connected to database!"));
+  .then(() => console.log("Connected to database!"))
+  .catch(error => console.error("Database connection error:", error)); // Add error handling for database connection
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// app.get("/health", async (req: Request, res: Response) => {
-//   res.send({ message: "health OK!" });
-// });
-
-// app.get("/test",async(req:Request,res:Response)=>{
-//     res.json({message:"hello!"});
-// });
 app.use("/api/my/user", myUserRoute);
 app.use("/api", ProductRoute);
 
-app.listen(7800, () => {
-  console.log("server started on localhost:7800");
+app.listen(process.env.PORT, () => {
+  console.log("Server started on localhost:7800");
 });

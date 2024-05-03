@@ -1,7 +1,7 @@
 // Import necessary modules
 import express, { Request, Response } from "express";
 import multer from "multer";
-import { createProduct, fetchProducts, fetchProductById, updateProduct, deleteProduct} from "../controller/ProductController";
+import { createProduct, fetchProducts, fetchProductById, updateProduct, deleteProduct } from "../controller/ProductController";
 
 const router = express.Router();
 
@@ -17,11 +17,11 @@ router.post("/upload", upload.single("photo"), (req: Request, res: Response) => 
 });
 
 // Define other routes for your product-related operations
-router.post("/products", createProduct);
-router.get("/products", fetchProducts);
-router.get("/products/:id", fetchProductById);
-router.put("/products/:id", updateProduct);
-router.delete("/products/:id", deleteProduct);
-// router.get("/search", searchProducts);
+router.post("/products/create", createProduct);
+router.get("/products/fetchAll", fetchProducts);
+router.get("/products/fetchById/:id", fetchProductById);
+router.put("/products/update/:id", updateProduct);
+router.delete("/products/delete/:id", deleteProduct);
+// router.get("/products/search", searchProducts);
 
 export default router;
