@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 // import Link from '@mui/material/Link';
@@ -38,7 +38,7 @@ export default function LoginView() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  // const [isLoggedIn, setIsLoggedIn] = useState(0);
   // const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
@@ -53,9 +53,9 @@ export default function LoginView() {
       const data = await response.json();
       if (data.message === 'Login successful') {
         // console.log(isLoggedIn)
-       setIsLoggedIn(0);
-      //  console.log(isLoggedIn)
-         localStorage.setItem('hhhazizaiauz', isLoggedIn);
+        //  setIsLoggedIn(0);
+        //  console.log(isLoggedIn)
+        localStorage.setItem('121211', 1);
         // console.log(data.token);
         // const decoded = jwt_decode(data.token);
         // console.log(decoded);
@@ -66,7 +66,7 @@ export default function LoginView() {
         // Handle login failure (e.g., display error message)
       }
     } catch (error) {
-      if (isLoggedIn) { console.log("logged IN"); }
+      // if (isLoggedIn) { console.log("logged IN"); }
       console.error('Error logging in:', error);
     }
   };
@@ -77,20 +77,20 @@ export default function LoginView() {
   //   router.push('/dashboard');
   // };
 
-  const [value, setValue] = useState('');
+  // const [value, setValue] = useState('');
 
-  useEffect(() => {
-    // Load the value from localStorage when the component mounts
-    const storedValue = localStorage.getItem('myValue');
-    if (storedValue) {
-      setValue(storedValue);
-    }
-  }, []);
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setValue(newValue);
-    localStorage.setItem('myValue', newValue);
-  };
+  // useEffect(() => {
+  //   // Load the value from localStorage when the component mounts
+  //   const storedValue = localStorage.getItem('myValue');
+  //   if (storedValue) {
+  //     setValue(storedValue);
+  //   }
+  // }, []);
+  // const handleChange = (e) => {
+  //   const newValue = e.target.value;
+  //   setValue(newValue);
+  //   localStorage.setItem('myValue', newValue);
+  // };
   const renderForm = (
     <>
       <Stack spacing={3}>

@@ -31,9 +31,8 @@ export const loginAdmin = async (req: Request, res: Response) => {
         }
 
         // Generate JWT token with admin ID and email
-        const token = jwt.sign({ adminId: admin._id, email: admin.email }, 'your_secret_key', { expiresIn: '1h' });
-        res.cookie('token', token);
-        return res.status(200).json({ message: 'Login successful', token: admin._id });
+        // const token = jwt.sign({ adminId: admin._id, email: admin.email }, 'your_secret_key', { expiresIn: '1h' });
+        return res.status(200).json({ message: 'Login successful' });
     } catch (error) {
         console.error('Error logging in admin:', error);
         return res.status(500).json({ message: 'Internal server error' });

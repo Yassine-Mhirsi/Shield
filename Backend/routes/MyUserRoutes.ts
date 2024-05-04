@@ -5,6 +5,7 @@ import { loginAdmin } from "../controller/AdminController";
 const router = express.Router();
 
 router.get('/', MyUserController.getAllUsers);
+router.delete('/deleteUser/:id', MyUserController.deleteUser);
 router.post('/login', loginAdmin);
 
 export default router;
