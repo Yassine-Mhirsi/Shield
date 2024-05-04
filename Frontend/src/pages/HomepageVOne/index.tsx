@@ -4,6 +4,7 @@ import { Text, Img, Heading, Input, RatingBar, Button, Slider } from "../../comp
 import AliceCarousel, { EventObject, DotsItem, Link } from "react-alice-carousel";
 import { useAuth0 } from "@auth0/auth0-react";
 import UsernameMenu from "components/UsernameMenu";
+import Swal from "sweetalert2";
 
 // import {
 //   DropdownMenu,
@@ -139,6 +140,57 @@ export default function HomepageVOnePage() {
   };
 
 
+
+//   const handleSwalForm = async () => {
+//     const { value: formValues } = await Swal.fire({
+//         title: "Multiple inputs",
+//         html: `
+//             <input id="tax-registration-number" class="swal2-input" placeholder="Tax Registration Number" required>
+//             <input id="company-name" class="swal2-input" placeholder="Company Name" required>
+//             <input id="phone-number" class="swal2-input" placeholder="Phone Number" required>
+//             <select id="role" class="swal2-select" required>
+//                 <option value="" disabled selected>Select Role</option>
+//                 <option value="Shop">Shop</option>
+//                 <option value="Repair Shop">Repair Shop</option>
+//                 <option value="Insurance">Insurance</option>
+//             </select>
+//         `,
+//         focusConfirm: false,
+//         preConfirm: () => {
+//             const taxRegistrationNumber = (document.getElementById("tax-registration-number") as HTMLInputElement)?.value;
+//             const companyName = (document.getElementById("company-name") as HTMLInputElement)?.value;
+//             const phoneNumber = (document.getElementById("phone-number") as HTMLInputElement)?.value;
+//             const role = (document.getElementById("role") as HTMLSelectElement)?.value;
+//             return { taxRegistrationNumber, companyName, phoneNumber, role };
+//         }
+//     });
+// };
+
+// const handleSwalForm = async () => {
+//   const { value: fruit } = await Swal.fire({
+//     title: "Select field validation",
+//     input: "select",
+//     inputOptions: {
+//             apples: "Apples",
+//             bananas: "Bananas",
+//             grapes: "Grapes",
+//             oranges: "Oranges"
+//     },
+//     inputPlaceholder: "Select a fruit",
+//     showCancelButton: true,
+//     inputValidator: (value) => {
+//         return new Promise((resolve) => {
+//             if (value === "oranges") {
+//                 resolve();
+//             } else {
+//                 resolve("You need to select oranges :)");
+//             }
+//         });
+//     }
+// });
+  
+
+
   return (
     <>
       <Helmet>
@@ -224,8 +276,9 @@ export default function HomepageVOnePage() {
               shape="square"
               rightIcon={<Img src="images/img_arrow.svg" alt="Arrow" className="h-[48px] w-[48px]" />}
               className="mt-14 min-w-[245px] gap-2.5 font-medium sm:px-5"
+              // onClick={handleSwalForm}
             >
-              Shop Now{userRole}
+              Become a Partner {userRole}
             </Button>
           </div>
           <div className="relative ml-[-14px] h-[700px] w-[63%] md:ml-0 md:h-auto md:w-full md:p-5">

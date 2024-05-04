@@ -4,6 +4,7 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoutes";
 import ProductRoute from "./routes/ProductRoutes";
+import PartnerRoute from "./routes/PartnerRoutes";
 
 mongoose
   .connect(process.env.MONGO_URI as string)
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use("/api/my/user", myUserRoute);
 app.use("/api", ProductRoute);
+app.use("/partner", PartnerRoute);
 
 app.listen(process.env.PORT, () => {
   console.log("Server started on localhost:7800");

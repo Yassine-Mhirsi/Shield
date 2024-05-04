@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 // import Link from '@mui/material/Link';
@@ -77,20 +77,20 @@ export default function LoginView() {
   //   router.push('/dashboard');
   // };
 
-  const [value, setValue] = useState('');
+  // const [value, setValue] = useState('');
 
-  useEffect(() => {
-    // Load the value from localStorage when the component mounts
-    const storedValue = localStorage.getItem('myValue');
-    if (storedValue) {
-      setValue(storedValue);
-    }
-  }, []);
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setValue(newValue);
-    localStorage.setItem('myValue', newValue);
-  };
+  // useEffect(() => {
+  //   // Load the value from localStorage when the component mounts
+  //   const storedValue = localStorage.getItem('myValue');
+  //   if (storedValue) {
+  //     setValue(storedValue);
+  //   }
+  // }, []);
+  // const handleChange = (e) => {
+  //   const newValue = e.target.value;
+  //   setValue(newValue);
+  //   localStorage.setItem('myValue', newValue);
+  // };
   const renderForm = (
     <>
       <Stack spacing={3}>
