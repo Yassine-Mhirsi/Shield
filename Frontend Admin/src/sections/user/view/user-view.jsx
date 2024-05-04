@@ -12,6 +12,8 @@ import TablePagination from '@mui/material/TablePagination';
 
 // import { users } from 'src/_mock/user';
 
+import { useNavigate } from 'react-router-dom';
+
 // import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
@@ -38,6 +40,13 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [userst, setUserst] = useState([]);
+  const navigate = useNavigate();
+  const storedValue = localStorage.getItem('121211');
+  useEffect(() => {
+    if (storedValue === '0') {
+      navigate('/login');
+    }
+  });
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -137,7 +146,7 @@ export default function UserPage() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'email', label: 'Email' },
-                  { id: 'status2', label: '' },
+                  { id: 'key', label: '' },
                   // { id: 'company', label: 'Company' },
                   { id: 'role', label: 'Role' },
                   { id: 'isVerified', label: 'Verified', align: 'center' },
@@ -151,6 +160,7 @@ export default function UserPage() {
                   .map((row) => (
                     <UserTableRow
                       key={row._id}
+                      userId={row._id}
                       name={row.email}
                       role={row.role}
                       // status={row.status}
@@ -160,6 +170,7 @@ export default function UserPage() {
                       selected={selected.indexOf(row.email) !== -1}
                       handleClick={(event) => handleClick(event, row.email)}
                     />
+
                   ))}
 
                 <TableEmptyRows

@@ -38,7 +38,7 @@ export default function LoginView() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  // const [isLoggedIn, setIsLoggedIn] = useState(0);
   // const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
@@ -53,9 +53,9 @@ export default function LoginView() {
       const data = await response.json();
       if (data.message === 'Login successful') {
         // console.log(isLoggedIn)
-       setIsLoggedIn(0);
-      //  console.log(isLoggedIn)
-         localStorage.setItem('hhhazizaiauz', isLoggedIn);
+        //  setIsLoggedIn(0);
+        //  console.log(isLoggedIn)
+        localStorage.setItem('121211', 1);
         // console.log(data.token);
         // const decoded = jwt_decode(data.token);
         // console.log(decoded);
@@ -66,7 +66,7 @@ export default function LoginView() {
         // Handle login failure (e.g., display error message)
       }
     } catch (error) {
-      if (isLoggedIn) { console.log("logged IN"); }
+      // if (isLoggedIn) { console.log("logged IN"); }
       console.error('Error logging in:', error);
     }
   };

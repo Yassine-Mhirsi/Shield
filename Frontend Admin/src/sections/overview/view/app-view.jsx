@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { faker } from '@faker-js/faker';
+import { useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -19,6 +21,13 @@ import AppConversionRates from '../app-conversion-rates';
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  const navigate = useNavigate();
+  const storedValue = localStorage.getItem('121211');
+  useEffect(() => {
+    if (storedValue === '0') {
+      navigate('/login');
+    }
+  });
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>

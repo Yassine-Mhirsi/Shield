@@ -9,7 +9,7 @@ import PartnerRoute from "./routes/PartnerRoutes";
 mongoose
   .connect(process.env.MONGO_URI as string)
   .then(() => console.log("Connected to database!"))
-  .catch(error => console.error("Database connection error:", error)); // Add error handling for database connection
+  .catch(error => console.error("Database connection error:", error));
 
 const app = express();
 app.use(express.json());

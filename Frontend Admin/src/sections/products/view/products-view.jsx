@@ -1,9 +1,8 @@
 /* eslint-disable react/button-has-type */
 // import { products } from 'src/_mock/products';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import Swal from 'sweetalert2';
 /* eslint-disable react/no-unknown-property */
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
@@ -20,6 +19,14 @@ export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState(false);
 
   const [products, setProducts] = useState([]);
+
+  const navigate = useNavigate();
+  const storedValue = localStorage.getItem('121211');
+  useEffect(() => {
+    if (storedValue === '0') {
+      navigate('/login');
+    }
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,6 +53,45 @@ export default function ProductsView() {
     setOpenFilter(false);
   };
 
+  // const opendeleteModal = (selectedProduct) => {
+  //   Swal.fire({
+  //     title: "You want to delete the product?",
+  //     text: "You won't be able to revert this!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, delete it!"
+  //   }).then(async (result) => {
+  //     if (result.isConfirmed) {
+  //       try {
+  //         const response = await fetch(`http://localhost:7800/api/products/delete/${selectedProduct}`, {
+  //           method: 'DELETE'
+  //         });
+  //         console.log("Deleted : ", response);
+  //         if (response.ok) {
+  //           Swal.fire({
+  //             title: "Deleted!",
+  //             text: "Your product has been deleted.",
+  //             icon: "success"
+  //           });
+  //           setProducts(prevProducts => prevProducts.filter(product => product._id !== selectedProduct));
+  //         } else {
+  //           throw new Error('Failed to delete product');
+  //         }
+  //       } catch (error) {
+  //         console.log('Error deleting product:', error);
+  //         Swal.fire({
+  //           title: "Error!",
+  //           text: "Failed to delete the product.",
+  //           icon: "error"
+  //         });
+  //       }
+  //     }
+  //   });
+  // };
+
+
   // try {
   //   const response = fetch(`http://localhost:7800/api/products/delete/${selectedProduct}`);
   //   // const deleted = response.json();
@@ -54,46 +100,6 @@ export default function ProductsView() {
   //   console.log('Error fetching products:', error);
   //   // Handle error condition if needed
   // }
-
-  const opendeleteModal = (selectedProduct) => {
-    Swal.fire({
-      title: "You want to delete the product?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(`http://localhost:7800/api/products/delete/${selectedProduct}`, {
-            method: 'DELETE'
-          });
-          console.log("Deleted : ", response);
-          if (response.ok) {
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your product has been deleted.",
-              icon: "success"
-            });
-            setProducts(prevProducts => prevProducts.filter(product => product._id !== selectedProduct));
-          } else {
-            throw new Error('Failed to delete product');
-          }
-        } catch (error) {
-          console.log('Error deleting product:', error);
-          Swal.fire({
-            title: "Error!",
-            text: "Failed to delete the product.",
-            icon: "error"
-          });
-        }
-      }
-    });
-  };
-
-  
 
 
   return (
@@ -134,7 +140,6 @@ export default function ProductsView() {
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
                 <p style={{ textAlign: 'center', color: '#333', fontSize: '1rem' }}>{product.model}</p>
                 <p style={{ fontWeight: 'bold', color: '#333', fontSize: '1rem' }}>{product.price} TND</p>
-                <button style={{ padding: '0.5rem 1rem', backgroundColor: 'red', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }} onClick={() => opendeleteModal(product._id)}>Delete</button>
               </div>
             </div>
           ))}

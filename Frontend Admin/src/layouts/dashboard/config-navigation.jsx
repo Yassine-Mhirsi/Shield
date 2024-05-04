@@ -1,3 +1,6 @@
+// import { useNavigate } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
+
 import SvgColor from 'src/components/svg-color';
 // ----------------------------------------------------------------------
 
@@ -22,21 +25,40 @@ const navConfig = [
     path: '/products',
     icon: icon('ic_cart'),
   },
-  // {
-  //   title: 'blog',
-  //   path: '/blog',
-  //   icon: icon('ic_blog'),
-  // },
   {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
+    title: 'Requests',
+    path: '/requests',
+    icon: icon('ic_request_3'),
   },
+
+  // {
+  //   title: 'logout',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // },
   // {
   //   title: 'Not found',
   //   path: '/404',
   //   icon: icon('ic_disabled'),
   // },
 ];
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
+// const navigate = useNavigate();
+// const logoutHandler = () => {
+//   localStorage.setItem('121211', 0);
+
+
+//   navigate('/login');
+// };
+
+// const logoutHandler = () => {
+//   // Clear localStorage
+//   localStorage.setItem('121211', 0);
+
+//   // eslint-disable-next-line react-hooks/rules-of-hooks
+//   const history = useHistory();
+//   history.push('/login');
+// };
 
 export default navConfig;
