@@ -1,32 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Text, Input, Img, Heading, Button, RatingBar, CheckBox } from "../../components";
 import Header from "../../components/Header";
 
-const data = [
-  { greenwarm: "images/img_placeholder_3.png", greenwarm1: "<>Green <br />Warm Jacket</>" },
-  { greenwarm: "images/img_placeholder_1.png", greenwarm1: "<>Black<br />Warm Jacket</>" },
-  { greenwarm: "images/img_shoes_isolated_pk7npbk.png", greenwarm1: "<>Blue Grey <br />Warm Jacket</>" },
-  { greenwarm: "images/img_placeholder_4.png", greenwarm1: "<>Blue Denim <br />Jacket</>" },
-  { greenwarm: "images/img_mask_group_7.png", greenwarm1: "<>Purple <br />Warm Jacket</>" },
-  { greenwarm: "images/img_placeholder_2.png", greenwarm1: "<>Casual <br />Pink Shirt</>" },
-  { greenwarm: "images/img_mask_group_6.png", greenwarm1: "Gray T-shirt" },
-  { greenwarm: "images/img_placeholder_250x250.png", greenwarm1: "Red Flannel" },
-  { greenwarm: "images/img_placeholder_631x384.png", greenwarm1: "<>Casual <br />Grey Shoes</>" },
-  { greenwarm: "images/img_sport_j9bzxuy.png", greenwarm1: "Pink Jacket" },
-  { greenwarm: "images/img_placeholder_5.png", greenwarm1: "<>Black <br />Warm Jacket</>" },
-  { greenwarm: "images/img_placeholder_245x245.png", greenwarm1: "<>Black<br />Brief Case</>" },
-  { greenwarm: "images/img_business_shirt_ptnj9lv.png", greenwarm1: "<>Modern Classic<br />Watch</>" },
-  { greenwarm: "images/img_placeholder_177x177.png", greenwarm1: "<>Blue Denim <br />Skirt</>" },
-  { greenwarm: "images/img_placeholder_23.png", greenwarm1: "<>Casual <br />Classic Watch</>" },
-  { greenwarm: "images/img_placeholder_24.png", greenwarm1: "<>Black Adventure<br />Boots</>" },
-  { greenwarm: "images/img_placeholder_6.png", greenwarm1: "<>Black Formal<br />Highheels</>" },
-  { greenwarm: "images/img_travel_8v7cnke.png", greenwarm1: "<>Brown <br />Casual Shoes</>" },
-  { greenwarm: "images/img_warm_pants_pxl7hrp.png", greenwarm1: "<>Gray <br />Longpants</>" },
-  { greenwarm: "images/img_placeholder_25.png", greenwarm1: "<>Green<br />Sport Jacket</>" },
-];
+
+// const data = [
+//   { greenwarm: "images/img_placeholder_3.png", greenwarm1: "<>Green <br />Warm Jacket</>" },
+//   { greenwarm: "images/img_placeholder_1.png", greenwarm1: "<>Black<br />Warm Jacket</>" },
+//   { greenwarm: "images/img_shoes_isolated_pk7npbk.png", greenwarm1: "<>Blue Grey <br />Warm Jacket</>" },
+//   { greenwarm: "images/img_placeholder_4.png", greenwarm1: "<>Blue Denim <br />Jacket</>" },
+//   { greenwarm: "images/img_mask_group_7.png", greenwarm1: "<>Purple <br />Warm Jacket</>" },
+//   { greenwarm: "images/img_placeholder_2.png", greenwarm1: "<>Casual <br />Pink Shirt</>" },
+//   { greenwarm: "images/img_mask_group_6.png", greenwarm1: "Gray T-shirt" },
+//   { greenwarm: "images/img_placeholder_250x250.png", greenwarm1: "Red Flannel" },
+//   { greenwarm: "images/img_placeholder_631x384.png", greenwarm1: "<>Casual <br />Grey Shoes</>" },
+//   { greenwarm: "images/img_sport_j9bzxuy.png", greenwarm1: "Pink Jacket" },
+//   { greenwarm: "images/img_placeholder_5.png", greenwarm1: "<>Black <br />Warm Jacket</>" },
+//   { greenwarm: "images/img_placeholder_245x245.png", greenwarm1: "<>Black<br />Brief Case</>" },
+//   { greenwarm: "images/img_business_shirt_ptnj9lv.png", greenwarm1: "<>Modern Classic<br />Watch</>" },
+//   { greenwarm: "images/img_placeholder_177x177.png", greenwarm1: "<>Blue Denim <br />Skirt</>" },
+//   { greenwarm: "images/img_placeholder_23.png", greenwarm1: "<>Casual <br />Classic Watch</>" },
+//   { greenwarm: "images/img_placeholder_24.png", greenwarm1: "<>Black Adventure<br />Boots</>" },
+//   { greenwarm: "images/img_placeholder_6.png", greenwarm1: "<>Black Formal<br />Highheels</>" },
+//   { greenwarm: "images/img_travel_8v7cnke.png", greenwarm1: "<>Brown <br />Casual Shoes</>" },
+//   { greenwarm: "images/img_warm_pants_pxl7hrp.png", greenwarm1: "<>Gray <br />Longpants</>" },
+//   { greenwarm: "images/img_placeholder_25.png", greenwarm1: "<>Green<br />Sport Jacket</>" },
+// ];
 
 export default function ProductListPage() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/api/products');
+        const allProducts = await response.json();
+        // Update state with fetched products
+        setProducts(allProducts);
+        // console.log("products:", allProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        // Handle error condition if needed
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -185,6 +205,43 @@ export default function ProductListPage() {
               <div className="flex justify-between gap-5 sm:flex-col">
                 <Text as="p" className="!font-medium">
                   <span className="text-gray-500">Viewing&nbsp;</span>
+                  <span className="text-gray-800">{products.length}</span>
+                  <span className="text-gray-500">&nbsp;of&nbsp;</span>
+                  <span className="text-gray-800">{products.length} product</span>
+                </Text>
+                <div className="flex items-center gap-4">
+                  <Text as="p">
+                    <span className="text-gray-500">Sort by:&nbsp;</span>
+                    <span className="text-gray-800">Newest Items</span>
+                  </Text>
+                  <Img src="images/img_arrow_down.svg" alt="arrowdown_three" className="h-[24px] w-[24px] self-start" />
+                </div>
+              </div>
+              <a href="/productdetails" target="">
+                <div className="flex flex-col items-center gap-[55px] sm:gap-[27px]">
+                  <div className="grid grid-cols-5 justify-center gap-8 self-stretch md:grid-cols-3 sm:grid-cols-1">
+                    {products.map((product, index) => (
+                      <div key={"product" + index} className="flex w-full flex-col items-center gap-4">
+                        <Img src={product.photo} alt={product.brand} className="h-[245px] w-full object-cover md:h-auto" />
+                        <div className="flex w-[66%] flex-col items-center gap-2 md:w-full">
+                          <Text size="md" as="p" className="text-center !text-gray-800">
+                            {product.model}
+                          </Text>
+                          <Text as="p" className="!font-medium !text-gray-800">
+                            ${product.price}
+                          </Text>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Pagination or navigation controls can be added here */}
+                </div>
+              </a>
+            </div>
+            {/* <div className="flex flex-1 flex-col gap-[29px] md:self-stretch">
+              <div className="flex justify-between gap-5 sm:flex-col">
+                <Text as="p" className="!font-medium">
+                  <span className="text-gray-500">Viewing&nbsp;</span>
                   <span className="text-gray-800">20</span>
                   <span className="text-gray-500">&nbsp;of&nbsp;</span>
                   <span className="text-gray-800">160 product</span>
@@ -197,7 +254,7 @@ export default function ProductListPage() {
                   <Img src="images/img_arrow_down.svg" alt="arrowdown_three" className="h-[24px] w-[24px] self-start" />
                 </div>
               </div>
-              <a href="" target="_blank">
+              <a href="/productdetails" target="">
                 <div className="flex flex-col items-center gap-[55px] sm:gap-[27px]">
                   <div className="grid grid-cols-5 justify-center gap-8 self-stretch md:grid-cols-3 sm:grid-cols-1">
                     {data.map((d, index) => (
@@ -229,7 +286,7 @@ export default function ProductListPage() {
                   </div>
                 </div>
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
         <footer className="mt-[100px] flex flex-col items-center gap-[97px] self-stretch bg-gray-800 py-[30px] md:gap-[72px] sm:gap-12 sm:py-5">

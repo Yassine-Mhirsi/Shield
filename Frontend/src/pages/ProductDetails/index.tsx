@@ -61,11 +61,11 @@ export default function ProductDetailsPage() {
                       Zip Jacket
                     </>
                   </Heading>
-                  <Text size="lg" as="p">
-                    $299
+                  <Text size="lg" as="p" className="!text-gray-800">
+                    $2999999999999
                   </Text>
                   <div className="h-px w-full self-stretch bg-blue_gray-100" />
-                  <Text as="p" className="leading-8">
+                  <Text as="p" className="leading-8 !text-gray-800">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                     aliquip ex ea commodo consequat.

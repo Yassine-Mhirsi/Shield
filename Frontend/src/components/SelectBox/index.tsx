@@ -10,7 +10,7 @@ const variants = {
   },
 } as const;
 const sizes = {
-  xs: "h-[60px] px-[33px] text-lg",
+  xs: "h-[60px] px-[50px] text-lg",
 } as const;
 
 type selectOptionType = { value: string; label: string };
@@ -71,7 +71,7 @@ const SelectBox = React.forwardRef<any, SelectProps>(
               border: "0 !important",
               boxShadow: "0 !important",
               minHeight: "auto",
-              width: "100%",
+              width: "380px",
               "&:hover": {
                 border: "0 !important",
               },

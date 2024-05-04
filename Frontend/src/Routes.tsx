@@ -7,6 +7,10 @@ import ProductList from "pages/ProductList";
 import ProductDetails from "pages/ProductDetails";
 import Cart from "pages/Cart";
 import Checkout from "pages/Checkout";
+import UserProfileForm from "forms/user-profile-form/UserProfileForm";
+import Settings from "pages/Settings";
+import SubmitPartner from "pages/SubmitPartner";
+
 
 const ProjectRoutes = () => {
   let element = useRoutes([
@@ -15,6 +19,14 @@ const ProjectRoutes = () => {
     {
       path: "/",
       element: <HomepageVOne />,
+    },
+    {
+      path: "settings",
+      element: <Settings />,
+    },
+    {
+      path: "submitPartner",
+      element: <SubmitPartner />,
     },
     {
       path: "productlist",

@@ -9,7 +9,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Img } from "components/Img";
 
 const UsernameMenu = () => {
   const { user, logout } = useAuth0();
@@ -18,7 +19,8 @@ const UsernameMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center font-bold text-[#ffffff] gap-2">
         <CircleUserRound className="text-[#ffffff]" />
-        {user?.email}
+        {/* <Img src={user?.picture} /> */}
+        {user?.nickname}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-[#0c0a09]">
         <DropdownMenuItem>
@@ -30,7 +32,7 @@ const UsernameMenu = () => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link to="" className="font-bold text-[#ffffff]">
+          <Link to="/settings" className="font-bold text-[#ffffff]">
             User Profile
           </Link>
         </DropdownMenuItem>
