@@ -4,36 +4,13 @@ import { Text, Input, Img, Heading, Button, RatingBar, CheckBox } from "../../co
 import Header from "../../components/Header";
 
 
-// const data = [
-//   { greenwarm: "images/img_placeholder_3.png", greenwarm1: "<>Green <br />Warm Jacket</>" },
-//   { greenwarm: "images/img_placeholder_1.png", greenwarm1: "<>Black<br />Warm Jacket</>" },
-//   { greenwarm: "images/img_shoes_isolated_pk7npbk.png", greenwarm1: "<>Blue Grey <br />Warm Jacket</>" },
-//   { greenwarm: "images/img_placeholder_4.png", greenwarm1: "<>Blue Denim <br />Jacket</>" },
-//   { greenwarm: "images/img_mask_group_7.png", greenwarm1: "<>Purple <br />Warm Jacket</>" },
-//   { greenwarm: "images/img_placeholder_2.png", greenwarm1: "<>Casual <br />Pink Shirt</>" },
-//   { greenwarm: "images/img_mask_group_6.png", greenwarm1: "Gray T-shirt" },
-//   { greenwarm: "images/img_placeholder_250x250.png", greenwarm1: "Red Flannel" },
-//   { greenwarm: "images/img_placeholder_631x384.png", greenwarm1: "<>Casual <br />Grey Shoes</>" },
-//   { greenwarm: "images/img_sport_j9bzxuy.png", greenwarm1: "Pink Jacket" },
-//   { greenwarm: "images/img_placeholder_5.png", greenwarm1: "<>Black <br />Warm Jacket</>" },
-//   { greenwarm: "images/img_placeholder_245x245.png", greenwarm1: "<>Black<br />Brief Case</>" },
-//   { greenwarm: "images/img_business_shirt_ptnj9lv.png", greenwarm1: "<>Modern Classic<br />Watch</>" },
-//   { greenwarm: "images/img_placeholder_177x177.png", greenwarm1: "<>Blue Denim <br />Skirt</>" },
-//   { greenwarm: "images/img_placeholder_23.png", greenwarm1: "<>Casual <br />Classic Watch</>" },
-//   { greenwarm: "images/img_placeholder_24.png", greenwarm1: "<>Black Adventure<br />Boots</>" },
-//   { greenwarm: "images/img_placeholder_6.png", greenwarm1: "<>Black Formal<br />Highheels</>" },
-//   { greenwarm: "images/img_travel_8v7cnke.png", greenwarm1: "<>Brown <br />Casual Shoes</>" },
-//   { greenwarm: "images/img_warm_pants_pxl7hrp.png", greenwarm1: "<>Gray <br />Longpants</>" },
-//   { greenwarm: "images/img_placeholder_25.png", greenwarm1: "<>Green<br />Sport Jacket</>" },
-// ];
-
 export default function ProductListPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:7800/api/products');
+        const response = await fetch('http://localhost:7800/api/products/fetchAll');
         const allProducts = await response.json();
         // Update state with fetched products
         setProducts(allProducts);
@@ -225,7 +202,7 @@ export default function ProductListPage() {
                         <Img src={product.photo} alt={product.brand} className="h-[245px] w-full object-cover md:h-auto" />
                         <div className="flex w-[66%] flex-col items-center gap-2 md:w-full">
                           <Text size="md" as="p" className="text-center !text-gray-800">
-                            {product.model}
+                          {product.brand} {product.model}
                           </Text>
                           <Text as="p" className="!font-medium !text-gray-800">
                             ${product.price}

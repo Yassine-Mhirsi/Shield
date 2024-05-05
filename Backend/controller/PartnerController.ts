@@ -1,13 +1,11 @@
-// controllers/partnerController.js
 import { Request, Response } from "express";
 import Partner from "../model/partner";
-
 
 // Controller function to handle partner submission
 export const submitPartner = async (req: Request, res: Response) => {
   try {
     // Extract partner information from request body
-    const { userId, email, TRN, companyName, phoneNumber, newRole } = req.body;
+    const { userId, email, TRN, companyName, phoneNumber, newRole, picture } = req.body;
 
     // Create a new partner instance
     const partner = new Partner({
@@ -15,7 +13,8 @@ export const submitPartner = async (req: Request, res: Response) => {
       TRN,
       companyName,
       phoneNumber,
-      newRole
+      newRole,
+      picture // Include the picture field
     });
 
     // Save the partner information to the database

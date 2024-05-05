@@ -2,6 +2,7 @@ import React from "react";
 
 const shapes = {
   square: "rounded-[0px]",
+  circle: "rounded-[50%]",
 } as const;
 const variants = {
   outline: {
