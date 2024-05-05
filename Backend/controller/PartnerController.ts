@@ -29,6 +29,31 @@ export const submitPartner = async (req: Request, res: Response) => {
   }
 };
 
+export const fetchRequests = async (req: Request, res: Response) => {
+  try {
+    const partners = await Partner.find();
+    res.status(200).json(partners);
+  } catch (error: any) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const deletePartner = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const deletedPartner = await Partner.findByIdAndDelete(id);
+    if (!deletedPartner) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json({ message: "Partner deleted successfully" });
+  } catch (error: any) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+
 export default {
-    submitPartner,
+  submitPartner,
+  fetchRequests,
+  deletePartner,
 };

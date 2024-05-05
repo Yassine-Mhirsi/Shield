@@ -136,9 +136,9 @@ export default function ProductsView() {
           {products.map((product, index) => (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', maxWidth: '300px', border: '1px solid #ccc', padding: '1rem' }}>
               <img src="../../../../public/assets/images/products/product_12.jpg" alt="Logo" style={{ height: '50px', width: 'auto' }} />
-              <img src={product.photo} alt={product.brand} style={{ height: '150px', width: 'auto', maxWidth: '100%', objectFit: 'cover' }} />
+              <img src={product.photo} alt={product.model} style={{ height: '150px', width: 'auto', maxWidth: '100%', objectFit: 'cover' }} />
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
-                <p style={{ textAlign: 'center', color: '#333', fontSize: '1rem' }}>{product.model}</p>
+                <p style={{ textAlign: 'center', color: '#333', fontSize: '1rem' }}>{product.brand} {product.model}</p>
                 <p style={{ fontWeight: 'bold', color: '#333', fontSize: '1rem' }}>{product.price} TND</p>
               </div>
             </div>

@@ -25,8 +25,40 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 };
 
+// export const updateUserRole = async (req: Request, res: Response) => {
+//     const { id } = req.params;
+//     const { rolev } = req.body; // Assuming you only want to update the role attribute
 
+//     try {
+//       const user = await User.findByIdAndUpdate(id, { role:rolev }, { new: true }); // Update only the role attribute
+//       if (!user) {
+//         return res.status(404).json({ message: "User not found" });
+//       }
+//       res.status(200).json({ message: "User role updated successfully", user });
+//     } catch (error: any) {
+//       res.status(400).json({ message: error.message });
+//     }
+// };
 
+const updateCurrentUser = async (req: Request, res: Response) => {
+    try {
+        const { role } = req.body;
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        user.role = role;
+
+        await user.save();
+
+        res.send(user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error updating user" });
+    }
+};
 
 // const updateCurrentUser = async (req: Request, res: Response) => {
 //   try {
@@ -57,4 +89,5 @@ export const deleteUser = async (req: Request, res: Response) => {
 export default {
     getAllUsers,
     deleteUser,
+    updateCurrentUser,
 };
