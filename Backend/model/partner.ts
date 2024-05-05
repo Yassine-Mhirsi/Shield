@@ -1,5 +1,3 @@
-// models/partner.js
-
 import mongoose from 'mongoose';
 
 const partnerSchema = new mongoose.Schema({
@@ -29,6 +27,10 @@ const partnerSchema = new mongoose.Schema({
   newRole: {
     type: String,
     required: true
+  },
+  picture: {
+    type: String, // Assuming the picture will be stored as a URL
+    required: true // Set it to true if picture is mandatory
   }
 });
 

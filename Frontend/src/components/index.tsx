@@ -11,4 +11,4 @@ import { TextArea } from "./TextArea";
 import { Switch } from "./Switch";
 import { ReactTable } from "./ReactTable";
 import { SelectBox } from "./SelectBox";
-export { Img, Input, Button,Button1, Text, Heading, Slider, RatingBar, CheckBox,TextArea, Switch, ReactTable, SelectBox };
+export { Img, Input, Button, Button1, Text, Heading, Slider, RatingBar, CheckBox, TextArea, Switch, ReactTable, SelectBox };

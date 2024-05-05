@@ -4,7 +4,7 @@ import { Text, Img, Heading, Input, RatingBar, Button, Slider } from "../../comp
 import AliceCarousel, { EventObject, DotsItem, Link } from "react-alice-carousel";
 import { useAuth0 } from "@auth0/auth0-react";
 import UsernameMenu from "components/UsernameMenu";
-import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 // import {
 //   DropdownMenu,
@@ -62,9 +62,21 @@ export default function HomepageVOnePage() {
   const sliderRef = React.useRef<AliceCarousel>(null);
   const [sliderState1, setSliderState1] = React.useState(0);
   const sliderRef1 = React.useRef<AliceCarousel>(null);
-
+  
+  const navigate = useNavigate();
   const { user, loginWithRedirect, isAuthenticated } = useAuth0();
   const [userRole, setUserRole] = useState(null);
+
+  
+  const handleButtonClick = () => {
+    if (isAuthenticated) {
+      navigate('/submitPartner');
+    } else {
+      // Redirect to login
+      loginWithRedirect();
+    }
+  };
+
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -276,10 +288,11 @@ export default function HomepageVOnePage() {
               shape="square"
               rightIcon={<Img src="images/img_arrow.svg" alt="Arrow" className="h-[48px] w-[48px]" />}
               className="mt-14 min-w-[245px] gap-2.5 font-medium sm:px-5"
-              // onClick={handleSwalForm}
-            >
-              Become a Partner {userRole}
+              onClick={handleButtonClick}
+              >
+              Become a Partner 
             </Button>
+            {/* {userRole} */}
           </div>
           <div className="relative ml-[-14px] h-[700px] w-[63%] md:ml-0 md:h-auto md:w-full md:p-5">
             <div className="flex w-full md:flex-col">
