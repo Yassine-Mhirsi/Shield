@@ -7,13 +7,13 @@ export const createProduct = async (req: Request, res: Response) => {
     try {
         const product = req.body;
 
-        if (product.SN && product.SN.trim() !== "") {
-            const existingProduct = await Product.findOne({ SN: product.SN });
+        // if (product.SN && product.SN !== null) {
+        //     const existingProduct = await Product.findOne({ SN: product.SN });
 
-            if (existingProduct) {
-                return res.status(400).json({ error: "Product with the same SN already exists." });
-            }
-        }
+        //     if (existingProduct) {
+        //         return res.status(400).json({ error: "Product with the same SN already exists." });
+        //     }
+        // }
 
         const newProduct = await Product.create(product);
 

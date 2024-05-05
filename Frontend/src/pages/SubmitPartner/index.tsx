@@ -5,9 +5,6 @@ import Header from "../../components/Header";
 import { useAuth0 } from "@auth0/auth0-react";
 
 
-
-
-
 const options = [
   { value: 'repair-shop', label: 'Repair Shop' },
   { value: 'insurance', label: 'Insurance' },
@@ -15,7 +12,7 @@ const options = [
 ];
 
 export default function SubmitPartner() {
-  
+
   const { user } = useAuth0();
   const [userId, setUserId] = useState(null);
 
@@ -47,12 +44,27 @@ export default function SubmitPartner() {
     companyName: "",
     phoneNumber: "",
     newRole: null,
+    picture: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
+  
+    // Update formValues for other inputs
+    setFormValues((prev) => ({ 
+      ...prev, 
+      [name]: value 
+    }));
+  
+    // Update formValues.picture separately
+    if (name === "url") {
+      setFormValues((prev) => ({
+        ...prev,
+        picture: value,
+      }));
+    }
   };
+  
 
 
   const handleSelectChange = (selectedOption: any) => {
@@ -76,6 +88,7 @@ export default function SubmitPartner() {
           companyName: formValues.companyName,
           phoneNumber: formValues.phoneNumber,
           newRole: formValues.newRole?.value,
+          picture: formValues.picture,
         }),
       });
       if (response.ok) {
@@ -114,7 +127,6 @@ export default function SubmitPartner() {
                         <div className="flex w-full flex-col items-start justify-center gap-2.5">
                           <Text as="p" className="text-[#09090b]">Tax Registration Number</Text>
                           <input
-                            // shape="round"
                             name="TRN"
                             placeholder="1234567L"
                             className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
@@ -125,7 +137,6 @@ export default function SubmitPartner() {
                         <div className="flex w-full flex-col items-start justify-center gap-2.5">
                           <Text as="p" className="text-[#09090b]">Company Name</Text>
                           <input
-                            // shape="round"
                             name="companyName"
                             placeholder={"Company Name"}
                             className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
@@ -140,7 +151,6 @@ export default function SubmitPartner() {
                         <div className="flex w-full flex-col items-start justify-center gap-2.5">
                           <Text as="p" className="text-[#09090b]">Phone Number</Text>
                           <input
-                            // shape="round"
                             name="phoneNumber"
                             placeholder={"12345678"}
                             className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
@@ -163,6 +173,16 @@ export default function SubmitPartner() {
                           />
                         </div>
                       </div>
+                    </div>
+                    <div className="flex w-full flex-col items-start justify-center gap-2.5">
+                      <Text as="p" className="text-[#09090b]">Image URL</Text>
+                      <input
+                        name="url"
+                        placeholder={"https://"}
+                        className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
+                        value={formValues.picture}
+                        onChange={handleInputChange}
+                      />
                     </div>
                   </div>
                 </div>

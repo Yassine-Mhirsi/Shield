@@ -7,9 +7,13 @@ import ProductList from "pages/ProductList";
 import ProductDetails from "pages/ProductDetails";
 import Cart from "pages/Cart";
 import Checkout from "pages/Checkout";
-import UserProfileForm from "forms/user-profile-form/UserProfileForm";
 import Settings from "pages/Settings";
 import SubmitPartner from "pages/SubmitPartner";
+import DashboardAdminShop from "pages/DashboardAdminShop";
+import AddAgent from "pages/DashboardAdminShop/AddAgent";
+import AddTable from "pages/DashboardAdminShop/AddTable";
+import TableList from "pages/DashboardAdminShop/TableList";
+import MenuList from "pages/DashboardAdminShop/MenuList";
 
 
 const ProjectRoutes = () => {
@@ -23,6 +27,26 @@ const ProjectRoutes = () => {
     {
       path: "settings",
       element: <Settings />,
+    },
+    {
+      path: "dashboardadminshop",
+      element: <DashboardAdminShop />,
+    },
+    {
+      path: "dashboardadminshop/addagent",
+      element: <AddAgent />,
+    },
+    {
+      path: "dashboardadminshop/addtable",
+      element: <AddTable />,
+    },
+    {
+      path: "dashboardadminshop/menulist",
+      element: <MenuList />,
+    },
+    {
+      path: "dashboardadminshop/tablelist",
+      element: <TableList />,
     },
     {
       path: "submitPartner",
