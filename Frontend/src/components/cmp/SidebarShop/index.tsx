@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Img } from "./..";
+import { Text, Img } from "..";
 import { SubMenu, MenuItem, Menu, Sidebar, sidebarClasses } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
 
@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-export default function Sidebar1({ ...props }: Props) {
+export default function SidebarShop({ ...props }: Props) {
   return (
     <Sidebar
       {...props}
@@ -15,9 +15,9 @@ export default function Sidebar1({ ...props }: Props) {
       className={`${props.className} flex flex-col h-screen top-0 py-6 md:p-5 sm:py-5 bg-white-A700 shadow-md !sticky overflow-auto md:hidden`}
     >
       <Img
-        src="../../../../public/images/logo.png"
+        src="../../../../public/images/Untitled.png"
         alt="sidebarlogo"
-        className="ml-7 h-[30px] w-[125px] object-contain md:ml-0"
+        className="ml-7 h-[50px] w-[160px] object-contain md:ml-0"
       />
       <Menu
         menuItemStyles={{
@@ -48,7 +48,7 @@ export default function Sidebar1({ ...props }: Props) {
             Dashboard
           </Link>
         </MenuItem>
-        <Link to="/dashboardadminshop/tablelist" className="flex items-center">
+        <Link to="/dashboardadminshop/productlist" className="flex items-center">
           <SubMenu icon={<Img src="../../../../public/images/img_frame_21.svg" alt="image" className="h-[20px] w-[20px]" />} label="Products">
           </SubMenu>
         </Link>

@@ -10,10 +10,13 @@ import Checkout from "pages/Checkout";
 import Settings from "pages/Settings";
 import SubmitPartner from "pages/SubmitPartner";
 import DashboardAdminShop from "pages/DashboardAdminShop";
-import AddAgent from "pages/DashboardAdminShop/AddAgent";
-import AddTable from "pages/DashboardAdminShop/AddTable";
-import TableList from "pages/DashboardAdminShop/TableList";
-import MenuList from "pages/DashboardAdminShop/MenuList";
+import AddProduct from "pages/DashboardAdminShop/AddProduct";
+import Productlist from "pages/DashboardAdminShop/Productlist";
+import DashboardAdminInsurance from "pages/DashboardAdminInsurance";
+import ContractList from "pages/DashboardAdminInsurance/ContractList";
+import ReportList from "pages/DashboardAdminInsurance/ReportList";
+import DashboardAdminRepairShop from "pages/DashboardAdminRepairShop";
+import Reportlist from "pages/DashboardAdminRepairShop/Reportlist";
 
 
 const ProjectRoutes = () => {
@@ -33,20 +36,32 @@ const ProjectRoutes = () => {
       element: <DashboardAdminShop />,
     },
     {
-      path: "dashboardadminshop/addagent",
-      element: <AddAgent />,
+      path: "dashboardadminshop/addproduct",
+      element: <AddProduct />,
     },
     {
-      path: "dashboardadminshop/addtable",
-      element: <AddTable />,
+      path: "dashboardadminshop/productlist",
+      element: <Productlist />,
     },
     {
-      path: "dashboardadminshop/menulist",
-      element: <MenuList />,
+      path: "dashboardadmininsurance",
+      element: <DashboardAdminInsurance />,
     },
     {
-      path: "dashboardadminshop/tablelist",
-      element: <TableList />,
+      path: "dashboardadmininsurance/contractlist",
+      element: <ContractList />,
+    },
+    {
+      path: "dashboardadmininsurance/reportlist",
+      element: <ReportList />,
+    },
+    {
+      path: "dashboardadminrepairshop",
+      element: <DashboardAdminRepairShop />,
+    },
+    {
+      path: "dashboardadminrepairshop/reportlist",
+      element: <Reportlist />,
     },
     {
       path: "submitPartner",

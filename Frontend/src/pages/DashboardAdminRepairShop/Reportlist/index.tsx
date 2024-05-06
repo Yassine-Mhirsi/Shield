@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Button, Img, Text } from ".../../components/cmp";
 import Header from ".../../components/cmp/Header";
 import { ReactTable } from ".../../components/cmp/ReactTable";
-import Sidebar8 from ".../../components/cmp/Sidebar8";
+import SidebarRepairShop from "components/cmp/SidebarRepairShop";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
 
@@ -170,27 +170,27 @@ export default function TableListPage() {
   return (
     <>
       <Helmet>
-        <title>Dashboard | Products</title>
+        <title>Dashboard | Reports</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="w-full bg-white-A700">
         <div className="flex items-start md:flex-col">
-          <Sidebar8 />
+          <SidebarRepairShop />
           <div className="flex flex-1 flex-col items-center gap-[35px] md:self-stretch md:p-5">
             <Header />
             <div className="flex w-[93%] flex-col items-start md:w-full">
               <div className="flex flex-row justify-between items-center gap-[1500px]">
                 <div>
                   <Text size="xl" as="p">
-                    Product List
+                    Report List
                   </Text>
                   <Text size="lg" as="p" className="!text-blue_gray-400">
-                    Add Product / Product List
+                    Add Report / Report List
                   </Text>
                 </div>
                 <div>
                   <Link to="/dashboardadminshop/addtable" className="flex items-center">
-                    <Button className="rounded-lg bg-blue-500 text-white px-[40px] py-6">Add Product</Button>
+                    <Button className="rounded-lg bg-blue-500 text-white px-[40px] py-6">Add Report</Button>
                   </Link>
                 </div>
               </div>

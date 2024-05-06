@@ -1,7 +1,7 @@
 // Import necessary modules
 import express, { Request, Response } from "express";
 import multer from "multer";
-import { createProduct, fetchProducts, fetchProductById, updateProduct, deleteProduct } from "../controller/ProductController";
+import { createProduct, fetchProducts, fetchProductById, updateProduct, deleteProduct, GetProductsByShopId } from "../controller/ProductController";
 
 const router = express.Router();
 
@@ -22,6 +22,7 @@ router.get("/products/fetchAll", fetchProducts);
 router.get("/products/fetchById/:id", fetchProductById);
 router.put("/products/update/:id", updateProduct);
 router.delete("/products/delete/:id", deleteProduct);
+router.get("/products/fetchByShopId/:shopId", GetProductsByShopId);
 // router.get("/products/search", searchProducts);
 
 export default router;
