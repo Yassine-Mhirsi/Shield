@@ -3,19 +3,19 @@ import { Helmet } from "react-helmet";
 import { Text } from "../../components/cmp";
 import Header from "../../components/cmp/Header";
 import DashboardRowmegaphone from "components/cmp/DashboardRowmegaphone";
-import SidebarShop from "../../components/cmp/SidebarShop";
+import SidebarInsurance from "components/cmp/SidebarInsurance";
 
 
-export default function DashboardAdminShop() {
+export default function DashboardAdminInsurance() {
   return (
     <>
       <Helmet>
-        <title>Dashboard Admin Shop</title>
+        <title>Dashboard Admin Insurance</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="w-full bg-gray-50 pb-[68px] md:pb-5">
         <div className="flex items-start md:flex-col">
-          <SidebarShop />
+          <SidebarInsurance />
           <div className="flex flex-1 flex-col items-center gap-[37px] md:self-stretch md:p-5">
             <Header />
             <div className="flex w-[93%] flex-col gap-[30px] md:w-full">

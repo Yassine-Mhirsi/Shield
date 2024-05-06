@@ -62,32 +62,22 @@ export default function HomepageVOnePage() {
   const sliderRef = React.useRef<AliceCarousel>(null);
   const [sliderState1, setSliderState1] = React.useState(0);
   const sliderRef1 = React.useRef<AliceCarousel>(null);
-  
+
   const navigate = useNavigate();
   const { user, loginWithRedirect, isAuthenticated } = useAuth0();
   const [userRole, setUserRole] = useState(null);
 
-  
-  const handleButtonClick = () => {
-    if (isAuthenticated) {
-      navigate('/submitPartner');
-    } else {
-      // Redirect to login
-      loginWithRedirect();
-    }
-  };
 
+
+  const [userStatus, setUserStatus] = useState(null);
 
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
         const response = await fetch('http://localhost:7800/api/my/user');
         const allUsers = await response.json();
-        // console.log("All users:", allUsers);
-        const currentUser = allUsers.find((u: { email: string; }) => u.email === user.email);
-        // console.log("Current user:", currentUser);
+        const currentUser = allUsers.find(u => u.email === user.email);
         if (currentUser) {
-          // Assuming currentUser contains role information
           setUserRole(currentUser.role);
         } else {
           setUserRole('Role not found');
@@ -98,10 +88,43 @@ export default function HomepageVOnePage() {
       }
     };
 
+    const fetchUserStatus = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/partner/fetchAllPartner');
+        const allUsers = await response.json();
+        const currentUser = allUsers.find(u => u.user.email === user.email);
+        if (currentUser) {
+          setUserStatus(currentUser.status);
+        } else {
+          console.log('Status not found');
+        }
+      } catch (error) {
+        console.error('Error fetching user status:', error);
+        // setUserStatus('Error fetching status');
+      }
+    };
+
     if (user) {
       fetchUserRole();
+      fetchUserStatus();
     }
   }, [user]);
+
+  const handleButtonClick = () => {
+    if (isAuthenticated) {
+      if (userStatus === 'accepted') {
+        navigate(`/dashboardadmin${userRole}`);
+      } else if (userStatus === 'waiting') {
+        alert('Your request is still being processed');
+      } else if (userStatus === 'refused') {
+        alert('Your request was refused');
+      }else{
+        navigate(`/submitPartner`);
+      }
+    } else {
+      loginWithRedirect();
+    }
+  };
 
 
   // Define menu items based on user role
@@ -153,54 +176,54 @@ export default function HomepageVOnePage() {
 
 
 
-//   const handleSwalForm = async () => {
-//     const { value: formValues } = await Swal.fire({
-//         title: "Multiple inputs",
-//         html: `
-//             <input id="tax-registration-number" class="swal2-input" placeholder="Tax Registration Number" required>
-//             <input id="company-name" class="swal2-input" placeholder="Company Name" required>
-//             <input id="phone-number" class="swal2-input" placeholder="Phone Number" required>
-//             <select id="role" class="swal2-select" required>
-//                 <option value="" disabled selected>Select Role</option>
-//                 <option value="Shop">Shop</option>
-//                 <option value="Repair Shop">Repair Shop</option>
-//                 <option value="Insurance">Insurance</option>
-//             </select>
-//         `,
-//         focusConfirm: false,
-//         preConfirm: () => {
-//             const taxRegistrationNumber = (document.getElementById("tax-registration-number") as HTMLInputElement)?.value;
-//             const companyName = (document.getElementById("company-name") as HTMLInputElement)?.value;
-//             const phoneNumber = (document.getElementById("phone-number") as HTMLInputElement)?.value;
-//             const role = (document.getElementById("role") as HTMLSelectElement)?.value;
-//             return { taxRegistrationNumber, companyName, phoneNumber, role };
-//         }
-//     });
-// };
+  //   const handleSwalForm = async () => {
+  //     const { value: formValues } = await Swal.fire({
+  //         title: "Multiple inputs",
+  //         html: `
+  //             <input id="tax-registration-number" class="swal2-input" placeholder="Tax Registration Number" required>
+  //             <input id="company-name" class="swal2-input" placeholder="Company Name" required>
+  //             <input id="phone-number" class="swal2-input" placeholder="Phone Number" required>
+  //             <select id="role" class="swal2-select" required>
+  //                 <option value="" disabled selected>Select Role</option>
+  //                 <option value="Shop">Shop</option>
+  //                 <option value="Repair Shop">Repair Shop</option>
+  //                 <option value="Insurance">Insurance</option>
+  //             </select>
+  //         `,
+  //         focusConfirm: false,
+  //         preConfirm: () => {
+  //             const taxRegistrationNumber = (document.getElementById("tax-registration-number") as HTMLInputElement)?.value;
+  //             const companyName = (document.getElementById("company-name") as HTMLInputElement)?.value;
+  //             const phoneNumber = (document.getElementById("phone-number") as HTMLInputElement)?.value;
+  //             const role = (document.getElementById("role") as HTMLSelectElement)?.value;
+  //             return { taxRegistrationNumber, companyName, phoneNumber, role };
+  //         }
+  //     });
+  // };
 
-// const handleSwalForm = async () => {
-//   const { value: fruit } = await Swal.fire({
-//     title: "Select field validation",
-//     input: "select",
-//     inputOptions: {
-//             apples: "Apples",
-//             bananas: "Bananas",
-//             grapes: "Grapes",
-//             oranges: "Oranges"
-//     },
-//     inputPlaceholder: "Select a fruit",
-//     showCancelButton: true,
-//     inputValidator: (value) => {
-//         return new Promise((resolve) => {
-//             if (value === "oranges") {
-//                 resolve();
-//             } else {
-//                 resolve("You need to select oranges :)");
-//             }
-//         });
-//     }
-// });
-  
+  // const handleSwalForm = async () => {
+  //   const { value: fruit } = await Swal.fire({
+  //     title: "Select field validation",
+  //     input: "select",
+  //     inputOptions: {
+  //             apples: "Apples",
+  //             bananas: "Bananas",
+  //             grapes: "Grapes",
+  //             oranges: "Oranges"
+  //     },
+  //     inputPlaceholder: "Select a fruit",
+  //     showCancelButton: true,
+  //     inputValidator: (value) => {
+  //         return new Promise((resolve) => {
+  //             if (value === "oranges") {
+  //                 resolve();
+  //             } else {
+  //                 resolve("You need to select oranges :)");
+  //             }
+  //         });
+  //     }
+  // });
+
 
 
   return (
@@ -286,13 +309,13 @@ export default function HomepageVOnePage() {
             <Button
               size="3xl"
               shape="square"
-              rightIcon={<Img src="images/img_arrow.svg" alt="Arrow" className="h-[48px] w-[48px]" />}
+              // rightIcon={<Img src="images/img_arrow.svg" alt="Arrow" className="h-[48px] w-[48px]" />}
               className="mt-14 min-w-[245px] gap-2.5 font-medium sm:px-5"
               onClick={handleButtonClick}
-              >
-              Become a Partner 
+            >
+              Become a Partner {userStatus} {userRole}
             </Button>
-            {/* {userRole} */}
+
           </div>
           <div className="relative ml-[-14px] h-[700px] w-[63%] md:ml-0 md:h-auto md:w-full md:p-5">
             <div className="flex w-full md:flex-col">

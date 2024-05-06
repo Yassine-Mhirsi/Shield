@@ -73,6 +73,29 @@ export const deleteProduct = async (req: Request, res: Response) => {
     }
 };
 
+
+export const GetProductsByShopId = async (req: Request, res: Response) => {
+    const shopId = req.params.shopId;
+
+    if (!shopId) {
+        return res.status(400).json({ message: "Shop ID must be provided" });
+    }
+
+    try {
+        // Query to find products where 'shop.id' matches the provided shopId
+        const products = await Product.find({ 'shop.id': shopId });
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'No products found for the given shop ID.' });
+        }
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching products'});
+    }
+}
+
+
 //   export const searchProducts = async (req: Request, res: Response) => {
 //     const { keyword } = req.query;
 
@@ -99,5 +122,6 @@ export default {
     fetchProductById,
     updateProduct,
     deleteProduct,
+    GetProductsByShopId,
     // searchProducts,
 };

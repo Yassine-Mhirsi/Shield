@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, SelectBox, Img, Text, Input } from ".../../components/cmp";
 import Header from ".../../components/cmp/Header";
-import Sidebar8 from ".../../components/cmp/Sidebar8";
+import { useAuth0 } from "@auth0/auth0-react";
+import SidebarShop from "components/cmp/SidebarShop";
 
 // const dropDownOptions = [
 //   { label: "Laptop", value: "Laptop" },
@@ -30,6 +31,39 @@ export default function AddTablePage() {
   //     category: selectedOption,
   //   }));
   // };
+  const { user } = useAuth0();
+  const [shopInfo, setShopInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchShopInfo = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/shop/fetchAll');
+        const allShops = await response.json();
+        const currentShop = allShops.find((u: {
+          user: any; email: string;
+        }) => u.user.email === user.email);
+        if (currentShop) {
+          setShopInfo({
+            id: currentShop._id,
+            name: currentShop.companyName, // Assuming 'companyName' is the property containing the shop name
+            picture: currentShop.picture // Assuming 'picture' is the property containing the shop picture URL
+          });
+        } else {
+          setShopInfo('Shop info not found');
+        }
+      } catch (error) {
+        console.error('Error fetching Shop info:', error);
+        setShopInfo('Error fetching shop info');
+      }
+    };
+
+    if (user) {
+      fetchShopInfo();
+    }
+  }, [user]);
+
+  // console.log(user.email);
+  // console.log(shopInfo.id);
 
   const handleSubmit = async () => {
     try {
@@ -42,8 +76,13 @@ export default function AddTablePage() {
           brand: formData.brand,
           model: formData.model,
           category: formData.category,
-          price: formData.price, // Parse price as a float
+          price: formData.price,
           photo: formData.photo,
+          shop: {
+            id: shopInfo.id,
+            name: shopInfo.name,
+            picture: shopInfo.picture
+          }
         }),
       });
       if (response.ok) {
@@ -67,7 +106,7 @@ export default function AddTablePage() {
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="flex w-full items-start justify-center bg-white-A700 md:flex-col">
-        <Sidebar8 />
+        <SidebarShop />
         <div className="flex flex-1 flex-col items-center gap-[35px] md:self-stretch md:p-5">
           <Header />
           <div className="flex w-[93%] flex-col items-start gap-[37px] md:w-full">

@@ -1,6 +1,7 @@
 import React from "react";
 
 const sizes = {
+  q:"",
   xs: "text-[10px] font-normal",
   lg: "text-base font-normal",
   s: "text-xs font-normal",

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Button, Img, Text, RatingBar, SelectBox } from ".../../components/cmp";
 import Header from ".../../components/cmp/Header";
 import { ReactTable } from ".../../components/cmp/ReactTable";
-import Sidebar7 from ".../../components/cmp/Sidebar7";
+import Sidebar7 from "components/cmp/SidebarInsurance";
 import { createColumnHelper } from "@tanstack/react-table";
 
 const dropDownOptions = [

@@ -5,7 +5,7 @@ import Partner from "../model/partner";
 export const submitPartner = async (req: Request, res: Response) => {
   try {
     // Extract partner information from request body
-    const { userId, email, TRN, companyName, phoneNumber, newRole, picture } = req.body;
+    const { userId, email, TRN, companyName, phoneNumber, newRole, picture,status } = req.body;
 
     // Create a new partner instance
     const partner = new Partner({
@@ -14,7 +14,8 @@ export const submitPartner = async (req: Request, res: Response) => {
       companyName,
       phoneNumber,
       newRole,
-      picture // Include the picture field
+      picture,
+      status
     });
 
     // Save the partner information to the database
