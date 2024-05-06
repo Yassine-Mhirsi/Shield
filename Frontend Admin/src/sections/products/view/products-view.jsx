@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 // import ProductCard from '../product-card';
 import ProductSort from '../product-sort';
 import ProductFilters from '../product-filters';
-import ProductCartWidget from '../product-cart-widget';
 // ----------------------------------------------------------------------
 
 export default function ProductsView() {
@@ -134,19 +133,24 @@ export default function ProductsView() {
         ))} */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
           {products.map((product, index) => (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', maxWidth: '300px', border: '1px solid #ccc', padding: '1rem' }}>
-              <img src="../../../../public/assets/images/products/product_12.jpg" alt="Logo" style={{ height: '50px', width: 'auto' }} />
-              <img src={product.photo} alt={product.model} style={{ height: '150px', width: 'auto', maxWidth: '100%', objectFit: 'cover' }} />
+            <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', maxWidth: '300px', border: '1px solid #ccc', padding: '1rem', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                <img src={product.shop.picture} alt={product.shop.name} style={{ height: '50px', width: '50px', objectFit: 'cover', borderRadius: '50%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }} />
+                <img src={product.photo} alt={product.model} style={{ height: '150px', width: 'auto', maxWidth: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+              </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
-                <p style={{ textAlign: 'center', color: '#333', fontSize: '1rem' }}>{product.brand} {product.model}</p>
-                <p style={{ fontWeight: 'bold', color: '#333', fontSize: '1rem' }}>{product.price} TND</p>
+                <p style={{ textAlign: 'center', color: '#333', fontSize: '1.2rem', marginBottom: '0' }}>{product.brand} {product.model}</p>
+                <p style={{ fontWeight: 'bold', color: '#333', fontSize: '1.2rem', marginBottom: '0' }}>{product.price} TND</p>
               </div>
             </div>
           ))}
         </div>
+
+
+
       </Grid>
 
-      <ProductCartWidget />
+
     </Container>
   );
 }

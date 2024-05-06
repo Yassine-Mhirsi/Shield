@@ -35,7 +35,19 @@ const getAllInsurance = async (req: Request, res: Response) => {
     }
 };
 
+export const deleteInsurance = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
+    try {
+        const deletedInsurance = await Insurance.findByIdAndDelete(id);
+        if (!deletedInsurance) {
+            return res.status(404).json({ message: "Insurance not found" });
+        }
+        res.status(200).json({ message: "Insurance deleted successfully" });
+    } catch (error: any) {
+        res.status(404).json({ message: error.message });
+    }
+};
 
 
 
@@ -43,4 +55,5 @@ const getAllInsurance = async (req: Request, res: Response) => {
 export default {
     createInsurance,
     getAllInsurance,
+    deleteInsurance,
 };

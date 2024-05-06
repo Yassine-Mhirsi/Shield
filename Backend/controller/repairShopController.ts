@@ -35,7 +35,19 @@ const getAllRepairShop = async (req: Request, res: Response) => {
     }
 };
 
+export const deleteRepairShop = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
+    try {
+        const deletedRepairShop = await RepairShop.findByIdAndDelete(id);
+        if (!deletedRepairShop) {
+            return res.status(404).json({ message: "Repair Shop not found" });
+        }
+        res.status(200).json({ message: "Repair Shop deleted successfully" });
+    } catch (error: any) {
+        res.status(404).json({ message: error.message });
+    }
+};
 
 
 
@@ -43,4 +55,5 @@ const getAllRepairShop = async (req: Request, res: Response) => {
 export default {
     createRepairShop,
     getAllRepairShop,
+    deleteRepairShop,
 };

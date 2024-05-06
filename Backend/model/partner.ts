@@ -31,6 +31,11 @@ const partnerSchema = new mongoose.Schema({
   picture: {
     type: String, // Assuming the picture will be stored as a URL
     required: true // Set it to true if picture is mandatory
+  },
+  status: {
+    type: String,
+    required: true,
+    default: "waiting"
   }
 });
 

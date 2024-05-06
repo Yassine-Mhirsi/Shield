@@ -11,17 +11,17 @@ const icon = (name) => (
 const navConfig = [
 
   {
-    title: 'dashboard',
+    title: 'Dashboard',
     path: '/',
     icon: icon('ic_analytics'),
   },
   {
-    title: 'user',
+    title: 'Users',
     path: '/user',
     icon: icon('ic_user'),
   },
   {
-    title: 'product',
+    title: 'Products',
     path: '/products',
     icon: icon('ic_cart'),
   },
@@ -30,7 +30,21 @@ const navConfig = [
     path: '/requests',
     icon: icon('ic_request_3'),
   },
-
+  {
+    title: 'Shops',
+    path: '/shop',
+    icon: icon('ic_shop'),
+  },
+  {
+    title: 'Insurances',
+    path: '/insurance',
+    icon: icon('ic_insurance'),
+  },
+  {
+    title: 'Repair Shops',
+    path: '/repairshop',
+    icon: icon('ic_repair'),
+  },
   // {
   //   title: 'logout',
   //   path: '/login',
