@@ -7,7 +7,7 @@ router.post("/create", insurancecontroller.createInsurance);
 router.get("/fetchAll", insurancecontroller.getAllInsurance);
 // router.get("/products/fetchById/:id", fetchProductById);
 // router.put("/products/update/:id", updateProduct);
-// router.delete("/products/delete/:id", deleteProduct);
+router.delete("/delete/:id", insurancecontroller.deleteInsurance);
 // router.get("/products/search", searchProducts);
 
 export default router;

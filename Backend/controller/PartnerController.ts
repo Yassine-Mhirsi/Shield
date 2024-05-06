@@ -52,9 +52,29 @@ export const deletePartner = async (req: Request, res: Response) => {
   }
 };
 
+const updateStatus = async (req: Request, res: Response) => {
+  try {
+    const { status } = req.body;
+    const partner = await Partner.findById(req.params.id);
+
+    if (!partner) {
+      return res.status(404).json({ message: "Partner not found" });
+    }
+
+    partner.status = status;
+
+    await partner.save();
+
+    res.send(partner);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error updating partner" });
+  }
+};
 
 export default {
   submitPartner,
   fetchRequests,
   deletePartner,
+  updateStatus,
 };

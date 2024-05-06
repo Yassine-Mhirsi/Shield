@@ -35,7 +35,7 @@ const partnerSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default:"waiting"
+    default: "waiting"
   }
 });
 

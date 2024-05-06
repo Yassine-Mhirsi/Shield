@@ -35,7 +35,19 @@ const getAllShops = async (req: Request, res: Response) => {
     }
 };
 
+export const deleteShop = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
+    try {
+        const deletedShop = await Shop.findByIdAndDelete(id);
+        if (!deletedShop) {
+            return res.status(404).json({ message: "Shop not found" });
+        }
+        res.status(200).json({ message: "Shop deleted successfully" });
+    } catch (error: any) {
+        res.status(404).json({ message: error.message });
+    }
+};
 
 
 
@@ -43,4 +55,5 @@ const getAllShops = async (req: Request, res: Response) => {
 export default {
     createShop,
     getAllShops,
+    deleteShop,
 };

@@ -1,17 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 
-import { BlogView } from 'src/sections/blog/view';
+import { RepairView } from 'src/sections/repair/view';
 
 // ----------------------------------------------------------------------
 
-export default function BlogPage() {
+export default function RepairPage() {
   return (
     <>
       <Helmet>
-        <title> Requests | Shield </title>
+        <title> Repair Shops | Shield </title>
       </Helmet>
 
-      <BlogView />
+      <RepairView />
     </>
   );
 }

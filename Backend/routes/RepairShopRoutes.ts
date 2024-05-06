@@ -7,7 +7,7 @@ router.post("/create", repairshopcontroller.createRepairShop);
 router.get("/fetchAll", repairshopcontroller.getAllRepairShop);
 // router.get("/products/fetchById/:id", fetchProductById);
 // router.put("/products/update/:id", updateProduct);
-// router.delete("/products/delete/:id", deleteProduct);
+router.delete("/delete/:id", repairshopcontroller.deleteRepairShop);
 // router.get("/products/search", searchProducts);
 
 export default router;

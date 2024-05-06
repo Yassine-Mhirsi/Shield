@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { BlogView } from 'src/sections/blog/view';
+import { ShopView } from 'src/sections/shop/view';
 
 // ----------------------------------------------------------------------
 
@@ -8,10 +8,10 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Requests | Shield </title>
+        <title> Shops | Shield </title>
       </Helmet>
 
-      <BlogView />
+      <ShopView />
     </>
   );
 }
