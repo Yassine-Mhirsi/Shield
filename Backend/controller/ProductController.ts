@@ -115,9 +115,27 @@ export const GetProductsByShopId = async (req: Request, res: Response) => {
 
         res.json(products);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching products'});
+        res.status(500).json({ message: 'Error fetching products' });
     }
 }
+
+export const GetProductsByCat = async (req: Request, res: Response) => {
+    const category = req.query.category;
+
+    try {
+        // Query to find products where 'shop.id' matches the provided shopId
+        const products = await Product.find({ category });
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'No products found for the given category.' });
+        }
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching products' });
+    }
+}
+
 
 
 //   export const searchProducts = async (req: Request, res: Response) => {

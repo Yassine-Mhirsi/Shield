@@ -103,7 +103,7 @@ export default function CartPage() {
   return (
     <>
       <Helmet>
-        <title>react</title>
+        <title>Cart | Shield</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="flex w-full flex-col items-center bg-white-A700">

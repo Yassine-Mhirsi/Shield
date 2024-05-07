@@ -17,7 +17,7 @@ export default function SettingsPage() {
   return (
     <>
       <Helmet>
-        <title>Shield | Profile</title>
+        <title>Profile | Shield</title>
         {/* <meta name="description" content="Web site created using create-react-app" /> */}
       </Helmet>
       <div className="w-full bg-gray-50">

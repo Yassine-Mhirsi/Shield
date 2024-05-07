@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { faker } from '@faker-js/faker';
-import { useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
 
@@ -21,6 +21,7 @@ import AppConversionRates from '../app-conversion-rates';
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  // const [nbProduct, setnbProduct] = useState(null);
   const navigate = useNavigate();
   const storedValue = localStorage.getItem('121211');
   useEffect(() => {
@@ -28,16 +29,33 @@ export default function AppView() {
       navigate('/login');
     }
   });
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/api/products/fetchAll');
+        const allProducts = await response.json();
+        // setnbProduct(allProducts.length);
+        console.log("products:", allProducts.length);
+      } catch (error) {
+        console.log('Error fetching products:', error);
+        // Handle error condition if needed
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // console.log("products:", nbProduct);
+  // setnbProduct(0);
+  // console.log("products:", nbProduct);
+
   return (
     <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: 5 }}>
-        Hi,Admin 👋
-      </Typography>
-
       <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Weekly Sales"
+            title="Products"
             total={714000}
             color="success"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}

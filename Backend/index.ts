@@ -8,6 +8,7 @@ import PartnerRoute from "./routes/PartnerRoutes";
 import ShopRoute from "./routes/ShopRoutes";
 import RepairShopRoute from "./routes/RepairShopRoutes";
 import InsuranceRoute from "./routes/InsuranceRoutes";
+import ContractRoute from "./routes/ContractRoutes";
 
 mongoose
   .connect(process.env.MONGO_URI as string)
@@ -24,6 +25,7 @@ app.use("/partner", PartnerRoute);
 app.use("/shop", ShopRoute);
 app.use("/repairshop", RepairShopRoute);
 app.use("/insurance", InsuranceRoute);
+app.use("/contract", ContractRoute);
 
 app.listen(process.env.PORT, () => {
   console.log("Server started on localhost:7800");
