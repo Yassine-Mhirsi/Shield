@@ -17,6 +17,9 @@ import ContractList from "pages/DashboardAdminInsurance/ContractList";
 import ReportList from "pages/DashboardAdminInsurance/ReportList";
 import DashboardAdminRepairShop from "pages/DashboardAdminRepairShop";
 import Reportlist from "pages/DashboardAdminRepairShop/Reportlist";
+import UpdateProduct from "pages/DashboardAdminShop/UpdateProduct";
+import Report from "pages/Report";
+import Contract from "pages/Contract";
 
 
 const ProjectRoutes = () => {
@@ -42,6 +45,10 @@ const ProjectRoutes = () => {
     {
       path: "dashboardadminshop/productlist",
       element: <Productlist />,
+    },
+    {
+      path: "dashboardadminshop/updateproduct/:productId",
+      element: <UpdateProduct />,
     },
     {
       path: "dashboardadmininsurance",
@@ -74,6 +81,14 @@ const ProjectRoutes = () => {
     {
       path: "productdetails/:id",
       element: <ProductDetails />,
+    },
+    {
+      path: "report",
+      element: <Report />,
+    },
+    {
+      path: "contract",
+      element: <Contract />,
     },
     {
       path: "cart",

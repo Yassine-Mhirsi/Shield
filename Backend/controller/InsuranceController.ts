@@ -5,19 +5,19 @@ import Insurance from "../model/insurance";
 
 export const createInsurance = async (req: Request, res: Response) => {
     try {
-        const { userId, email, TRN, companyName, phoneNumber, picture } = req.body;
+        const { userId, email, TRN, companyName, phoneNumber, picture, insurancetypes  } = req.body;
 
         const insurance = new Insurance({
           user: { id: userId, email },
           TRN,
           companyName,
           phoneNumber,
-          picture
+          picture,
+          insurancetypes
         });
     
         const newInsurance=await insurance.save();
     
-
         res.status(201).json(newInsurance);
     } catch (error: any) {
         res.status(400).json({ message: error.message });
