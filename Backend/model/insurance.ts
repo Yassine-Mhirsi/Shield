@@ -1,5 +1,16 @@
 import mongoose from "mongoose";
 
+const insuranceTypeSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    }
+});
+
 const insuranceSchema = new mongoose.Schema({
     user: {
         id: {
@@ -28,7 +39,8 @@ const insuranceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    insurancetypes: [insuranceTypeSchema]
 });
 
-const Insurance = mongoose.model("insurance", insuranceSchema);
+const Insurance = mongoose.model("Insurance", insuranceSchema);
 export default Insurance;
