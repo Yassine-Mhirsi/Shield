@@ -1,5 +1,14 @@
 import mongoose from 'mongoose';
 
+const insuranceTypeSchema = new mongoose.Schema({
+  type: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  }
+});
+
 const partnerSchema = new mongoose.Schema({
   user: {
     id: {
@@ -36,7 +45,8 @@ const partnerSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: "waiting"
-  }
+  },
+  insurancetypes: [insuranceTypeSchema]
 });
 
 const Partner = mongoose.model('Partner', partnerSchema);

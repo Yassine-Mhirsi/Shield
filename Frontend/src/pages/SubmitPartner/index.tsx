@@ -4,15 +4,14 @@ import { Button, Text, Input, SelectBox } from "../../components";
 import Header from "../../components/Header";
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 const options = [
   { value: 'repair-shop', label: 'Repair Shop' },
   { value: 'insurance', label: 'Insurance' },
   { value: 'shop', label: 'Shop' },
 ];
 
-export default function SubmitPartner() {
 
+export default function SubmitPartner() {
   const { user } = useAuth0();
   const [userId, setUserId] = useState(null);
 
@@ -21,9 +20,9 @@ export default function SubmitPartner() {
       try {
         const response = await fetch('http://localhost:7800/api/my/user');
         const allUsers = await response.json();
-        const currentUser = allUsers.find((u: { email: string; }) => u.email === user.email);
+        const currentUser = allUsers.find(u => u.email === user.email);
         if (currentUser) {
-          setUserId(currentUser._id); // Assuming 'id' is the property containing the user ID
+          setUserId(currentUser._id);
         } else {
           setUserId('User ID not found');
         }
@@ -38,24 +37,26 @@ export default function SubmitPartner() {
     }
   }, [user]);
 
-
   const [formValues, setFormValues] = useState({
-    TRN: "",
-    companyName: "",
-    phoneNumber: "",
+    TRN: '',
+    companyName: '',
+    phoneNumber: '',
     newRole: null,
-    picture: "",
+    picture: '',
+    insurancetypes: [{ type: '', price: '' }]
   });
 
-  const handleInputChange = (e) => {
+  const [selectedRole, setSelectedRole] = useState('');
+
+  const handleInputChang = (e) => {
     const { name, value } = e.target;
-  
+
     // Update formValues for other inputs
-    setFormValues((prev) => ({ 
-      ...prev, 
-      [name]: value 
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value
     }));
-  
+
     // Update formValues.picture separately
     if (name === "url") {
       setFormValues((prev) => ({
@@ -64,13 +65,38 @@ export default function SubmitPartner() {
       }));
     }
   };
-  
 
 
-  const handleSelectChange = (selectedOption: any) => {
+  const handleInputChange = (e, index) => {
+    const { name, value } = e.target;
+
+    // Handling updates for insurancetypes array separately
+    if (name === 'type' || name === 'price') {
+      const updatedinsurancetypes = formValues.insurancetypes.map((contract, contractIndex) =>
+        index === contractIndex ? { ...contract, [name]: value } : contract
+      );
+      setFormValues({ ...formValues, insurancetypes: updatedinsurancetypes });
+    } else {
+      // Update formValues for other inputs
+      setFormValues((prev) => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleSelectChange = (selectedOption) => {
+    setSelectedRole(selectedOption.value);
     setFormValues((prev) => ({
       ...prev,
-      newRole: selectedOption,
+      newRole: selectedOption
+    }));
+  };
+
+  const addContract = () => {
+    setFormValues(prev => ({
+      ...prev,
+      insurancetypes: [...prev.insurancetypes, { type: '', price: '' }]
     }));
   };
 
@@ -89,11 +115,11 @@ export default function SubmitPartner() {
           phoneNumber: formValues.phoneNumber,
           newRole: formValues.newRole?.value,
           picture: formValues.picture,
+          insurancetypes: formValues.insurancetypes
         }),
       });
       if (response.ok) {
         alert("Partner information submitted successfully");
-        // Reset form values if needed
       } else {
         const data = await response.json();
         alert(data.message);
@@ -103,7 +129,6 @@ export default function SubmitPartner() {
       alert("Failed to submit partner information");
     }
   };
-
   return (
     <>
       <Helmet>
@@ -120,8 +145,6 @@ export default function SubmitPartner() {
               <div className="flex gap-5 self-stretch md:flex-col">
                 <div className="flex flex-1 flex-col gap-5 md:self-stretch">
                   <div className="flex flex-col items-center gap-8 rounded bg-white-A700_01 p-8 shadow-sm sm:p-5">
-                    <div className="flex flex-col items-start justify-start gap-3.5">
-                    </div>
                     <div className="flex flex-col gap-6 self-stretch ">
                       <div className="flex gap-5 md:flex-col">
                         <div className="flex w-full flex-col items-start justify-center gap-2.5">
@@ -131,7 +154,7 @@ export default function SubmitPartner() {
                             placeholder="1234567L"
                             className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
                             value={formValues.TRN}
-                            onChange={handleInputChange}
+                            onChange={handleInputChang}
                           />
                         </div>
                         <div className="flex w-full flex-col items-start justify-center gap-2.5">
@@ -141,7 +164,7 @@ export default function SubmitPartner() {
                             placeholder={"Company Name"}
                             className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
                             value={formValues.companyName}
-                            onChange={handleInputChange}
+                            onChange={handleInputChang}
                           />
                         </div>
                       </div>
@@ -155,7 +178,7 @@ export default function SubmitPartner() {
                             placeholder={"12345678"}
                             className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
                             value={formValues.phoneNumber}
-                            onChange={handleInputChange}
+                            onChange={handleInputChang}
                           />
                         </div>
                         <div className="flex w-full flex-col items-start justify-center gap-2.5">
@@ -181,9 +204,40 @@ export default function SubmitPartner() {
                         placeholder={"https://"}
                         className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
                         value={formValues.picture}
-                        onChange={handleInputChange}
+                        onChange={handleInputChang}
                       />
                     </div>
+                    {selectedRole === 'insurance' && formValues.insurancetypes.map((contract, index) => (
+                      <div key={index} className="flex gap-5 md:flex-col">
+                        <div className="flex w-full flex-col items-start justify-center gap-2.5">
+                          <Text as="p" className="text-[#09090b]">Contract Type</Text>
+                          <input
+                            name="type"
+                            placeholder="Basic"
+                            value={contract.type}
+                            onChange={(e) => handleInputChange(e, index)}
+                          />
+                        </div>
+                        <div className="flex w-full flex-col items-start justify-center gap-2.5">
+                          <Text as="p" className="text-[#09090b]">Price</Text>
+                          <input
+                            type="number"
+                            name="price"
+                            placeholder="Price"
+                            value={contract.price}
+                            onChange={(e) => handleInputChange(e, index)}
+                          />
+                        </div>
+                        {index === formValues.insurancetypes.length - 1 && (
+                          <div className="flex w-full flex-col items-start justify-center gap-2.5">
+                            <Text as="p" className="text-[#09090b]">Add</Text>
+                            <div className="flex items-center" onClick={addContract}>
+                              <img src="../../../../public/images/add.svg" className="mb-[5px] mr-2.5 h-[30px] w-[30px]" alt="Add more" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
