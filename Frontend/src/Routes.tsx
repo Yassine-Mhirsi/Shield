@@ -72,7 +72,7 @@ const ProjectRoutes = () => {
       element: <ProductList />,
     },
     {
-      path: "productdetails",
+      path: "productdetails/:id",
       element: <ProductDetails />,
     },
     {

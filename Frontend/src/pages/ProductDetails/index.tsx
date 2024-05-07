@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Text, Button, Img, Input, Heading } from "../../components";
 import Header from "../../components/Header";
+import { useParams } from "react-router-dom";
 
 const data = [
   { placeholderone: "images/img_placeholder_137x139.png" },
@@ -14,10 +15,52 @@ const data1 = [
 ];
 
 export default function ProductDetailsPage() {
+  let { id } = useParams();
+  const [product, setProduct] = useState({});
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async (PID) => {
+      try {
+        const response = await fetch(`http://localhost:7800/api/products/fetchById/${PID}`);
+        const Products = await response.json();
+        // Update state with fetched products
+        setProduct(Products);
+        // console.log("products:", allProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        // Handle error condition if needed
+      }
+    };
+
+    fetchProducts(id);
+  }, []);
+
+  // useEffect(() => {
+  //   // Only make the fetch request if product.category is available
+  //   if (product.category !== undefined) {
+  //     const fetchProductsByCategory = async (catego) => {
+  //       try {
+  //         const response = await fetch(`http://localhost:7800/api/products?category=${catego}`);
+  //         if (!response.ok) {
+  //           throw new Error('Failed to fetch products');
+  //         }
+  //         const Products = await response.json();
+  //         setProducts(Products);
+  //       } catch (error) {
+  //         console.error('Error fetching products:', error);
+  //         // Handle error condition if needed
+  //       }
+  //     };
+
+  //     fetchProductsByCategory(product.category);
+  //   }
+  // }, [product]); // Include product as a dependency
+
+
   return (
     <>
-      <Helmet>
-        <title>react</title>
+      <Helmet>  
+        <title>Product Details | Shield</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="flex w-full flex-col items-center bg-white-A700">
@@ -26,20 +69,10 @@ export default function ProductDetailsPage() {
           <div className="flex items-center gap-8 md:flex-col">
             <div className="flex w-full flex-col items-center gap-8">
               <Img
-                src="images/img_placeholder_523x800.png"
-                alt="placeholder_one"
+                src={product.photo}
+                alt={product.model}
                 className="h-[523px] w-full object-cover md:h-auto"
               />
-              <div className="flex w-[60%] gap-8 md:w-full md:flex-row sm:flex-col">
-                {data.map((d, index) => (
-                  <Img
-                    key={"listplaceholder" + index}
-                    src="images/img_placeholder_137x139.png"
-                    alt="placeholder_one"
-                    className="h-[137px] w-[29%] object-cover sm:w-full"
-                  />
-                ))}
-              </div>
             </div>
             <div className="flex w-full flex-col items-start gap-14 sm:gap-7">
               <div className="flex flex-col gap-[29px] self-stretch">
@@ -51,60 +84,34 @@ export default function ProductDetailsPage() {
                     &gt;
                   </Text>
                   <Text as="p" className="self-end !font-medium">
-                    Purple Warm Jacket
+                    {product.model}
                   </Text>
                 </div>
                 <div className="flex flex-col items-start gap-[31px]">
                   <Heading size="lg" as="h1" className="w-[49%] !text-gray-800 md:w-full">
-                    <>
-                      Purple Warm <br />
-                      Zip Jacket
-                    </>
+
+                    {product.brand}  {product.model}
+
                   </Heading>
                   <Text size="lg" as="p" className="!text-gray-800">
-                    $2999999999999
+                    {product.price} TND
                   </Text>
-                  <div className="h-px w-full self-stretch bg-blue_gray-100" />
-                  <Text as="p" className="leading-8 !text-gray-800">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
-                  </Text>
+                  {/* <div className="h-px w-full self-stretch bg-blue_gray-100" /> */}
+
                 </div>
               </div>
-              <div className="flex w-[34%] items-center gap-6 md:w-full">
-                <Text as="p" className="mb-[9px] self-end !font-medium !text-gray-800">
-                  Quantity
-                </Text>
-                <div className="flex-1">
+              <div style={{ backgroundColor: 'black', padding: '8px', borderRadius: '20px', display: 'inline-block' }}>
+                <a href="" target="">
                   <Button
-                    variant="outline"
-                    shape="square"
-                    color="undefined_undefined"
-                    className="relative z-[1] w-full font-medium sm:px-5"
+                    size="4xl" // Adjusted size to be smaller
+                    className="min-w-[40px] gap-2 font-bold sm:px-3" // Adjusted padding
+                    style={{ color: 'white', borderRadius: '20px' }} // Set text color to white and rounded corners
                   >
-                    1
+                    Buy now
                   </Button>
-                  <div className="relative mt-[-48px] flex justify-between gap-5">
-                    <div className="w-[28%] bg-gray-50 p-[19px]">
-                      <div className="h-[2px] w-[9px] bg-gray-500" />
-                    </div>
-                    <Button size="sm" shape="square" className="w-[48px]">
-                      <Img src="images/img_grid.svg" />
-                    </Button>
-                  </div>
-                </div>
+                </a>
               </div>
-              <a href="" target="_blank">
-                <Button
-                  size="6xl"
-                  shape="square"
-                  rightIcon={<Img src="images/img_cart_white_a700.svg" alt="Cart" className="h-[32px] w-[32px]" />}
-                  className="min-w-[245px] gap-4 font-bold sm:px-5"
-                >
-                  Add to Cart
-                </Button>
-              </a>
+
             </div>
           </div>
           <div className="flex flex-col gap-[33px]">
@@ -119,28 +126,28 @@ export default function ProductDetailsPage() {
                   </Text>
                 </a>
               </div>
-              <div className="flex gap-4">
-                <Img src="images/img_arrow_blue_gray_100.svg" alt="arrow_one" className="h-[48px] w-[48px]" />
-                <Img src="images/img_arrow_gray_800_48x48.svg" alt="arrow_three" className="h-[48px] w-[48px]" />
-              </div>
             </div>
-            <div className="flex items-center justify-between gap-5 px-[67px] md:flex-col md:px-5">
-              <div className="flex w-[17%] flex-col items-center gap-3.5 md:w-full">
-                <Img
-                  src="images/img_placeholder_1.png"
-                  alt="placeholder"
-                  className="h-[250px] w-full object-cover md:h-auto"
-                />
-                <div className="flex flex-col items-center gap-[9px]">
-                  <Text size="md" as="p" className="!text-gray-800">
-                    Black Briefcase
-                  </Text>
-                  <Text as="p" className="!font-medium">
-                    $299
-                  </Text>
-                </div>
-              </div>
-              <div className="flex w-[26%] flex-col items-center justify-center gap-3.5 px-14 py-[67px] md:w-full md:p-5">
+            <div className="flex items-center justify-between gap-5 px-[67px] md:flex-col md:px-5" >
+              {products.map((product) => (
+                <a href={`/productdetails/${product._id}`}>
+                  <div className="flex w-[17%] flex-col items-center gap-3.5 md:w-full" >
+                    <Img
+                      src={product.photo}
+                      alt="placeholder"
+                      className="h-[250px] w-full object-cover md:h-auto"
+                    />
+                    <div className="flex flex-col items-center gap-[9px]">
+                      <Text size="md" as="p" className="!text-gray-800">
+                        {product.brand}
+                      </Text>
+                      <Text as="p" className="!font-medium">
+                        {product.price}
+                      </Text>
+                    </div>
+                  </div>
+                </a>
+              ))}
+              {/* <div className="flex w-[26%] flex-col items-center justify-center gap-3.5 px-14 py-[67px] md:w-full md:p-5">
                 <Img
                   src="images/img_placeholder_24.png"
                   alt="placeholder"
@@ -154,8 +161,8 @@ export default function ProductDetailsPage() {
                     $299
                   </Text>
                 </div>
-              </div>
-              <div className="flex w-[44%] gap-[166px] md:w-full md:flex-row sm:flex-col">
+              </div> */}
+              {/* <div className="flex w-[44%] gap-[166px] md:w-full md:flex-row sm:flex-col">
                 {data1.map((d, index) => (
                   <div key={"listplaceholder1" + index} className="flex w-full flex-col items-center gap-4 sm:w-full">
                     <Img
@@ -173,26 +180,26 @@ export default function ProductDetailsPage() {
                     </div>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
         <footer className="mt-[100px] flex flex-col items-center gap-[97px] self-stretch bg-gray-800 py-[30px] md:gap-[72px] sm:gap-12 sm:py-5">
           <div className="container-sm mt-[31px] flex items-start md:flex-col md:p-5">
             <div className="flex flex-1 flex-col gap-[31px] md:self-stretch">
-              <Img src="images/img_footer_logo.png" alt="footerlogo_one" className="h-[36px] w-[27%] object-cover" />
+              <Img src="../../../../public/images/img_footer_logo.png" alt="footerlogo_one" className="h-[36px] w-[27%] object-cover" />
               <Text as="p" className="w-[92%] leading-8 md:w-full">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor .
               </Text>
               <div className="flex flex-col items-start gap-[18px]">
                 <div className="flex items-center gap-2">
-                  <Img src="images/img_call.svg" alt="call_one" className="h-[24px] w-[24px]" />
+                  <Img src="../../../../public/images/img_call.svg" alt="call_one" className="h-[24px] w-[24px]" />
                   <Text as="p" className="!text-white-A700">
                     +1234567890
                   </Text>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Img src="images/img_email_white_a700.svg" alt="email_three" className="h-[24px] w-[24px]" />
+                  <Img src="../../../../public/images/img_email_white_a700.svg" alt="email_three" className="h-[24px] w-[24px]" />
                   <Text as="p" className="self-end !text-white-A700">
                     elliye@support.com
                   </Text>
@@ -274,7 +281,7 @@ export default function ProductDetailsPage() {
                   className="flex-grow tracking-[0.36px] text-blue_gray-100_7f"
                 />
                 <Button size="4xl" shape="square" className="relative ml-[-9px] w-[60px]">
-                  <Img src="images/img_submit.svg" />
+                  <Img src="../../../../public/images/img_submit.svg" />
                 </Button>
               </div>
             </div>
