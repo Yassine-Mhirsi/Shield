@@ -107,7 +107,7 @@ export default function SubmitPartner() {
   return (
     <>
       <Helmet>
-        <title>Shield | Partners</title>
+        <title>Partner | Shield</title>
       </Helmet>
       <div className="w-full bg-gray-50">
         <div className="flex md:flex-col">

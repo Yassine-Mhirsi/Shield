@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Text, Input, Img, Heading, Button, RatingBar, CheckBox } from "../../components";
 import Header from "../../components/Header";
@@ -6,6 +7,7 @@ import Header from "../../components/Header";
 
 export default function ProductListPage() {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,10 +26,14 @@ export default function ProductListPage() {
     fetchProducts();
   }, []);
 
+  const handleProductClick = (productId: any) => {
+    navigate(`/productdetails/${productId}`);
+  };
+
   return (
     <>
       <Helmet>
-        <title>react</title>
+        <title>Products | Shield</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="flex w-full flex-col items-center bg-white-A700">
@@ -45,7 +51,7 @@ export default function ProductListPage() {
                 Product List
               </Text>
             </div>
-            <Heading size="md" as="h1" className="self-end !text-gray-800">
+            <Heading size="md" as="h1" className="self-start !text-gray-800">
               Product List
             </Heading>
           </div>
@@ -194,26 +200,29 @@ export default function ProductListPage() {
                   <Img src="images/img_arrow_down.svg" alt="arrowdown_three" className="h-[24px] w-[24px] self-start" />
                 </div>
               </div>
-              <a href="/productdetails" target="">
-                <div className="flex flex-col items-center gap-[55px] sm:gap-[27px]">
-                  <div className="grid grid-cols-5 justify-center gap-8 self-stretch md:grid-cols-3 sm:grid-cols-1">
-                    {products.map((product, index) => (
-                      <div key={"product" + index} className="flex w-full flex-col items-center gap-4">
-                        <Img src={product.photo} alt={product.brand} className="h-[245px] w-full object-cover md:h-auto" />
-                        <div className="flex w-[66%] flex-col items-center gap-2 md:w-full">
-                          <Text size="md" as="p" className="text-center !text-gray-800">
+              {/* <a href="/productdetails" target=""> */}
+              <div className="flex flex-col items-center gap-[30px] sm:gap-[27px]">
+                <div className="grid grid-cols-3 justify-center gap-4 self-stretch md:grid-cols-2 sm:grid-cols-1">
+                  {products.map((product, index) => (
+                    <div key={"product" + index} className="flex w-full flex-col items-center gap-4 relative" onClick={() => handleProductClick(product._id)} style={{ border: '1px solid #ccc', borderRadius: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', width: '350px', margin: '15px' }}>
+                      <Img src={product.photo} alt={product.brand} className="h-[245px] w-full object-cover md:h-auto" />
+                      <div className="flex w-[66%] flex-col items-center gap-2 md:w-full">
+                        <Text size="md" as="p" className="text-center !text-gray-800">
                           {product.brand} {product.model}
-                          </Text>
-                          <Text as="p" className="!font-medium !text-gray-800">
-                            ${product.price}
-                          </Text>
-                        </div>
+                        </Text>
+                        <Text as="p" className="!font-medium !text-gray-800">
+                          ${product.price}
+                        </Text>
                       </div>
-                    ))}
-                  </div>
-                  {/* Pagination or navigation controls can be added here */}
+                      <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', position: 'absolute', bottom: '10px', left: '10px', border: '2px solid #fff', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                        <Img src={product.shop.picture} alt={product.shop.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </a>
+                {/* Pagination or navigation controls can be added here */}
+              </div>
+              {/* </a> */}
             </div>
             {/* <div className="flex flex-1 flex-col gap-[29px] md:self-stretch">
               <div className="flex justify-between gap-5 sm:flex-col">

@@ -12,7 +12,7 @@ export default function CheckoutPage() {
   return (
     <>
       <Helmet>
-        <title>react</title>
+        <title>Checkout | Shield</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="flex w-full flex-col items-center bg-white-A700">
