@@ -49,13 +49,37 @@ export const fetchProductById = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { SN, brand, model, category, price } = req.body;
+    const { SN, brand, model, category, price, photo, shop } = req.body;
 
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, { SN, brand, model, category, price }, { new: true });
+        // Find the existing product
+        const existingProduct = await Product.findById(id);
+
+        if (!existingProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Create an object with fields to update
+        const updatedFields: any = {};
+        if (SN) updatedFields.SN = SN;
+        if (brand) updatedFields.brand = brand;
+        if (model) updatedFields.model = model;
+        if (category) updatedFields.category = category;
+        if (price) updatedFields.price = price;
+        if (photo) updatedFields.photo = photo;
+
+        // If shop is provided, but not already existing, update it
+        if (shop && existingProduct.shop) {
+            // Keep the existing shop details
+            updatedFields.shop = existingProduct.shop;
+        }
+
+        // Update the product with the new fields
+        const updatedProduct = await Product.findByIdAndUpdate(id, updatedFields, { new: true });
+
         res.status(200).json(updatedProduct);
     } catch (error: any) {
-        res.status(404).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
