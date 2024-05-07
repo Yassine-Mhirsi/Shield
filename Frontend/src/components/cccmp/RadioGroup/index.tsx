@@ -34,6 +34,7 @@ const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>(
             handleChange(e, child.props.value, child.props.disabled),
           orientation,
           disabled: child.props.disabled,
+          style: { marginLeft: '10px' }
         });
       }
       return child;
