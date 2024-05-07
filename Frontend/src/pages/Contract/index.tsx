@@ -36,8 +36,6 @@ export default function Contract() {
       <div className="flex w-full flex-col gap-10 bg-white-A700">
         {/* page header section */}
         <div>
-          {/* promotion banner section */}
-          {/* <header className="relative"> */}
           <Header/>
             <div className="flex justify-center bg-black-900 py-4">
               <div className="container-xs flex items-center justify-between gap-5 pl-[371px] md:p-5 md:pl-5 sm:flex-col">
@@ -161,7 +159,7 @@ export default function Contract() {
                     Choose Insuracne
                   </Text>
                   <div className="flex gap-6 self-stretch md:flex-col">
-                    {[...Array(4)].map((d, index) => (
+                    {[...Array(3)].map((d, index) => (
                       <AddressColumnjack
                         checked="../../../../public/images/checked.svg"
                         username="Jack Jonnas"
