@@ -69,6 +69,9 @@ export default function InsuranceView() {
                 <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Registration: {partner.TRN}</p>
                 <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Phone: {partner.phoneNumber}</p>
                 <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Email User: {partner.user.email}</p>
+                {partner.insurancetypes.map(insurance => (
+                  <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Contract type: {insurance.type}, Price: {insurance.price}TND</p>
+                ))}
               </div>
               <button type="button" style={{ background: '#f44336', color: '#fff', padding: '0.8rem 1.5rem', border: 'none', borderRadius: '25px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '1rem' }} onClick={() => deleteInsurance(partner._id)}>
                 Delete

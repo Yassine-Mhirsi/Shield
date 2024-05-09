@@ -18,6 +18,7 @@ export default function AddTablePage() {
     category: "",
     price: 0,
     photo: "",
+    quantity: 0
   });
 
   const handleInputChange = (e) => {
@@ -82,7 +83,8 @@ export default function AddTablePage() {
             id: shopInfo.id,
             name: shopInfo.name,
             picture: shopInfo.picture
-          }
+          },
+          quantity: formData.quantity
         }),
       });
       if (response.ok) {
@@ -200,7 +202,20 @@ export default function AddTablePage() {
                       onChange={handleInputChange}
                     />
                   </div>
-
+                  <div className="flex flex-col items-start gap-2">
+                    <Text size="lg" as="p">
+                      Quantity
+                    </Text>
+                    <input
+                      // size="sm"
+                      type="number"
+                      name="quantity"
+                      placeholder={`Quantity`}
+                      className="self-stretch rounded-[5px] border-gray-200 sm:pr-5"
+                      value={formData.quantity}
+                      onChange={handleInputChange}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="mb-[5px] flex gap-[21px]">
