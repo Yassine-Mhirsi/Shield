@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Heading, Text, Input, Img, TextArea, SelectBox, Radio, RadioGroup } from "../../components/cccmp";
 import AddressColumnjack from "../../components/cccmp/AddressColumnjack";
 import CartElements from "../../components/cccmp/CartElements";
 import Footer from "../../components/cccmp/Footer";
-import MegaMenu1 from "../../components/cccmp/MegaMenu1";
 import Header from "components/Header";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useParams } from "react-router-dom";
+import { CheckBox } from "components/ccmp";
 
 const data = [
   { selectedvariant: "../../../../public/images/img_frame_lime_900.svg", labeltext: "Free shipping", pricetext: "$0.00" },
@@ -18,9 +20,103 @@ const dropDownOptions = [
   { label: "Option3", value: "option3" },
 ];
 
+interface InsuranceType {
+  type: string;
+  price: number;
+}
+
+interface Insurance {
+  user: any;
+  companyName?: string;
+  phoneNumber?: string;
+  email?: string;
+  picture?: string;
+  insurancetypes?: InsuranceType[];
+}
+
 export default function Contract() {
-  const [menuOpen, setMenuOpen] = React.useState(false);
-  const [menuOpen1, setMenuOpen1] = React.useState(false);
+  const [insurances, setInsurances] = useState<Insurance[]>([]);
+  const [selectedInsurance, setSelectedInsurance] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<InsuranceType | null>(null);
+
+  useEffect(() => {
+    const fetchInsurance = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/insurance/fetchAll');
+        const allInsurances = await response.json();
+        setInsurances(allInsurances);
+      } catch (error) {
+        console.error('Error fetching insurances:', error);
+      }
+    };
+
+    fetchInsurance();
+  }, []);
+
+  const handleSelectInsurance = (companyName: string) => {
+    setSelectedInsurance(companyName);
+    setSelectedType(null); // Reset type selection when changing insurance
+  };
+
+  const handleSelectType = (type: InsuranceType) => {
+    setSelectedType(type);
+  };
+
+
+  // ---------------------------------------------------------------------
+
+  const { user } = useAuth0();
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/api/my/user');
+        const allUsers = await response.json();
+        const currentUser = allUsers.find(u => u.email === user.email);
+        if (currentUser) {
+          setUserId(currentUser._id);
+        } else {
+          setUserId('User ID not found');
+        }
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
+        setUserId('Error fetching user ID');
+      }
+    };
+    if (user) {
+      fetchUserId();
+    }
+  }, [user]);
+  // console.log(userId);
+
+  // ---------------------------------------------------------------------
+
+  const { id } = useParams();
+  const [product, SetProduct] = useState(null);
+  useEffect(() => {
+    const fetchProductById = async () => {
+      try {
+        const response = await fetch(`http://localhost:7800/api/products/fetchById/${id}`);
+        const productData = await response.json();
+        SetProduct(productData);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+
+    fetchProductById();
+  }, [id]);
+
+
+  // -------------------------------------------------------------------------
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (checked) => {
+    setIsChecked(checked);
+  };
+
+
 
   return (
     <>
@@ -31,32 +127,31 @@ export default function Contract() {
           content="Easily update your shipping address to ensure a smooth delivery experience. Add new addresses for home or office, and select your preferred delivery option."
         />
       </Helmet>
-
       {/* address page section */}
       <div className="flex w-full flex-col gap-10 bg-white-A700">
         {/* page header section */}
         <div>
-          <Header/>
-            <div className="flex justify-center bg-black-900 py-4">
-              <div className="container-xs flex items-center justify-between gap-5 pl-[371px] md:p-5 md:pl-5 sm:flex-col">
-                <div className="flex items-center gap-2 sm:flex-col">
-                  <Text size="s" as="p" className="flex self-end !font-satoshi !font-medium !text-white-A700">
-                    <span className="font-rubik font-normal text-white-A700">
-                      Sign up and get 10% off to your first order.&nbsp;
-                    </span>
-                    <a href="#" className="font-rubik font-normal text-white-A700 underline">
-                      Sign Up Now
-                    </a>
-                  </Text>
-                </div>
-                <a href="#">
-                  <Img src="../../../../public/images/img_close.svg" alt="close button" className="h-[20px] w-[20px] sm:w-full" />
-                </a>
+          <Header />
+          {/* <div className="flex justify-center bg-black-900 py-4">
+            <div className="container-xs flex items-center justify-between gap-5 pl-[371px] md:p-5 md:pl-5 sm:flex-col">
+              <div className="flex items-center gap-2 sm:flex-col">
+                <Text size="s" as="p" className="flex self-end !font-satoshi !font-medium !text-white-A700">
+                  <span className="font-rubik font-normal text-white-A700">
+                    Sign up and get 10% off to your first order.&nbsp;
+                  </span>
+                  <a href="#" className="font-rubik font-normal text-white-A700 underline">
+                    Sign Up Now
+                  </a>
+                </Text>
               </div>
+              <a href="#">
+                <Img src="../../../../public/images/img_close.svg" alt="close button" className="h-[20px] w-[20px] sm:w-full" />
+              </a>
             </div>
-
-            {/* navigation menu section */}
-            {/* <div className="flex justify-center border-b border-solid border-gray-200_01 bg-white-A700 py-3">
+          </div> */}
+          {/* ------------------------------------------------------------------------------------------------------------------------------ */}
+          {/* navigation menu section */}
+          {/* <div className="flex justify-center border-b border-solid border-gray-200_01 bg-white-A700 py-3">
               <div className="container-xs flex items-center justify-between gap-5 md:flex-col md:p-5">
                 <Img src="../../../../public/images/img_header_logo.png" alt="header logo" className="h-[19px] w-[129px] object-contain" />
                 <ul className="flex items-center gap-11 sm:flex-col">
@@ -159,44 +254,77 @@ export default function Contract() {
                     Choose Insuracne
                   </Text>
                   <div className="flex gap-6 self-stretch md:flex-col">
-                    {[...Array(3)].map((d, index) => (
-                      <AddressColumnjack
-                        checked="../../../../public/images/checked.svg"
-                        username="Jack Jonnas"
-                        home="Home"
-                        addresslabel="Address :"
-                        addresstext="8424 James Lane South, San Francisco, CA 94080 "
-                        phonelabel="Phone :"
-                        phonetext=" + 380 (0564) 53 - 29 - 68"
-                        key={"addressList" + index}
-                        className="border-2 border-lime-900 px-5"
-                      />
+                    {insurances.map((insurance, index) => (
+                      <div className={`border-2 border-lime-900 px-5 flex flex-col w-full pt-5 pb-[19px] gap-[19px] border-solid rounded-[16px]`}>
+                        <div className="flex justify-between gap-5 self-stretch">
+                          <div className="flex items-center gap-3">
+                            <label key={index} className="flex items-center gap-2">
+                              <input
+                                type="radio"
+                                name="insurance"
+                                value={insurance.companyName}
+                                checked={selectedInsurance === insurance.companyName}
+                                onChange={() => handleSelectInsurance(insurance.companyName)}
+                              />
+                              <span className="bg-white-A700 rounded-[24px] py-[15px] pr-[35px] text-sm text-lime-900 sm:pr-5">
+                                {insurance.companyName}
+                              </span>
+                            </label>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Img src={insurance.picture} alt="menuicon" className="h-[35px] w-[35px]" />
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-[11px] self-stretch">
+                          <div className="flex flex-col items-start gap-1">
+                            <Text size="s" as="p">
+                              Email : {insurance.user.email}
+                            </Text>
+                          </div>
+                          <div className="flex flex-col items-start gap-1">
+                            <Text size="s" as="p">
+                              Phone : {insurance.phoneNumber}
+                            </Text>
+                          </div>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
-
-                {/* add new address form section */}
                 <div className="flex flex-col items-start gap-[19px]">
                   <Text size="3xl" as="p" className="!text-black-900">
-                    Add new address
+                    {/* {selectedOption} */}
                   </Text>
                   <div className="flex flex-col gap-[15px] self-stretch">
                     <div className="flex flex-col items-start gap-[7px]">
                       <Text size="s" as="p" className="ml-4 md:ml-0">
-                        Save as*
+                        Contract Type*
                       </Text>
-                      <RadioGroup name="addresstyperadiogroup" className="flex self-stretch">
-                        <Radio
-                          value="home"
-                          label="Basic"
-                          className="w-full gap-2 rounded-[24px] border border-gray-200_01 bg-white-A700 py-[15px] text-sm sm:pr-5"
-                        />
-                        <Radio
-                          value="office"
-                          label="Premium"
-                          className="ml-6 w-full gap-2 rounded-[24px] border border-gray-200_01 bg-white-A700 py-[15px] pr-[35px] text-sm text-gray-600_01 sm:pr-5"
-                        />
-                      </RadioGroup>
+                      <div className="flex self-stretch">
+                        {insurances.filter(ins => ins.companyName === selectedInsurance).flatMap(ins => ins.insurancetypes).map((type, index) => (
+                          <label key={index} className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              name="insuranceType"
+                              value={type.type}
+                              checked={selectedType?.type === type.type}
+                              onChange={() => handleSelectType(type)}
+                            />
+                            <span className="bg-white rounded-full py-2 px-4 text-sm text-green-900">
+                              {type.type} - {type.price}TND
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                      <CheckBox
+                        name="iconcheck_empt"
+                        label="Theft Protection +50TND"
+                        id="iconcheckempt"
+                        className="gap-2 pb-px pr-[35px] pt-[5px] text-sm text-blue_gray-400 sm:pr-5"
+                        onChange={handleCheckboxChange}
+                        checked={isChecked}
+                      />
+                      <p>Selected: {isChecked.toString()}</p>
                     </div>
                     <div className="flex flex-col gap-[15px]">
                       <div className="flex gap-6 md:flex-col">
@@ -205,12 +333,13 @@ export default function Contract() {
                             Name*
                           </Text>
                           <Input
+                            disabled
                             shape="round"
                             type="text"
                             name="Name Input"
-                            placeholder={`Enter name`}
+                            placeholder={user?.nickname}
                             prefix={<Img src="../../../../public/images/img_lock_gray_500.svg" alt="lock" className="h-[24px] w-[24px]" />}
-                            className="gap-2 self-stretch sm:pr-5"
+                            className="gap-2 self-stretch sm:pr-5 border"
                           />
                         </div>
                         <div className="flex w-full flex-col items-start gap-[7px]">
@@ -218,14 +347,15 @@ export default function Contract() {
                             Email*
                           </Text>
                           <Input
+                            disabled
                             shape="round"
                             type="email"
                             name="Email Input"
-                            placeholder={`Enter email`}
+                            placeholder={user?.email}
                             prefix={
                               <Img src="../../../../public/images/img_checkmark.svg" alt="checkmark" className="h-[24px] w-[24px]" />
                             }
-                            className="gap-2 self-stretch sm:pr-5"
+                            className="gap-2 self-stretch sm:pr-5 border"
                           />
                         </div>
                       </div>
@@ -237,30 +367,23 @@ export default function Contract() {
                           <Input
                             shape="round"
                             name="Phone Input"
-                            placeholder={`+001`}
+                            placeholder={`+216`}
                             prefix={
-                              <Img src="../../../../public/images/img_fi4628635.svg" alt="fi_4628635" className="h-[24px] w-[24px]" />
+                              <Img src="../../../../public/images/tunisia.svg" alt="fi_4628635" className="h-[24px] w-[24px]" />
                             }
-                            className="gap-2 self-stretch !text-black-900 sm:pr-5"
+                            className="gap-2 self-stretch !text-black-900 sm:pr-5 border"
                           />
                         </div>
                         <div className="flex w-full flex-col items-start gap-[7px]">
                           <Text size="s" as="p" className="ml-4 md:ml-0">
                             Province/State*
                           </Text>
-                          <SelectBox
+                          <Input
                             shape="round"
-                            indicator={
-                              <Img
-                                src="../../../../public/images/img_arrowdown_black_900_1.svg"
-                                alt="arrow_down"
-                                className="h-[16px] w-[16px]"
-                              />
-                            }
-                            name="State Dropdown"
-                            placeholder={`Texas`}
-                            options={dropDownOptions}
-                            className="gap-px self-stretch sm:pr-5"
+                            type="text"
+                            name="State"
+                            placeholder={`State`}
+                            className="self-stretch !text-black-900 sm:pr-5 border"
                           />
                         </div>
                       </div>
@@ -274,7 +397,7 @@ export default function Contract() {
                             type="number"
                             name="Zip Code Input"
                             placeholder={`88765455`}
-                            className="self-stretch !text-black-900 sm:pr-5"
+                            className="self-stretch !text-black-900 sm:pr-5 border"
                           />
                         </div>
                         <div className="flex w-full flex-col items-start gap-[7px]">
@@ -285,7 +408,7 @@ export default function Contract() {
                             shape="round"
                             name="City Input"
                             placeholder={`Texas`}
-                            className="self-stretch !text-black-900 sm:pr-5"
+                            className="self-stretch !text-black-900 sm:pr-5 border"
                           />
                         </div>
                       </div>
@@ -298,79 +421,64 @@ export default function Contract() {
                         shape="round"
                         name="Address TextArea"
                         placeholder={`Building name / street name`}
-                        className="self-stretch text-gray-500 sm:pb-5 sm:pr-5"
+                        className="self-stretch border text-gray-500 sm:pb-5 sm:pr-5"
                       />
                     </div>
+                    <CheckBox
+                      name="iconcheck_empty"
+                      label="By clicking on this, I take all responsibility of the information above"
+                      id="iconcheckempty"
+                      className="gap-2 pb-px pr-[35px] pt-[5px] text-sm text-blue_gray-400 sm:pr-5"
+                    />
                   </div>
-                  <Button
-                    variant="outline"
-                    color="undefined_undefined"
-                    className="min-w-[140px] rounded-[24px] font-semibold sm:px-5"
-                  >
-                    Save address
-                  </Button>
                 </div>
               </div>
-
-              {/* delivery options section */}
               <div className="flex w-[33%] flex-col gap-[31px] rounded-[16px] border border-solid border-gray-200_01 px-4 pb-5 pt-[19px] md:w-full">
                 <div className="flex flex-col items-start gap-3">
                   <Text size="s" as="p" className="uppercase">
-                    Delivery option
-                  </Text>
-                  <div className="flex flex-col gap-3 self-stretch">
-                    {data.map((d, index) => (
-                      <CartElements {...d} key={"freeList" + index} className="border-lime-900" />
-                    ))}
-                  </div>
-                </div>
-
-                {/* coupon code section */}
-                <div className="flex flex-col items-start gap-3">
-                  <Text size="s" as="p" className="uppercase">
-                    Coupon code
-                  </Text>
-                  <Input
-                    shape="round"
-                    name="Coupon Code Input"
-                    placeholder={`Apply coupon code`}
-                    prefix={<Img src="../../../../public/images/img_television.svg" alt="television" className="h-[24px] w-[24px]" />}
-                    className="gap-1 self-stretch"
-                  />
-                </div>
-
-                {/* cart summary section */}
-                <div className="flex flex-col items-start gap-3">
-                  <Text size="s" as="p" className="uppercase">
-                    Cart value
+                    Product value
                   </Text>
                   <div className="flex flex-col gap-[18px] self-stretch">
                     <div className="h-px bg-gray-200_01" />
                     <div className="flex flex-col gap-[19px]">
                       <div className="flex flex-wrap items-center justify-between gap-5">
                         <Text as="p" className="self-start">
-                          Sub total
+                          {product && product.brand} {product && product.model}
                         </Text>
                         <Text as="p" className="!font-inter !font-medium !text-gray-900_01">
-                          +$5.00
+                          +{product && product.price}TND
                         </Text>
                       </div>
                       <div className="flex flex-wrap items-center justify-between gap-5">
                         <Text as="p" className="self-start">
-                          Discount
-                        </Text>
-                        <Text as="p" className="!font-inter !font-medium !text-gray-900_01">
-                          +$5.00
+                          Insurance : ----------------------------------------------
                         </Text>
                       </div>
                       <div className="flex flex-wrap items-center justify-between gap-5">
                         <Text as="p" className="self-end">
-                          Shipping
-                        </Text>
-                        <Text as="p" className="!font-inter !font-medium !text-gray-900_01">
-                          +$5.00
+                          {selectedInsurance} {selectedType && selectedType.type}
                         </Text>
                       </div>
+                      {selectedType && (
+                        <div className="flex flex-wrap items-center justify-between gap-5">
+                          <Text as="p" className="self-end">
+                            Duration 1 Year
+                          </Text>
+                          <Text as="p" className="!font-inter !font-medium !text-gray-900_01">
+                            +{selectedType && selectedType.price * 365}TND
+                          </Text>
+                        </div>
+                      )}
+                      {isChecked ? (
+                        <div className="flex flex-wrap items-center justify-between gap-5">
+                          <Text as="p" className="self-end">
+                            Theft Protection
+                          </Text>
+                          <Text as="p" className="!font-inter !font-medium !text-gray-900_01">
+                            +50.00TND
+                          </Text>
+                        </div>
+                      ) : null}
                       <div className="h-px bg-gray-200_01" />
                     </div>
                     <div className="flex flex-wrap items-center justify-between gap-5">
@@ -378,12 +486,12 @@ export default function Contract() {
                         Total
                       </Text>
                       <Heading size="lg" as="h1" className="!text-gray-900">
-                        +$5.00
+                        {(selectedType && selectedType.price * 365) + (product ? product.price : 0) + (isChecked ? 50 : 0)}TND
                       </Heading>
                     </div>
                   </div>
                 </div>
-                <Button className="w-full rounded-[24px] font-semibold sm:px-5">Next</Button>
+                <Button className="w-full rounded-[24px] font-semibold sm:px-5">Confirme</Button>
               </div>
             </div>
           </div>

@@ -9,17 +9,17 @@ const sizes = {
 
 type CheckboxProps = Omit<
   React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-  "size" | "prefix" | "type" | "onChange"
+  "size" | "prefix" | "type" | "onChange" | "checked"
 > &
   Partial<{
     className: string;
     name: string;
     label: string;
     id: string;
-    onChange: Function;
+    onChange: (checked: boolean) => void;
     variant: keyof typeof variants;
     size: keyof typeof sizes;
-    onClick: () => void;
+    checked: boolean;
   }>;
 const CheckBox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   (
@@ -32,12 +32,13 @@ const CheckBox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       onChange,
       variant = "primary",
       size = "xs",
+      checked,
       ...restProps
     },
     ref,
   ) => {
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-      if (onChange) onChange(e?.target?.checked);
+      if (onChange) onChange(e.target.checked);
     };
 
     return (
@@ -50,6 +51,7 @@ const CheckBox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             name={name}
             onChange={handleChange}
             id={id}
+            checked={checked} // Set checked prop
             {...restProps}
           />
           {!!label && <label htmlFor={id}>{label}</label>}

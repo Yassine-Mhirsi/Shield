@@ -10,9 +10,8 @@ import Swal from 'sweetalert2'
 export default function UpdateTablePage() {
   const { productId } = useParams();
   // console.log(productId);
-  const [product, SetProduct] = useState(null);
   const navigate = useNavigate();
-
+  
   const [formData, setFormData] = useState({
     brand: "",
     model: "",
@@ -20,7 +19,8 @@ export default function UpdateTablePage() {
     price: 0,
     photo: "",
   });
-
+  
+  const [product, SetProduct] = useState(null);
   useEffect(() => {
     const fetchProductById = async () => {
       try {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Text, Button, Img, Input, Heading } from "../../components";
 import Header from "../../components/Header";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const data = [
   { placeholderone: "images/img_placeholder_137x139.png" },
@@ -35,6 +35,12 @@ export default function ProductDetailsPage() {
     fetchProducts(id);
   }, []);
 
+
+  const navigate = useNavigate();
+  const handleProductClick = (productId: any) => {
+    navigate(`/contract/${productId}`);
+  };
+
   // useEffect(() => {
   //   // Only make the fetch request if product.category is available
   //   if (product.category !== undefined) {
@@ -59,7 +65,7 @@ export default function ProductDetailsPage() {
 
   return (
     <>
-      <Helmet>  
+      <Helmet>
         <title>Product Details | Shield</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
@@ -106,6 +112,7 @@ export default function ProductDetailsPage() {
                     size="4xl" // Adjusted size to be smaller
                     className="min-w-[40px] gap-2 font-bold sm:px-3" // Adjusted padding
                     style={{ color: 'white', borderRadius: '20px' }} // Set text color to white and rounded corners
+                    onClick={()=>handleProductClick(id)}
                   >
                     Buy now
                   </Button>
