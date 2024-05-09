@@ -28,7 +28,7 @@ const navConfig = [
   {
     title: 'Requests',
     path: '/requests',
-    icon: icon('ic_request_3'),
+    icon: icon('ic_request'),
   },
   {
     title: 'Shops',
