@@ -49,7 +49,7 @@ export const fetchProductById = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { SN, brand, model, category, price, photo, shop } = req.body;
+    const { SN, brand, model, category, price, photo, shop, quantity } = req.body;
 
     try {
         // Find the existing product
@@ -67,6 +67,7 @@ export const updateProduct = async (req: Request, res: Response) => {
         if (category) updatedFields.category = category;
         if (price) updatedFields.price = price;
         if (photo) updatedFields.photo = photo;
+        if (quantity) updatedFields.quantity = quantity;
 
         // If shop is provided, but not already existing, update it
         if (shop && existingProduct.shop) {

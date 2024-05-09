@@ -52,7 +52,7 @@ export default function BlogView() {
     }
   };
 
-  const acceptPartner = async (id, userId, userEmail, trn, name, phone, pict, newRole) => {
+  const acceptPartner = async (id, userId, userEmail, trn, name, phone, pict, newRole, insuranceTypes) => {
     // console.log("Data sent to backend:", { id, userId, userEmail, trn, name, phone, pict, newRole });
     try {
       let apiUrl;
@@ -163,7 +163,8 @@ export default function BlogView() {
               TRN: trn,
               companyName: name,
               phoneNumber: phone,
-              picture: pict
+              picture: pict,
+              insurancetypes: insuranceTypes,
             })
           });
 
@@ -211,9 +212,12 @@ export default function BlogView() {
                       <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Registration: {partner.TRN}</p>
                       <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Phone: {partner.phoneNumber}</p>
                       <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Email User: {partner.user.email}</p>
+                      {partner.newRole === "insurance" && partner.insurancetypes.map(insurance => (
+                        <p style={{ color: '#666', fontSize: '1rem', marginBottom: '0', textAlign: 'center' }}>Contract type: {insurance.type}, Price: {insurance.price}TND</p>
+                      ))}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1rem' }}>
-                      <button type="button" style={{ background: '#4caf50', color: '#fff', padding: '0.8rem 1.5rem', border: 'none', borderRadius: '25px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '1rem' }} onClick={() => acceptPartner(partner._id, partner.user.id, partner.user.email, partner.TRN, partner.companyName, partner.phoneNumber, partner.picture, partner.newRole)}>
+                      <button type="button" style={{ background: '#4caf50', color: '#fff', padding: '0.8rem 1.5rem', border: 'none', borderRadius: '25px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '1rem' }} onClick={() => acceptPartner(partner._id, partner.user.id, partner.user.email, partner.TRN, partner.companyName, partner.phoneNumber, partner.picture, partner.newRole, partner.insurancetypes)}>
                         Accept
                       </button>
                       <button type="button" style={{ background: '#f44336', color: '#fff', padding: '0.8rem 1.5rem', border: 'none', borderRadius: '25px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '1rem' }} onClick={() => declinePartner(partner._id)}>

@@ -141,6 +141,7 @@ export default function ProductsView() {
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
                 <p style={{ textAlign: 'center', color: '#333', fontSize: '1.2rem', marginBottom: '0' }}>{product.brand} {product.model}</p>
                 <p style={{ fontWeight: 'bold', color: '#333', fontSize: '1.2rem', marginBottom: '0' }}>{product.price} TND</p>
+                <p style={{ fontWeight: 'bold', color: '#333', fontSize: '1.2rem', marginBottom: '0' }}>Q: {product.quantity}</p>
               </div>
             </div>
           ))}

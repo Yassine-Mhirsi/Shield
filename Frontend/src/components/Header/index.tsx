@@ -5,7 +5,7 @@ import AliceCarousel, { EventObject, DotsItem, Link } from "react-alice-carousel
 import { useAuth0 } from "@auth0/auth0-react";
 import UsernameMenu from "components/UsernameMenu";
 import { CloseSVG } from "../../assets/images";
-
+import { Link as RouterLink} from "react-router-dom";
 
 interface Props {
   className?: string;
@@ -88,68 +88,68 @@ export default function Header({ ...props }: Props) {
   };
 
   return (
-            <header className="flex items-center justify-center self-stretch bg-black py-[17px]">
-          <div className="container-sm flex items-center justify-between gap-5 md:flex-col md:p-5">
-            <Img
-              src="images/img_header_logoo.png"
-              alt="headerlogo_one"
-              className="h-[50px] w-[15%] object-cover md:w-full"
-            />
-            <div className="flex w-[69%] items-center justify-between gap-5 md:w-full md:flex-col">
-              <ul className="flex flex-wrap gap-20 md:gap-5">
-                {getMenuItems().map((menuItem, index) => (
-                  <li key={index}>
-                    {menuItem.dropdown ? (
-                      <div className="relative">
-                        <a href={menuItem.link} className="self-start">
-                          <Text as="p" className="!font-medium">
-                            {menuItem.label}
-                          </Text>
-                        </a>
-                        <ul className="absolute top-full left-0 bg-white shadow-md z-10">
-                          {menuItem.dropdown.map((item, idx) => (
-                            <li key={idx}>
-                              <a href="#" className="block px-4 py-2 text-sm text-gray-800">
-                                {item}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : (
-                      <a href={menuItem.link} className="self-start">
-                        <Text as="p" className="!font-medium">
-                          {menuItem.label}
-                        </Text>
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-              <div className="flex w-[22%] items-center justify-between gap-40 md:w-full">
-                <div className="flex w-[33%] justify-between gap-5">
-                  <Img src="images/img_search.svg" alt="search_one" className="h-[24px] w-[24px]" />
-                  <Img src="images/img_cart.svg" alt="cart_one" className="h-[24px] w-[24px]" />
-                </div>
-
-                <span className="flex space-x-2 items-center">
-                  {isAuthenticated ? (
-                    <>
-                      <Link className="font-bold hover:text-orange-500"></Link>
-                      <UsernameMenu />
-                    </>
-                  ) : (
-                    <Button
-                      shape="square" className="min-w-[150px] font-bold sm:px-5 text-[#ffffff]"
-                      onClick={async () => await loginWithRedirect()}>
-                      Log In
-                    </Button>
-                  )}
-                </span>
-              </div>
+    <header className="flex items-center justify-center self-stretch bg-black py-[17px]">
+      <div className="container-sm flex items-center justify-between gap-5 md:flex-col md:p-5">
+          <Img
+            src="images/img_header_logoo.png"
+            alt="headerlogo_one"
+            className="h-[50px] w-[15%] object-cover md:w-full"
+          />
+        <div className="flex w-[69%] items-center justify-between gap-5 md:w-full md:flex-col">
+          <ul className="flex flex-wrap gap-20 md:gap-5">
+            {getMenuItems().map((menuItem, index) => (
+              <li key={index}>
+                {menuItem.dropdown ? (
+                  <div className="relative">
+                    <a href={menuItem.link} className="self-start">
+                      <Text as="p" className="!font-medium">
+                        {menuItem.label}
+                      </Text>
+                    </a>
+                    <ul className="absolute top-full left-0 bg-white shadow-md z-10">
+                      {menuItem.dropdown.map((item, idx) => (
+                        <li key={idx}>
+                          <a href="#" className="block px-4 py-2 text-sm text-gray-800">
+                            {item}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <a href={menuItem.link} className="self-start">
+                    <Text as="p" className="!font-medium">
+                      {menuItem.label}
+                    </Text>
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+          <div className="flex w-[22%] items-center justify-between gap-40 md:w-full">
+            <div className="flex w-[33%] justify-between gap-5">
+              <Img src="images/img_search.svg" alt="search_one" className="h-[24px] w-[24px]" />
+              <Img src="images/img_cart.svg" alt="cart_one" className="h-[24px] w-[24px]" />
             </div>
+
+            <span className="flex space-x-2 items-center">
+              {isAuthenticated ? (
+                <>
+                  <Link className="font-bold hover:text-orange-500"></Link>
+                  <UsernameMenu />
+                </>
+              ) : (
+                <Button
+                  shape="square" className="min-w-[150px] font-bold sm:px-5 text-[#ffffff]"
+                  onClick={async () => await loginWithRedirect()}>
+                  Log In
+                </Button>
+              )}
+            </span>
           </div>
-        </header>
+        </div>
+      </div>
+    </header>
     // <header {...props}>
     //   {/* <div className="d-flex align-items-center justify-content-between">
     //     <a href="index.html" className="logo d-flex align-items-center">

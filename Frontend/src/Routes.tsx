@@ -20,6 +20,7 @@ import Reportlist from "pages/DashboardAdminRepairShop/Reportlist";
 import UpdateProduct from "pages/DashboardAdminShop/UpdateProduct";
 import Report from "pages/Report";
 import Contract from "pages/Contract";
+import ManageProfil from "pages/ManageProfile";
 
 
 const ProjectRoutes = () => {
@@ -98,7 +99,12 @@ const ProjectRoutes = () => {
       path: "checkout",
       element: <Checkout />,
     },
+    {
+      path: "manageProfile",
+      element: <ManageProfil />
+    },
   ]);
+
 
   return element;
 };
