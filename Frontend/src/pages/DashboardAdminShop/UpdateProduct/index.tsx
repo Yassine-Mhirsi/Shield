@@ -19,6 +19,7 @@ export default function UpdateTablePage() {
     category: "",
     price: 0,
     photo: "",
+    quantity: 0
   });
 
   useEffect(() => {
@@ -180,7 +181,20 @@ export default function UpdateTablePage() {
                       onChange={handleInputChange}
                     />
                   </div>
-
+                  <div className="flex flex-col items-start gap-2">
+                    <Text size="lg" as="p">
+                      Quantity
+                    </Text>
+                    <input
+                      // size="sm"
+                      type="number"
+                      name="quantity"
+                      placeholder={`Quantity`}
+                      className="self-stretch rounded-[5px] border-gray-200 sm:pr-5"
+                      value={formData.quantity}
+                      onChange={handleInputChange}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="mb-[5px] flex gap-[21px]">

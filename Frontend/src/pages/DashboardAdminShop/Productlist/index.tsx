@@ -131,7 +131,7 @@ export default function TableListPage() {
                       <th>Model</th>
                       <th>Category</th>
                       <th>Price</th>
-                      <th>Serial Number</th>
+                      <th>Quantity</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -146,7 +146,7 @@ export default function TableListPage() {
                           <td><Text as="p" style={{ marginLeft: '100px' }}>{product.model}</Text></td>
                           <td><Text as="p" style={{ marginLeft: '100px' }}>{product.category}</Text></td>
                           <td><Text as="p" style={{ marginLeft: '100px' }}>${Number(product.price).toFixed(2)}</Text></td>
-                          <td><Text as="p" style={{ marginLeft: '100px' }}>{product.SN}</Text></td>
+                          <td><Text as="p" style={{ marginLeft: '100px' }}>{product.quantity}</Text></td>
                           <td>
                             <div className="flex items-center" onClick={() => handleProductClick(product._id)}>
                               <Img src="../../../../public/images/edit.svg" className="mb-[5px] mr-2.5 h-[20px] w-[20px]" />

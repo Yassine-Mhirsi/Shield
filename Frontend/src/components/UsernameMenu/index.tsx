@@ -25,7 +25,7 @@ const UsernameMenu = () => {
       <DropdownMenuContent className="bg-[#0c0a09]">
         <DropdownMenuItem>
           <Link
-            to="/dashboard-admin-shop"
+            to="/manageProfile"
             className="font-bold text-[#ffffff]"
           >
             Manage
