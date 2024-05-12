@@ -27,7 +27,7 @@ export default function LandingPageCard({
   return (
     <div {...props} className={`${props.className} flex flex-col w-full`}>
       <Img
-        src={imageone}
+        src="images/img_image_260x384.png"
         alt="image"
         className="h-[260px] w-full rounded-tl-[10px] rounded-tr-[10px] object-cover md:h-auto"
       />
@@ -35,7 +35,7 @@ export default function LandingPageCard({
         <div className="mt-2.5 flex items-center gap-3">
           <Img src="images/img_linkedin_gray_900.svg" alt="image" className="h-[24px] w-[24px]" />
           <Heading as="h6" className="self-end">
-            {locationtext}
+            2861 62nd Ave, Oakland, CA 94605
           </Heading>
         </div>
         <div className="flex flex-col gap-[19px] self-stretch">
@@ -43,13 +43,13 @@ export default function LandingPageCard({
             <div className="flex items-center gap-3 pr-[31px] sm:pr-5">
               <Img src="images/img_bookmark.svg" alt="3_bed_room" className="h-[20px] w-[20px] self-start" />
               <Heading as="h6" className="!text-gray-700">
-                {bedroomtext}
+                3 Bed Room
               </Heading>
             </div>
             <div className="flex items-center gap-3">
               <Img src="images/img_user.svg" alt="1_bath" className="h-[20px] w-[20px] self-start" />
               <Heading as="h6" className="!text-gray-700">
-                {bathroomtext}
+                1 Bath
               </Heading>
             </div>
           </div>
@@ -57,23 +57,23 @@ export default function LandingPageCard({
             <div className="flex items-center gap-3">
               <Img src="images/img_microphone.svg" alt="1032_sqft" className="h-[20px] w-[20px] self-start" />
               <Heading as="h6" className="!text-gray-700">
-                {sqfttext}
+                1,032 sqft
               </Heading>
             </div>
             <div className="flex items-center gap-3">
               <Img src="images/defaultNoData.png" alt="family" className="h-[20px] w-[20px] self-start" />
               <Heading as="h6" className="!text-gray-700">
-                {familytext}
+                Family
               </Heading>
             </div>
           </div>
         </div>
         <div className="mb-2.5 flex items-center justify-between gap-5 self-stretch pr-[47px] md:pr-5">
           <Button shape="round" className="min-w-[156px] font-semibold sm:px-5">
-            {viewdetailsbutton}
+            View Details
           </Button>
           <Heading size="3xl" as="h4" className="tracking-[-0.48px]">
-            {pricetext}
+            $649,900
           </Heading>
         </div>
       </div>

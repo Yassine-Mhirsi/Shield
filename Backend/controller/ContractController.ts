@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Contract from "../model/contract";
+import mongoose from "mongoose";
 
 
 
@@ -27,7 +28,31 @@ export const fetchContract = async (req: Request, res: Response) => {
 };
 
 
+export const fetchContractByUserId = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.userId;  // Get the user ID from the request parameters
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid user ID format' });
+        }
+
+        const contracts = await Contract.find({ "user.id": userId }); // Query to find contracts by user ID
+
+        if (contracts.length === 0) {
+            return res.status(404).json({ message: 'No contracts found for this user' });
+        }
+
+        res.status(200).json(contracts);
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+
+
 export default {
     createContract,
     fetchContract,
+    fetchContractByUserId,
 };

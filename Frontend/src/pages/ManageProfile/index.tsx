@@ -1,106 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Img, Heading, Text, RatingBar } from "../../components/ccccmp";
-import AgentProfileTwo from "../../components/ccccmp/AgentProfileTwo";
-// import Footer from "../../components/ccccmp/Footer";
 import Header from "../../components/Header";
-import LandingPageCard from "../../components/ccccmp/LandingPageCard";
 import { TabPanel, TabList, Tab, Tabs } from "react-tabs";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const data = [
-  {
-    descriptiontext:
-      "Eget eu massa et consectetur. Mauris donec. Leo a, id sed duis proin sodales. Turpis viverra diam porttitor mattis morbi ac amet. Euismod commodo. We get you customer relationships that last. ",
-    reviewcountertext: "4.5 review",
-    datetext: "02 June 2022",
-    usernametext: "Taylor Wilson",
-    userroletext: "Product Manager - Static Mania",
-  },
-  {
-    descriptiontext:
-      "Eget eu massa et consectetur. Mauris donec. Leo a, id sed duis proin sodales. Turpis viverra diam porttitor mattis morbi ac amet. Euismod commodo. We get you customer relationships that last. ",
-    reviewcountertext: "4.5 review",
-    datetext: "02 June 2022",
-    usernametext: "Taylor Wilson",
-    userroletext: "Product Manager - Static Mania",
-  },
-  {
-    descriptiontext:
-      "Eget eu massa et consectetur. Mauris donec. Leo a, id sed duis proin sodales. Turpis viverra diam porttitor mattis morbi ac amet. Euismod commodo. We get you customer relationships that last. ",
-    reviewcountertext: "4.5 review",
-    datetext: "02 June 2022",
-    usernametext: "Taylor Wilson",
-    userroletext: "Product Manager - Static Mania",
-  },
-];
-const data1 = [
-  {
-    imageone: "images/img_image_260x384.png",
-    locationtext: "2861 62nd Ave, Oakland, CA 94605",
-    bedroomtext: "3 Bed Room",
-    bathroomtext: "1 Bath",
-    sqfttext: "1,032 sqft",
-    familytext: "Family",
-    viewdetailsbutton: "View Details",
-    pricetext: "$649,900",
-  },
-  {
-    imageone: "images/img_image_1.png",
-    locationtext: "2861 62nd Ave, Oakland, CA 94605",
-    bedroomtext: "3 Bed Room",
-    bathroomtext: "1 Bath",
-    sqfttext: "1,032 sqft",
-    familytext: "Family",
-    viewdetailsbutton: "View Details",
-    pricetext: "$649,900",
-  },
-  {
-    imageone: "images/img_image_2.png",
-    locationtext: "2861 62nd Ave, Oakland, CA 94605",
-    bedroomtext: "3 Bed Room",
-    bathroomtext: "1 Bath",
-    sqfttext: "1,032 sqft",
-    familytext: "Family",
-    viewdetailsbutton: "View Details",
-    pricetext: "$649,900",
-  },
-  {
-    imageone: "images/img_image_3.png",
-    locationtext: "2861 62nd Ave, Oakland, CA 94605",
-    bedroomtext: "3 Bed Room",
-    bathroomtext: "1 Bath",
-    sqfttext: "1,032 sqft",
-    familytext: "Family",
-    viewdetailsbutton: "View Details",
-    pricetext: "$649,900",
-  },
-  {
-    imageone: "images/img_image_4.png",
-    locationtext: "2861 62nd Ave, Oakland, CA 94605",
-    bedroomtext: "3 Bed Room",
-    bathroomtext: "1 Bath",
-    sqfttext: "1,032 sqft",
-    familytext: "Family",
-    viewdetailsbutton: "View Details",
-    pricetext: "$649,900",
-  },
-  {
-    imageone: "images/img_image_5.png",
-    locationtext: "2861 62nd Ave, Oakland, CA 94605",
-    bedroomtext: "3 Bed Room",
-    bathroomtext: "1 Bath",
-    sqfttext: "1,032 sqft",
-    familytext: "Family",
-    viewdetailsbutton: "View Details",
-    pricetext: "$649,900",
-  },
-];
 
-export default function ManageProfil() {
+export default function ManageProfile() {
+
+  const calculateDaysBetween = (startDate: string, endDate: string): number => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Validate date objects to be valid numbers
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      console.error("Invalid date provided");
+      return 0; // Return 0 or handle this case appropriately
+    }
+
+    const difference = end.getTime() - start.getTime(); // difference in milliseconds
+    return Math.ceil(difference / (1000 * 60 * 60 * 24)); // Convert to days
+  };
+
+
   const { user } = useAuth0();
+  const [userId, setUserId] = useState(null);
+  const [contracts, setContracts] = useState([]); // Initialize as an empty array
 
-  
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/api/my/user');
+        const allUsers = await response.json();
+        const currentUser = allUsers.find(u => u.email === user.email);
+        if (currentUser) {
+          setUserId(currentUser._id);
+        } else {
+          console.error('User ID not found');
+          setUserId(null);
+        }
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
+        setUserId(null);
+      }
+    };
+
+    if (user) {
+      fetchUserId();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (userId) { // Fetch contracts only if userId is not null
+      const fetchContractByUserId = async () => {
+        try {
+          const response = await fetch(`http://localhost:7800/contract/fetchContractByUserId/${userId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch contract data');
+          }
+          const contractData = await response.json();
+          setContracts(contractData); // Make sure this is always an array
+        } catch (error) {
+          console.error('Error fetching Contract:', error);
+          setContracts([]); // Set to empty array on error
+        }
+      };
+      fetchContractByUserId();
+    } else {
+      setContracts([]); // Clear contracts if no valid userId
+    }
+  }, [userId]);
+  // console.log(contract);
 
 
 
@@ -172,78 +142,73 @@ export default function ManageProfil() {
                       <Tab className="ml-[680px] text-lg font-semibold text-gray-900 border border-gray-300 rounded-md px-4 py-2">Contracts</Tab>
                       <Tab className="mr-[680px] text-lg font-semibold text-gray-900 border border-gray-300 rounded-md px-4 py-2">Reports</Tab>
                     </TabList>
-                    {[...Array(4)].map((_, index) => (
-                      <TabPanel key={`tab-panel${index}`} className="absolute justify-center">
-                        <div className="w-full">
-                          <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1">
-                            {data1.map((d, index) => (
-                              <LandingPageCard {...d} key={"grid286162Ndave" + index} />
-                            ))}
-                          </div>
+                    <TabPanel className="absolute justify-center">
+                      <div className="w-full">
+                        <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1">
+                          {contracts.map((cnts, index) => (
+                            <div key={`cnts-${index}`} className="flex flex-col w-full">
+                              <Img
+                                src={cnts.product.picture}
+                                alt="Shop Image"
+                                className="h-[260px] w-full rounded-tl-[10px] rounded-tr-[10px] object-cover md:h-auto"
+                              />
+                              <div className="flex flex-col items-center justify-center gap-[25px] self-stretch rounded-bl-[10px] rounded-br-[10px] border border-solid border-red-100_01 bg-gray-50_01 p-5">
+                                <div className="mt-2.5 flex items-center gap-3">
+                                  <Img src={cnts.shop.picture} alt="Shop Icon" className="h-[24px] w-[24px] rounded-md" />
+                                  <Heading as="h6" className="self-end">
+                                    {cnts.shop.name}
+                                  </Heading>
+                                </div>
+                                <div className="flex flex-col gap-[19px] self-stretch">
+                                  <div className="flex justify-between gap-5">
+                                    <div className="flex items-center gap-3 pr-[31px] sm:pr-5">
+                                      <Img src="images/insurance.svg" alt="Product SN" className="h-[20px] w-[20px] self-start" />
+                                      <Heading as="h6" className="!text-gray-700">
+                                        {cnts.insurance.companyName}
+                                      </Heading>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                      <Img src="images/type.svg" alt="User Email" className="h-[20px] w-[20px] self-start" />
+                                      <Heading as="h6" className="!text-gray-700">
+                                        {cnts.type}
+                                      </Heading>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-between gap-5">
+                                    <div className="flex items-center gap-3">
+                                      <Img src="images/theft.svg" alt="Insurance TRN" className="h-[20px] w-[20px] self-start" />
+                                      <Heading as="h6" className="!text-gray-700">
+                                        {cnts.protVol ? "Included" : "Not Included"}
+                                      </Heading>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                      <Img src="images/sands-of-time.svg" alt="Insurance Company" className="h-[20px] w-[20px] self-start" />
+                                      <Heading as="h6" className="!text-gray-700">
+                                        Ends In {calculateDaysBetween(cnts.date, cnts.date_f)} Days
+                                      </Heading>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="mb-2.5 flex items-center justify-between gap-5 self-stretch pr-[47px] md:pr-5">
+                                  <Button shape="round" className="min-w-[156px] font-semibold sm:px-5">
+                                    View Details
+                                  </Button>
+                                  <Heading size="3xl" as="h4" className="tracking-[-0.48px]">
+                                    {cnts.price.toFixed(2)}TND
+                                  </Heading>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      </TabPanel>
-                    ))}
-                    <div className="flex justify-between gap-5 sm:flex-col">
-                      <div className="flex gap-[5px]">
-                        <Button
-                          variant="outline"
-                          shape="round"
-                          color="undefined_undefined"
-                          className="min-w-[48px] font-semibold"
-                        >
-                          1
-                        </Button>
-                        <Button
-                          variant="outline"
-                          shape="round"
-                          color="undefined_undefined"
-                          className="min-w-[48px] font-semibold"
-                        >
-                          2
-                        </Button>
-                        <Button
-                          variant="outline"
-                          shape="round"
-                          color="undefined_undefined"
-                          className="min-w-[48px] font-semibold"
-                        >
-                          3
-                        </Button>
-                        <Button
-                          variant="outline"
-                          shape="round"
-                          color="undefined_undefined"
-                          className="min-w-[48px] font-semibold"
-                        >
-                          4
-                        </Button>
-                        <Button
-                          variant="outline"
-                          shape="round"
-                          color="undefined_undefined"
-                          className="min-w-[48px] font-semibold"
-                        >
-                          5
-                        </Button>
                       </div>
-                      <Button
-                        variant="outline"
-                        shape="round"
-                        color="undefined_undefined"
-                        rightIcon={
-                          <Img src="images/img_arrowright.svg" alt="arrow_right" className="h-[16px] w-[16px]" />
-                        }
-                        className="min-w-[134px] gap-1 font-semibold"
-                      >
-                        Next Page
-                      </Button>
-                    </div>
+                    </TabPanel>
                   </Tabs>
                 </div>
               </div>
             </div>
           </div>
-          <div className="container-xs flex items-start justify-between gap-5 rounded-[10px] border border-solid border-blue_gray-100_01 bg-white-A700 p-[42px] md:flex-col md:p-5">
+          {/* <div className="container-xs flex items-start justify-between gap-5 rounded-[10px] border border-solid border-blue_gray-100_01 bg-white-A700 p-[42px] md:flex-col md:p-5">
             <div className="flex w-[47%] flex-col gap-[57px] md:w-full sm:gap-7">
               <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-[30px] sm:flex-col">
@@ -352,7 +317,7 @@ export default function ManageProfil() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="container-xs flex flex-col gap-[39px] rounded-[10px]  bg-white-A700 py-[30px] md:p-5 sm:py-5">
           </div>
         </div>

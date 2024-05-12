@@ -275,7 +275,8 @@ export default function Contract() {
         },
         product: {
           id: id, // Product ID
-          SN: serialNumber // Product Serial Number
+          SN: serialNumber, // Product Serial Number
+          picture: product.photo,
         },
         shop: {
           id: product.shop.id,
