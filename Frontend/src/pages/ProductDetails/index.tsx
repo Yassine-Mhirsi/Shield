@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet";
 import { Text, Button, Img, Input, Heading } from "../../components";
 import Header from "../../components/Header";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import Swal from "sweetalert2";
 
 const data = [
   { placeholderone: "images/img_placeholder_137x139.png" },
@@ -36,10 +38,76 @@ export default function ProductDetailsPage() {
   }, []);
 
 
+  // ---------------------------------------------------------------------------------------------------------
+
+
   const navigate = useNavigate();
-  const handleProductClick = (productId: any) => {
-    navigate(`/contract/${productId}`);
+  const { user, loginWithRedirect, isAuthenticated } = useAuth0();
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/api/my/user');
+        const allUsers = await response.json();
+        const currentUser = allUsers.find(u => u.email === user.email);
+        if (currentUser) {
+          setUserRole(currentUser.role);
+        } else {
+          setUserRole('Role not found');
+        }
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+        setUserRole('Error fetching role');
+      }
+    };
+
+    fetchUserRole();
+  }, [user]);
+  // console.log(userRole);
+
+
+
+  const handleProductClick = (event, productId) => {
+    event.preventDefault(); // This stops the page refresh
+  
+    if (!isAuthenticated) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "warning",
+        title: "You are Not Signed In"
+      });
+    } else if (isAuthenticated && userRole !== "client") {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "warning",
+        title: "You are Not Authorized"
+      });
+    } else {
+      navigate(`/contract/${productId}`);
+    }
   };
+  
 
   // useEffect(() => {
   //   // Only make the fetch request if product.category is available
@@ -112,7 +180,7 @@ export default function ProductDetailsPage() {
                     size="4xl" // Adjusted size to be smaller
                     className="min-w-[40px] gap-2 font-bold sm:px-3" // Adjusted padding
                     style={{ color: 'white', borderRadius: '20px' }} // Set text color to white and rounded corners
-                    onClick={()=>handleProductClick(id)}
+                    onClick={(e) => handleProductClick(e,id)} // ignore the error it works fine
                   >
                     Buy now
                   </Button>
