@@ -8,7 +8,10 @@ const ClientSchema = new mongoose.Schema(
                 ref: 'User',
                 required: true
             },
-
+            email: {
+                type: String,
+                required: true
+            },
         },
         phone: { type: Number},
         state: { type: String},

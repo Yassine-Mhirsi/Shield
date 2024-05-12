@@ -8,17 +8,17 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function ManageProfile() {
 
-  const calculateDaysBetween = (startDate: string, endDate: string): number => {
-    const start = new Date(startDate);
+  const calculateDaysBetween = (endDate: string): number => {
+    const today = new Date();
     const end = new Date(endDate);
 
     // Validate date objects to be valid numbers
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    if (isNaN(today.getTime()) || isNaN(end.getTime())) {
       console.error("Invalid date provided");
       return 0; // Return 0 or handle this case appropriately
     }
 
-    const difference = end.getTime() - start.getTime(); // difference in milliseconds
+    const difference = end.getTime() - today.getTime(); // difference in milliseconds
     return Math.ceil(difference / (1000 * 60 * 60 * 24)); // Convert to days
   };
 
@@ -184,7 +184,7 @@ export default function ManageProfile() {
                                     <div className="flex items-center gap-3">
                                       <Img src="images/sands-of-time.svg" alt="Insurance Company" className="h-[20px] w-[20px] self-start" />
                                       <Heading as="h6" className="!text-gray-700">
-                                        Ends In {calculateDaysBetween(cnts.date, cnts.date_f)} Days
+                                        Ends In {calculateDaysBetween(cnts.date_f)} Days
                                       </Heading>
                                     </div>
                                   </div>

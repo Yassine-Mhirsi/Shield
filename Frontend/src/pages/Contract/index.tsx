@@ -241,7 +241,7 @@ export default function Contract() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            user: { id: userId },
+            user: { id: userId, email: user?.email },
             phone: phone,
             state: state,
             zip_code: parseInt(zipCode, 10),
