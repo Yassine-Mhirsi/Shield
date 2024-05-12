@@ -21,6 +21,7 @@ import UpdateProduct from "pages/DashboardAdminShop/UpdateProduct";
 import Report from "pages/Report";
 import Contract from "pages/Contract";
 import ManageProfil from "pages/ManageProfile";
+import PaymentSuccessful from "pages/PaymentSuccessful";
 
 
 const ProjectRoutes = () => {
@@ -102,6 +103,10 @@ const ProjectRoutes = () => {
     {
       path: "manageProfile",
       element: <ManageProfil />
+    },
+    {
+      path: "paymentsuccessful",
+      element: <PaymentSuccessful />
     },
   ]);
 

@@ -6,8 +6,10 @@ import CartElements from "../../components/cccmp/CartElements";
 import Footer from "../../components/cccmp/Footer";
 import Header from "components/Header";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CheckBox } from "components/ccmp";
+import Swal from "sweetalert2";
+
 
 const data = [
   { selectedvariant: "../../../../public/images/img_frame_lime_900.svg", labeltext: "Free shipping", pricetext: "$0.00" },
@@ -26,6 +28,7 @@ interface InsuranceType {
 }
 
 interface Insurance {
+  id: string;
   user: any;
   companyName?: string;
   phoneNumber?: string;
@@ -35,27 +38,39 @@ interface Insurance {
 }
 
 export default function Contract() {
+  const navigate = useNavigate();
   const [insurances, setInsurances] = useState<Insurance[]>([]);
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
   const [selectedType, setSelectedType] = useState<InsuranceType | null>(null);
+  const [insuranceId, setinsuranceId] = useState("");
+  const [insuranceTRN, setinsuranceTRN] = useState("");
 
   useEffect(() => {
     const fetchInsurance = async () => {
       try {
         const response = await fetch('http://localhost:7800/insurance/fetchAll');
         const allInsurances = await response.json();
+        const currentInsurance = allInsurances.find(u => u.companyName === selectedInsurance);
         setInsurances(allInsurances);
+        if (currentInsurance) {
+          setinsuranceId(currentInsurance._id); // Assuming 'id' is available on currentInsurance
+          setinsuranceTRN(currentInsurance.TRN); // Assuming 'TRN' is available on currentInsurance
+        } else {
+          setinsuranceId('');
+          setinsuranceTRN('');
+        }
       } catch (error) {
         console.error('Error fetching insurances:', error);
       }
     };
 
     fetchInsurance();
-  }, []);
+  }, [selectedInsurance]);
 
   const handleSelectInsurance = (companyName: string) => {
     setSelectedInsurance(companyName);
-    setSelectedType(null); // Reset type selection when changing insurance
+    setSelectedType(null);
+    setIsChecked(false);
   };
 
   const handleSelectType = (type: InsuranceType) => {
@@ -116,6 +131,210 @@ export default function Contract() {
     setIsChecked(checked);
   };
 
+  // -------------------------------------------------------------------------
+
+  const [userIdClient, setUserIdClient] = useState(null);
+  const [clientData, setclientData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserIdinClient = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/client/fetchAll');
+        const allUsers = await response.json();
+        const currentUser = allUsers.find(u => u.user.id === userId);
+        if (currentUser) {
+          setclientData(currentUser);
+          setUserIdClient(currentUser._id);
+        } else {
+          setUserIdClient(false);
+        }
+      } catch (error) {
+        console.error('Error fetching user client ID:', error);
+        setUserIdClient(false);
+      }
+    };
+    fetchUserIdinClient();
+  }, [userId]); // Ensure userId is included in the dependency array if it's not static  
+  // console.log(userIdClient);
+  // console.log(clientData);
+
+
+  // -------------------------------------------------------------------------
+
+  const [phone, setPhone] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [city, setCity] = useState('');
+
+  const handlePhoneChange = (value) => {
+    setPhone(value);
+  };
+
+  const handleStateChange = (value) => {
+    setState(value);
+  };
+
+  const handleZipCodeChange = (value) => {
+    setZipCode(value);
+  };
+
+  const handleCityChange = (value) => {
+    setCity(value);
+  };
+
+
+  function generateSerialNumber(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  const handleConfirm = async () => {
+    let success = false;  // Use a local variable to determine success of client update/create
+    // console.log("Product ID to add:", id); // Debug: Check what ID is being added
+    if (userIdClient && clientData && id) {
+      try {
+        const updatedListProducts = [...clientData.listProducts, id];
+        // console.log("Updated List of Products:", updatedListProducts); // Debug: Verify the new array
+
+        const updatedClientData = {
+          ...clientData,
+          phone: phone,
+          state: state,
+          zip_code: parseInt(zipCode, 10),
+          city: city,
+          listProducts: updatedListProducts
+        };
+
+        const updateResponse = await fetch(`http://localhost:7800/client/update/${userIdClient}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedClientData)
+        });
+
+        if (updateResponse.ok) {
+          // alert('Client information updated successfully!');
+          const updateResult = await updateResponse.json();
+          // console.log('Update Success:', updateResult);
+          setclientData(updatedClientData);
+          success = true;
+        } else {
+          const errorData = await updateResponse.json();
+          alert(`Failed to update client information: ${errorData.message}`);
+          console.error('Failed to update client information:', errorData);
+        }
+      } catch (error) {
+        alert('An error occurred while updating client information.');
+        console.error('Error:', error);
+      }
+    } else {
+      try {
+        const response = await fetch('http://localhost:7800/client/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user: { id: userId },
+            phone: phone,
+            state: state,
+            zip_code: parseInt(zipCode, 10),
+            city: city,
+            listProducts: [id]
+          })
+        });
+        if (response.ok) {
+          // alert('Client information saved successfully!');
+          const result = await response.json();
+          console.log('Success:', result);
+          success = true;
+        } else {
+          alert('Failed to save client information');
+          const errorData = await response.json();
+          console.error('Failed to save client information:', errorData);
+        }
+      } catch (error) {
+        alert('An error occurred while saving the client information.');
+        console.error('Error:', error);
+      }
+    }
+    if (success) {
+      const serialNumber = generateSerialNumber(10);
+
+      const contractData = {
+        // Example data structure, fill with actual data
+        user: {
+          id: userId,
+          email: user?.email // Assuming you have userEmail available
+        },
+        product: {
+          id: id, // Product ID
+          SN: serialNumber // Product Serial Number
+        },
+        shop: {
+          id: product.shop.id,
+          name: product.shop.name,
+          picture: product.shop.picture
+        },
+        insurance: {
+          id: insuranceId,
+          TRN: insuranceTRN,
+          companyName: selectedInsurance
+        },
+        date: new Date(), // Current date or another specified date
+        date_f: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // For example, one year from now
+        protVol: isChecked, // Example value
+        price: (selectedType && selectedType.price * 365) + (product ? product.price : 0) + (isChecked ? 50 : 0), // Example price
+        type: selectedType.type // Example type
+      };
+
+      try {
+        const response = await fetch('http://localhost:7800/contract/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(contractData)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          // alert('Contract created successfully!');
+          console.log('Contract Creation Success:', result);
+
+          Swal.fire({
+            icon: "success",
+            title: "Nice!!",
+            text: "Payment has been Successful",
+            confirmButtonText: "Go see Your Contract",
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate('/manageProfile');
+            }
+          });
+
+        } else {
+          const errorData = await response.json();
+          alert(`Failed to create contract: ${errorData.message}`);
+          console.error('Failed to create contract:', errorData);
+        }
+      } catch (error) {
+        alert('An error occurred while creating the contract.');
+        console.error('Error:', error);
+      }
+    }
+    else {
+      alert('Failed to proceed with contract creation due to earlier errors');
+    }
+  };
+
 
 
   return (
@@ -127,9 +346,7 @@ export default function Contract() {
           content="Easily update your shipping address to ensure a smooth delivery experience. Add new addresses for home or office, and select your preferred delivery option."
         />
       </Helmet>
-      {/* address page section */}
       <div className="flex w-full flex-col gap-10 bg-white-A700">
-        {/* page header section */}
         <div>
           <Header />
           {/* <div className="flex justify-center bg-black-900 py-4">
@@ -255,10 +472,13 @@ export default function Contract() {
                   </Text>
                   <div className="flex gap-6 self-stretch md:flex-col">
                     {insurances.map((insurance, index) => (
-                      <div className={`border-2 border-lime-900 px-5 flex flex-col w-full pt-5 pb-[19px] gap-[19px] border-solid rounded-[16px]`}>
+                      <div
+                        key={insurance.id || index}  // Prefer unique id over index if available
+                        className="border-2 border-lime-900 px-5 flex flex-col w-full pt-5 pb-[19px] gap-[19px] border-solid rounded-[16px]"
+                      >
                         <div className="flex justify-between gap-5 self-stretch">
                           <div className="flex items-center gap-3">
-                            <label key={index} className="flex items-center gap-2">
+                            <label className="flex items-center gap-2">
                               <input
                                 type="radio"
                                 name="insurance"
@@ -290,6 +510,7 @@ export default function Contract() {
                       </div>
                     ))}
                   </div>
+
                 </div>
                 <div className="flex flex-col items-start gap-[19px]">
                   <Text size="3xl" as="p" className="!text-black-900">
@@ -316,15 +537,16 @@ export default function Contract() {
                           </label>
                         ))}
                       </div>
-                      <CheckBox
-                        name="iconcheck_empt"
-                        label="Theft Protection +50TND"
-                        id="iconcheckempt"
-                        className="gap-2 pb-px pr-[35px] pt-[5px] text-sm text-blue_gray-400 sm:pr-5"
-                        onChange={handleCheckboxChange}
-                        checked={isChecked}
-                      />
-                      <p>Selected: {isChecked.toString()}</p>
+                      {selectedType && (
+                        <CheckBox
+                          name="iconcheck_empt"
+                          label="Theft Protection +50TND"
+                          id="iconcheckempt"
+                          className="gap-2 pb-px pr-[35px] pt-[5px] text-sm text-blue_gray-400 sm:pr-5"
+                          onChange={handleCheckboxChange}
+                          checked={isChecked}
+                        />
+                      )}
                     </div>
                     <div className="flex flex-col gap-[15px]">
                       <div className="flex gap-6 md:flex-col">
@@ -336,7 +558,7 @@ export default function Contract() {
                             disabled
                             shape="round"
                             type="text"
-                            name="Name Input"
+                            name="name"
                             placeholder={user?.nickname}
                             prefix={<Img src="../../../../public/images/img_lock_gray_500.svg" alt="lock" className="h-[24px] w-[24px]" />}
                             className="gap-2 self-stretch sm:pr-5 border"
@@ -350,7 +572,7 @@ export default function Contract() {
                             disabled
                             shape="round"
                             type="email"
-                            name="Email Input"
+                            name="email"
                             placeholder={user?.email}
                             prefix={
                               <Img src="../../../../public/images/img_checkmark.svg" alt="checkmark" className="h-[24px] w-[24px]" />
@@ -366,11 +588,12 @@ export default function Contract() {
                           </Text>
                           <Input
                             shape="round"
-                            name="Phone Input"
-                            placeholder={`+216`}
+                            name="phone"
+                            placeholder={clientData && clientData.phone ? clientData.phone : '+216'}
                             prefix={
                               <Img src="../../../../public/images/tunisia.svg" alt="fi_4628635" className="h-[24px] w-[24px]" />
                             }
+                            onChange={handlePhoneChange}
                             className="gap-2 self-stretch !text-black-900 sm:pr-5 border"
                           />
                         </div>
@@ -381,9 +604,10 @@ export default function Contract() {
                           <Input
                             shape="round"
                             type="text"
-                            name="State"
-                            placeholder={`State`}
+                            name="state"
+                            placeholder={clientData && clientData.state ? clientData.state : `State`}
                             className="self-stretch !text-black-900 sm:pr-5 border"
+                            onChange={handleStateChange}
                           />
                         </div>
                       </div>
@@ -395,9 +619,10 @@ export default function Contract() {
                           <Input
                             shape="round"
                             type="number"
-                            name="Zip Code Input"
-                            placeholder={`88765455`}
+                            name="zipCode"
+                            placeholder={clientData && clientData.zip_code ? clientData.zip_code : '2080'}
                             className="self-stretch !text-black-900 sm:pr-5 border"
+                            onChange={handleZipCodeChange}
                           />
                         </div>
                         <div className="flex w-full flex-col items-start gap-[7px]">
@@ -406,24 +631,26 @@ export default function Contract() {
                           </Text>
                           <Input
                             shape="round"
-                            name="City Input"
-                            placeholder={`Texas`}
+                            name="city"
+                            placeholder={clientData && clientData.city ? clientData.city : 'Tunis'}
                             className="self-stretch !text-black-900 sm:pr-5 border"
+                            onChange={handleCityChange}
                           />
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-start gap-[7px]">
+                    {/* <div className="flex flex-col items-start gap-[7px]">
                       <Text size="s" as="p" className="ml-4 md:ml-0">
                         Address*
                       </Text>
-                      <TextArea
+                      <Input
                         shape="round"
-                        name="Address TextArea"
-                        placeholder={`Building name / street name`}
-                        className="self-stretch border text-gray-500 sm:pb-5 sm:pr-5"
+                        name="address"
+                        placeholder={clientData && clientData.address ? clientData.address : `Building name / street name`}
+                        className="self-stretch !text-black-900 sm:pr-5 border"
+                        onChange={handleAddressChange}
                       />
-                    </div>
+                    </div> */}
                     <CheckBox
                       name="iconcheck_empty"
                       label="By clicking on this, I take all responsibility of the information above"
@@ -465,7 +692,7 @@ export default function Contract() {
                             Duration 1 Year
                           </Text>
                           <Text as="p" className="!font-inter !font-medium !text-gray-900_01">
-                            +{selectedType && selectedType.price * 365}TND
+                            +{selectedType && (selectedType.price * 365).toFixed(1)}TND
                           </Text>
                         </div>
                       )}
@@ -491,13 +718,10 @@ export default function Contract() {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full rounded-[24px] font-semibold sm:px-5">Confirme</Button>
+                <Button onClick={handleConfirm} className="w-full rounded-[24px] font-semibold sm:px-5">Confirm</Button>
               </div>
             </div>
           </div>
-
-          {/* footer section */}
-          <Footer />
         </div>
       </div>
     </>

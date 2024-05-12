@@ -55,6 +55,7 @@ export default function TableListPage() {
 
   const handleDelete = async (productId: string) => {
     Swal.fire({
+      allowOutsideClick: false,
       title: "You want to delete this Product?",
       text: "You won't be able to revert this!",
       icon: "warning",
@@ -70,9 +71,10 @@ export default function TableListPage() {
           });
           if (response.ok) {
             Swal.fire({
+              allowOutsideClick: false,
               title: "Deleted!",
               text: "the user has been deleted.",
-              icon: "success"
+              icon: "success",
             });
             setTimeout(() => {
               window.location.reload();

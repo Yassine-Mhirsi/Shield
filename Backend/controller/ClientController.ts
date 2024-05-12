@@ -27,10 +27,10 @@ export const fetchClients = async (req: Request, res: Response) => {
 
 export const updateClient = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { phone, state, zip_code, city, adress } = req.body;
+    const { phone, state, zip_code, city, listProducts } = req.body;
 
     try {
-        // Find the existing product
+        // Find the existing client
         const existingClient = await Client.findById(id);
 
         if (!existingClient) {
@@ -43,9 +43,10 @@ export const updateClient = async (req: Request, res: Response) => {
         if (state) updatedFields.state = state;
         if (zip_code) updatedFields.zip_code = zip_code;
         if (city) updatedFields.city = city;
-        if (adress) updatedFields.adress = adress;
+        // if (address) updatedFields.adress = address;
+        if (listProducts) updatedFields.listProducts = listProducts;
 
-        // Update the product with the new fields
+        // Update the client with the new fields
         const updatedClient = await Client.findByIdAndUpdate(id, updatedFields, { new: true });
 
         res.status(200).json(updatedClient);
@@ -53,6 +54,7 @@ export const updateClient = async (req: Request, res: Response) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 export default {

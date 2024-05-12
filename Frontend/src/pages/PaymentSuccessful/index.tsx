@@ -1,6 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Text, Img, Button, Heading } from "../../components";
+import { Text, Img, Button, Heading } from "../../components/ccmp";
+import { Link } from "react-router-dom";
 
 export default function SigninResetPasswordSuccessfulPage() {
   return (
@@ -15,17 +16,21 @@ export default function SigninResetPasswordSuccessfulPage() {
             <div className="mt-[11px] flex flex-col items-center gap-12">
               <Img src="images/img_completed_1.svg" alt="completedone" className="h-[180px] w-[180px]" />
               <div className="flex">
-                <Heading as="h1">Password has been recovered</Heading>
+                <Heading as="h1">Payment has been Successful</Heading>
               </div>
             </div>
             <div className="mb-[5px] flex flex-col items-center gap-12">
               <Button size="6xl" className="w-full rounded-[28px] font-bold sm:px-5">
+                <Link to='/manageProfile' >
                 LOGIN
+                </Link>
               </Button>
               <div className="flex items-center gap-[7px]">
                 <Img src="images/img_arrow_left_indigo_400_01.svg" alt="arrowleft" className="h-[20px] w-[20px]" />
                 <Text as="p" className="self-end !text-indigo-400_01">
-                  Back to Sign in
+                <Link to='/' >
+                  Back Home
+                </Link>
                 </Text>
               </div>
             </div>

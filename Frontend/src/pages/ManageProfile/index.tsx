@@ -99,6 +99,12 @@ const data1 = [
 
 export default function ManageProfil() {
   const { user } = useAuth0();
+
+  
+
+
+
+
   return (
     <>
       <Helmet>
