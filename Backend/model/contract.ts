@@ -18,6 +18,7 @@ const contractSchema = new mongoose.Schema({
             ref: 'Product',
             required: true
         },
+        name: { type: String, required: true },
         SN: {
             type: String,
             required: true
@@ -30,6 +31,10 @@ const contractSchema = new mongoose.Schema({
             ref: 'Shop',
             required: true
         },
+        email: {
+            type: String,
+            required: true
+        },
         name: { type: String, required: true },
         picture: { type: String, required: true }
     },
@@ -37,6 +42,10 @@ const contractSchema = new mongoose.Schema({
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Insurance',
+            required: true
+        },
+        email: {
+            type: String,
             required: true
         },
         TRN: { type: String, required: true },

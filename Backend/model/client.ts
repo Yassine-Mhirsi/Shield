@@ -17,7 +17,6 @@ const ClientSchema = new mongoose.Schema(
         state: { type: String},
         zip_code: { type: Number},
         city: { type: String},
-        // address: { type: String},
         listProducts: { type: [String], default: [], sparse: true },
     }
 );

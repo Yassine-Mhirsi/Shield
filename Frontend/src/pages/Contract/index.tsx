@@ -44,6 +44,8 @@ export default function Contract() {
   const [selectedType, setSelectedType] = useState<InsuranceType | null>(null);
   const [insuranceId, setinsuranceId] = useState("");
   const [insuranceTRN, setinsuranceTRN] = useState("");
+  const [insuranceEmail, setinsuranceEmail] = useState("");
+
 
   useEffect(() => {
     const fetchInsurance = async () => {
@@ -53,11 +55,13 @@ export default function Contract() {
         const currentInsurance = allInsurances.find(u => u.companyName === selectedInsurance);
         setInsurances(allInsurances);
         if (currentInsurance) {
-          setinsuranceId(currentInsurance._id); // Assuming 'id' is available on currentInsurance
-          setinsuranceTRN(currentInsurance.TRN); // Assuming 'TRN' is available on currentInsurance
+          setinsuranceId(currentInsurance._id); 
+          setinsuranceTRN(currentInsurance.TRN); 
+          setinsuranceEmail(currentInsurance.user.email); 
         } else {
           setinsuranceId('');
           setinsuranceTRN('');
+          setinsuranceEmail('');
         }
       } catch (error) {
         console.error('Error fetching insurances:', error);
@@ -66,6 +70,8 @@ export default function Contract() {
 
     fetchInsurance();
   }, [selectedInsurance]);
+
+  console.log(insuranceEmail);
 
   const handleSelectInsurance = (companyName: string) => {
     setSelectedInsurance(companyName);
@@ -105,7 +111,7 @@ export default function Contract() {
   }, [user]);
   // console.log(userId);
 
-  // ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
 
   const { id } = useParams();
   const [product, SetProduct] = useState(null);
@@ -122,16 +128,37 @@ export default function Contract() {
 
     fetchProductById();
   }, [id]);
+  
+// -------------------------------------------------------------------------
 
 
-  // -------------------------------------------------------------------------
+const [shopEmail, setShopEmail] = useState(null);
+useEffect(() => {
+  const fetchShops = async () => {
+    try {
+      const response = await fetch('http://localhost:7800/shop/fetchAll');
+      const allShops = await response.json();
+      const currentShop = allShops.find(u => u._id === product.shop.id);
+      setShopEmail(currentShop.user.email);
+    } catch (error) {
+      console.log('Error fetching partners:', error);
+    }
+  };
+
+  fetchShops();
+}, [product]);
+
+// console.log(shopEmail);
+
+
+// -------------------------------------------------------------------------
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = (checked) => {
     setIsChecked(checked);
   };
 
-  // -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 
   const [userIdClient, setUserIdClient] = useState(null);
   const [clientData, setclientData] = useState(null);
@@ -159,7 +186,7 @@ export default function Contract() {
   // console.log(clientData);
 
 
-  // -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 
   const [phone, setPhone] = useState('');
   const [state, setState] = useState('');
@@ -194,6 +221,7 @@ export default function Contract() {
   }
 
   const handleConfirm = async () => {
+    
     let success = false;  // Use a local variable to determine success of client update/create
     // console.log("Product ID to add:", id); // Debug: Check what ID is being added
     if (userIdClient && clientData && id) {
@@ -268,31 +296,34 @@ export default function Contract() {
       const serialNumber = generateSerialNumber(10);
 
       const contractData = {
-        // Example data structure, fill with actual data
+        
         user: {
           id: userId,
-          email: user?.email // Assuming you have userEmail available
+          email: user?.email,
         },
         product: {
-          id: id, // Product ID
-          SN: serialNumber, // Product Serial Number
+          id: id,
+          name: `${product.brand} ${product.model}`,
+          SN: serialNumber, 
           picture: product.photo,
         },
         shop: {
           id: product.shop.id,
+          email: shopEmail,
           name: product.shop.name,
           picture: product.shop.picture
         },
         insurance: {
           id: insuranceId,
+          email: insuranceEmail,
           TRN: insuranceTRN,
           companyName: selectedInsurance
         },
-        date: new Date(), // Current date or another specified date
-        date_f: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // For example, one year from now
-        protVol: isChecked, // Example value
-        price: (selectedType && selectedType.price * 365) + (product ? product.price : 0) + (isChecked ? 50 : 0), // Example price
-        type: selectedType.type // Example type
+        date: new Date(), 
+        date_f: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), 
+        protVol: isChecked, 
+        price: (selectedType && selectedType.price * 365) + (product ? product.price : 0) + (isChecked ? 50 : 0),
+        type: selectedType.type 
       };
 
       try {

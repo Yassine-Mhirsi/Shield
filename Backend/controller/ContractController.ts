@@ -48,6 +48,28 @@ export const fetchContractByUserId = async (req: Request, res: Response) => {
 };
 
 
+export const fetchContractsByInsuranceId = async (req: Request, res: Response) => {
+    const insuranceId = req.params.insuranceId;
+
+    // Check if the insuranceId provided is a valid MongoDB ObjectId
+    if (!insuranceId || !mongoose.Types.ObjectId.isValid(insuranceId)) {
+        return res.status(400).send('Invalid Insurance ID');
+    }
+
+    try {
+        const contracts = await Contract.find({ 'insurance.id': insuranceId }).exec();
+
+        if (!contracts || contracts.length === 0) {
+            return res.status(404).json({ message: 'No contracts found for this insurance ID' });
+        }
+
+        res.status(200).json(contracts);
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 
 
 
@@ -55,4 +77,5 @@ export default {
     createContract,
     fetchContract,
     fetchContractByUserId,
+    fetchContractsByInsuranceId
 };
