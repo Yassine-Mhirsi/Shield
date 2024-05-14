@@ -10,6 +10,7 @@ import RepairShopRoute from "./routes/RepairShopRoutes";
 import InsuranceRoute from "./routes/InsuranceRoutes";
 import ContractRoute from "./routes/ContractRoutes";
 import ClientRoute from "./routes/ClientRoutes";
+import ReportRoute from "./routes/ReportRoutes";
 
 mongoose
   .connect(process.env.MONGO_URI as string)
@@ -28,6 +29,7 @@ app.use("/repairshop", RepairShopRoute);
 app.use("/insurance", InsuranceRoute);
 app.use("/contract", ContractRoute);
 app.use("/client", ClientRoute);
+app.use("/report", ReportRoute);
 
 
 app.listen(process.env.PORT, () => {

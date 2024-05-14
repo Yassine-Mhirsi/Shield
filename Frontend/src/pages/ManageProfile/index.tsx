@@ -4,6 +4,8 @@ import { Button, Img, Heading, Text, RatingBar } from "../../components/ccccmp";
 import Header from "../../components/Header";
 import { TabPanel, TabList, Tab, Tabs } from "react-tabs";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
+import ReactQuill from 'react-quill';
 
 
 export default function ManageProfile() {
@@ -25,7 +27,9 @@ export default function ManageProfile() {
 
   const { user } = useAuth0();
   const [userId, setUserId] = useState(null);
-  const [contracts, setContracts] = useState([]); // Initialize as an empty array
+  const [contracts, setContracts] = useState([]);
+  const [reports, setReports] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("contracts");
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -51,29 +55,54 @@ export default function ManageProfile() {
   }, [user]);
 
   useEffect(() => {
-    if (userId) { // Fetch contracts only if userId is not null
-      const fetchContractByUserId = async () => {
-        try {
-          const response = await fetch(`http://localhost:7800/contract/fetchContractByUserId/${userId}`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch contract data');
-          }
-          const contractData = await response.json();
-          setContracts(contractData); // Make sure this is always an array
-        } catch (error) {
-          console.error('Error fetching Contract:', error);
-          setContracts([]); // Set to empty array on error
+    const fetchData = async () => {
+      if (!userId) {
+        setReports([]);
+        setContracts([]);
+        return; // Exit early if userId is null
+      }
+
+      try {
+        // Fetch reports
+        const reportResponse = await fetch(`http://localhost:7800/report/fetchReportByUserId/${userId}`);
+        if (!reportResponse.ok) {
+          throw new Error('Failed to fetch report data');
         }
-      };
-      fetchContractByUserId();
-    } else {
-      setContracts([]); // Clear contracts if no valid userId
-    }
+        const reportData = await reportResponse.json();
+        setReports(reportData);
+
+        // Fetch contracts
+        const contractResponse = await fetch(`http://localhost:7800/contract/fetchContractByUserId/${userId}`);
+        if (!contractResponse.ok) {
+          throw new Error('Failed to fetch contract data');
+        }
+        const contractData = await contractResponse.json();
+        setContracts(contractData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setReports([]); // Set to empty array on error
+        setContracts([]); // Set to empty array on error
+      }
+    };
+
+    fetchData();
   }, [userId]);
-  // console.log(contract);
+
+  // console.log(contracts);
+  // console.log(reports);
 
 
+  const navigate = useNavigate();
 
+  const handleAddReportClick = (contractId: any) => {
+    navigate(`/report/${contractId}`);
+  };
+
+  const handleTabClick = (tab) => {
+    setSelectedTab(tab);
+    console.log(tab);
+  };
+  console.log(selectedTab);
 
   return (
     <>
@@ -139,8 +168,8 @@ export default function ManageProfile() {
                     selectedTabPanelClassName="relative tab-panel--selected"
                   >
                     <TabList className="flex justify-between p-2.5 md:gap-5">
-                      <Tab className="ml-[680px] text-lg font-semibold text-gray-900 border border-gray-300 rounded-md px-4 py-2">Contracts</Tab>
-                      <Tab className="mr-[680px] text-lg font-semibold text-gray-900 border border-gray-300 rounded-md px-4 py-2">Reports</Tab>
+                      <Tab className="ml-[680px] text-lg font-semibold text-gray-900 border border-gray-300 rounded-md px-4 py-2" onClick={() => handleTabClick("contracts")} style={{ cursor: 'pointer' }}>Contracts</Tab>
+                      <Tab className="mr-[680px] text-lg font-semibold text-gray-900 border border-gray-300 rounded-md px-4 py-2" onClick={() => handleTabClick("reports")} style={{ cursor: 'pointer' }}>Reports</Tab>
                     </TabList>
                     <TabPanel className="absolute justify-center">
                       <div className="w-full">
@@ -190,12 +219,58 @@ export default function ManageProfile() {
                                   </div>
                                 </div>
                                 <div className="mb-2.5 flex items-center justify-between gap-5 self-stretch pr-[47px] md:pr-5">
-                                  <Button shape="round" className="min-w-[156px] font-semibold sm:px-5">
-                                    View Details
+                                  <Button shape="round" className="min-w-[156px] font-semibold sm:px-5" onClick={() => handleAddReportClick(cnts._id)}>
+                                    Add Report
                                   </Button>
                                   <Heading size="3xl" as="h4" className="tracking-[-0.48px]">
                                     {cnts.price.toFixed(2)}TND
                                   </Heading>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel className="absolute justify-center">
+                      <div className="w-full">
+                        <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1">
+                          {reports.map((report, index) => (
+                            <div key={`report-${index}`} className="flex flex-col w-full">
+                              <div className="flex flex-col items-center justify-center gap-[25px] self-stretch rounded-bl-[10px] rounded-br-[10px] border border-solid border-red-100_01 bg-gray-50_01 p-5">
+                                <div className="mt-2.5 flex items-center gap-3">
+                                  {/* <Img src="" alt="Shop Icon" className="h-[24px] w-[24px] rounded-md" /> */}
+                                  <Heading as="h6" className="self-end">
+                                    Status : {report.status}
+                                  </Heading>
+                                </div>
+                                <div className="flex flex-col gap-[19px] self-stretch">
+                                  <div className="flex justify-between gap-5">
+                                    <div className="flex items-center gap-3 pr-[31px] sm:pr-5">
+                                      <Img src="images/insurance.svg" alt="Product SN" className="h-[20px] w-[20px] self-start" />
+                                      <Heading as="h6" className="!text-gray-700">
+                                        {report.type}
+                                      </Heading>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                      <Img src="images/sands-of-time.svg" alt="Insurance Company" className="h-[20px] w-[20px] self-start" />
+                                      <Heading as="h6" className="!text-gray-700">
+                                        {new Date(report.date).toLocaleDateString('en-GB')}
+                                      </Heading>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-between gap-8">
+                                    <div className="w-full">
+                                      {/* <Heading as="h6" className="!text-gray-700"> */}
+                                        <ReactQuill
+                                          theme="snow"
+                                          value={report.desc}
+                                          readOnly={true}
+                                          modules={{ toolbar: false }}
+                                        />
+                                      {/* </Heading> */}
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
