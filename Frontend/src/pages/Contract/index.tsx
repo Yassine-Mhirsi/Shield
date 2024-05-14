@@ -9,6 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CheckBox } from "components/ccmp";
 import Swal from "sweetalert2";
+import MegaMenu1 from "components/cccmp/MegaMenu1";
 
 
 const data = [
@@ -38,6 +39,10 @@ interface Insurance {
 }
 
 export default function Contract() {
+
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [menuOpen1, setMenuOpen1] = React.useState(false);
+
   const navigate = useNavigate();
   const [insurances, setInsurances] = useState<Insurance[]>([]);
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
@@ -400,7 +405,7 @@ useEffect(() => {
           </div> */}
           {/* ------------------------------------------------------------------------------------------------------------------------------ */}
           {/* navigation menu section */}
-          {/* <div className="flex justify-center border-b border-solid border-gray-200_01 bg-white-A700 py-3">
+          <div className="flex justify-center border-b border-solid border-gray-200_01 bg-white-A700 py-3">
               <div className="container-xs flex items-center justify-between gap-5 md:flex-col md:p-5">
                 <Img src="../../../../public/images/img_header_logo.png" alt="header logo" className="h-[19px] w-[129px] object-contain" />
                 <ul className="flex items-center gap-11 sm:flex-col">
@@ -453,34 +458,9 @@ useEffect(() => {
                     </a>
                   </li>
                 </ul>
-                <div className="flex items-center gap-5">
-                  <ul className="flex">
-                    <li
-                      onMouseLeave={() => {
-                        setMenuOpen1(false);
-                      }}
-                      onMouseEnter={() => {
-                        setMenuOpen1(true);
-                      }}
-                    >
-                      <div className="flex cursor-pointer items-center gap-1 rounded-[18px] bg-gray-200_03 p-2">
-                        <Img src="../../../../public/images/img_contrast.svg" alt="search icon" className="h-[20px] w-[20px]" />
-                        <Text size="xs" as="p">
-                          Search for products
-                        </Text>
-                      </div>
-                      {menuOpen1 ? <MegaMenu1 /> : null}
-                    </li>
-                  </ul>
-                  <a href="#">
-                    <Img src="../../../../public/images/img_thumbs_up.svg" alt="thumbs up icon" className="h-[20px] w-[20px]" />
-                  </a>
-                  <a href="#">
-                    <Img src="../../../../public/images/img_lock.svg" alt="lock icon" className="h-[20px] w-[20px]" />
-                  </a>
-                </div>
+          
               </div>
-            </div> */}
+            </div>
           {/* breadcrumb navigation section */}
           <div className="flex justify-center bg-gray-200_03 pb-6 pt-[23px] sm:py-5">
             <div className="container-xs flex flex-wrap items-center gap-1 md:p-5">

@@ -5,13 +5,19 @@ import AliceCarousel, { EventObject, DotsItem, Link } from "react-alice-carousel
 import { useAuth0 } from "@auth0/auth0-react";
 import UsernameMenu from "components/UsernameMenu";
 import { CloseSVG } from "../../assets/images";
-import { Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 interface Props {
   className?: string;
 }
 
 export default function Header({ ...props }: Props) {
+  const navigate = useNavigate();
+  const home = () => {
+    navigate(`/`);
+  };
   const [sliderState, setSliderState] = React.useState(0);
   const sliderRef = React.useRef<AliceCarousel>(null);
   const [sliderState1, setSliderState1] = React.useState(0);
@@ -90,11 +96,12 @@ export default function Header({ ...props }: Props) {
   return (
     <header className="flex items-center justify-center self-stretch bg-black py-[17px]">
       <div className="container-sm flex items-center justify-between gap-5 md:flex-col md:p-5">
-          <Img
-            src="images/img_header_logoo.png"
-            alt="headerlogo_one"
-            className="h-[50px] w-[15%] object-cover md:w-full"
-          />
+        <Img
+          onClick={home}
+          src="images/img_header_logoo.png"
+          alt="headerlogo_one"
+          className="h-[50px] w-[15%] object-cover md:w-full"
+        />
         <div className="flex w-[69%] items-center justify-between gap-5 md:w-full md:flex-col">
           <ul className="flex flex-wrap gap-20 md:gap-5">
             {getMenuItems().map((menuItem, index) => (

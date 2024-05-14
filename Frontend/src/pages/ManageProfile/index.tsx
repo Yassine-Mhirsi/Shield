@@ -50,6 +50,8 @@ export default function ManageProfile() {
     }
   }, [user]);
 
+  // --------------------------------------------------------------------------------------------------------------
+
   useEffect(() => {
     if (userId) { // Fetch contracts only if userId is not null
       const fetchContractByUserId = async () => {
@@ -71,6 +73,29 @@ export default function ManageProfile() {
     }
   }, [userId]);
   // console.log(contract);
+
+  // --------------------------------------------------------------------------------------------------------------------
+
+  const [clientData, setclientData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserIdinClient = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/client/fetchAll');
+        const allUsers = await response.json();
+        const currentUser = allUsers.find(u => u.user.id === userId);
+        if (currentUser) {
+          setclientData(currentUser);
+        } else {
+        }
+      } catch (error) {
+        console.error('Error fetching user client ID:', error);
+      }
+    };
+    fetchUserIdinClient();
+  }, [userId]); // Ensure userId is included in the dependency array if it's not static  
+  // console.log(userIdClient);
+  // console.log(clientData);
 
 
 
@@ -114,7 +139,7 @@ export default function ManageProfile() {
                               className="h-[24px] w-[24px] self-start"
                             />
                             <Heading size="md" as="h3" className="!font-semibold">
-                              (123) 456-7890
+                              {clientData && clientData.phone}
                             </Heading>
                           </div>
                           <div className="flex items-center gap-3 self-start">
