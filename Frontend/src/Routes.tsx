@@ -85,7 +85,7 @@ const ProjectRoutes = () => {
       element: <ProductDetails />,
     },
     {
-      path: "report",
+      path: "report/:id",
       element: <Report />,
     },
     {

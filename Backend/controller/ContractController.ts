@@ -70,6 +70,20 @@ export const fetchContractsByInsuranceId = async (req: Request, res: Response) =
 };
 
 
+export const fetchContractById = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+        const contracts = await Contract.find({ '_id': id });
+        if (contracts.length === 0) {
+            return res.status(404).json({ message: 'No contracts found for this id' });
+        }
+        res.status(200).json(contracts);
+    } catch (error: any) {
+        res.status(404).json({ message: error.message });
+    }
+};
+
+
 
 
 
