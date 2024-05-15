@@ -59,7 +59,6 @@ export const updateProduct = async (req: Request, res: Response) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        // Create an object with fields to update
         const updatedFields: any = {};
         if (SN) updatedFields.SN = SN;
         if (brand) updatedFields.brand = brand;

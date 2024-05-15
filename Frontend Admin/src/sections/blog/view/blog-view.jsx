@@ -8,16 +8,15 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 export default function BlogView() {
-  const [partners, setPartners] = useState([]);
   const navigate = useNavigate();
   const storedValue = localStorage.getItem('121211');
-
+  
   useEffect(() => {
     if (storedValue === '0') {
       navigate('/login');
     }
   }, [storedValue, navigate]);
-
+  
   useEffect(() => {
     const fetchPartners = async () => {
       try {
@@ -28,10 +27,11 @@ export default function BlogView() {
         console.log('Error fetching partners:', error);
       }
     };
-
+    
     fetchPartners();
   }, []);
-
+  
+  const [partners, setPartners] = useState([]);
   const declinePartner = async (id) => {
     try {
       await fetch(`http://localhost:7800/partner/updateStatus/${id}`, {

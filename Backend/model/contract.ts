@@ -73,5 +73,5 @@ const contractSchema = new mongoose.Schema({
     },
 });
 
-const Contract = mongoose.model("contract", contractSchema);
+const Contract = mongoose.model("Contract", contractSchema);
 export default Contract;

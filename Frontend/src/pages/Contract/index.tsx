@@ -60,9 +60,9 @@ export default function Contract() {
         const currentInsurance = allInsurances.find(u => u.companyName === selectedInsurance);
         setInsurances(allInsurances);
         if (currentInsurance) {
-          setinsuranceId(currentInsurance._id); 
-          setinsuranceTRN(currentInsurance.TRN); 
-          setinsuranceEmail(currentInsurance.user.email); 
+          setinsuranceId(currentInsurance._id);
+          setinsuranceTRN(currentInsurance.TRN);
+          setinsuranceEmail(currentInsurance.user.email);
         } else {
           setinsuranceId('');
           setinsuranceTRN('');
@@ -76,7 +76,7 @@ export default function Contract() {
     fetchInsurance();
   }, [selectedInsurance]);
 
-  console.log(insuranceEmail);
+  // console.log(insuranceEmail);
 
   const handleSelectInsurance = (companyName: string) => {
     setSelectedInsurance(companyName);
@@ -116,7 +116,7 @@ export default function Contract() {
   }, [user]);
   // console.log(userId);
 
-// ---------------------------------------------------------------------
+  // ---------------------------------------------------------------------
 
   const { id } = useParams();
   const [product, SetProduct] = useState(null);
@@ -133,37 +133,37 @@ export default function Contract() {
 
     fetchProductById();
   }, [id]);
-  
-// -------------------------------------------------------------------------
+
+  // -------------------------------------------------------------------------
 
 
-const [shopEmail, setShopEmail] = useState(null);
-useEffect(() => {
-  const fetchShops = async () => {
-    try {
-      const response = await fetch('http://localhost:7800/shop/fetchAll');
-      const allShops = await response.json();
-      const currentShop = allShops.find(u => u._id === product.shop.id);
-      setShopEmail(currentShop.user.email);
-    } catch (error) {
-      console.log('Error fetching partners:', error);
-    }
-  };
+  const [shopEmail, setShopEmail] = useState(null);
+  useEffect(() => {
+    const fetchShops = async () => {
+      try {
+        const response = await fetch('http://localhost:7800/shop/fetchAll');
+        const allShops = await response.json();
+        const currentShop = allShops.find(u => u._id === product.shop.id);
+        setShopEmail(currentShop.user.email);
+      } catch (error) {
+        console.log('Error fetching partners:', error);
+      }
+    };
 
-  fetchShops();
-}, [product]);
+    fetchShops();
+  }, [product]);
 
-// console.log(shopEmail);
+  // console.log(shopEmail);
 
 
-// -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = (checked) => {
     setIsChecked(checked);
   };
 
-// -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   const [userIdClient, setUserIdClient] = useState(null);
   const [clientData, setclientData] = useState(null);
@@ -191,7 +191,7 @@ useEffect(() => {
   // console.log(clientData);
 
 
-// -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   const [phone, setPhone] = useState('');
   const [state, setState] = useState('');
@@ -226,7 +226,7 @@ useEffect(() => {
   }
 
   const handleConfirm = async () => {
-    
+
     let success = false;  // Use a local variable to determine success of client update/create
     // console.log("Product ID to add:", id); // Debug: Check what ID is being added
     if (userIdClient && clientData && id) {
@@ -301,7 +301,7 @@ useEffect(() => {
       const serialNumber = generateSerialNumber(10);
 
       const contractData = {
-        
+
         user: {
           id: userId,
           email: user?.email,
@@ -309,7 +309,7 @@ useEffect(() => {
         product: {
           id: id,
           name: `${product.brand} ${product.model}`,
-          SN: serialNumber, 
+          SN: serialNumber,
           picture: product.photo,
         },
         shop: {
@@ -324,11 +324,11 @@ useEffect(() => {
           TRN: insuranceTRN,
           companyName: selectedInsurance
         },
-        date: new Date(), 
-        date_f: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), 
-        protVol: isChecked, 
+        date: new Date(),
+        date_f: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+        protVol: isChecked,
         price: (selectedType && selectedType.price * 365) + (product ? product.price : 0) + (isChecked ? 50 : 0),
-        type: selectedType.type 
+        type: selectedType.type
       };
 
       try {
@@ -366,10 +366,46 @@ useEffect(() => {
         alert('An error occurred while creating the contract.');
         console.error('Error:', error);
       }
-    }
-    else {
+
+      try {
+        const updatedListSN = [...product.SN, serialNumber];
+        const updatedProductData = {
+          ...product,
+          SN: updatedListSN,
+          quantity: product.quantity - 1,
+        };
+
+
+        const updateResponse = await fetch(`http://localhost:7800/api/products/update/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedProductData)
+        });
+
+        if (updateResponse.ok) {
+          // alert('Product information updated successfully!');
+          const updateResult = await updateResponse.json();
+          // console.log('Update Success:', updateResult);
+          SetProduct(updatedProductData);
+          // success = true;
+        } else {
+          const errorData = await updateResponse.json();
+          alert(`Failed to update product information: ${errorData.message}`);
+          console.error('Failed to update product information:', errorData);
+        }
+      } catch (error) {
+        alert('An error occurred while updating product information.');
+        console.error('Error:', error);
+      }
+
+
+    } else {
       alert('Failed to proceed with contract creation due to earlier errors');
     }
+
+
   };
 
 
@@ -386,82 +422,6 @@ useEffect(() => {
       <div className="flex w-full flex-col gap-10 bg-white-A700">
         <div>
           <Header />
-          {/* <div className="flex justify-center bg-black-900 py-4">
-            <div className="container-xs flex items-center justify-between gap-5 pl-[371px] md:p-5 md:pl-5 sm:flex-col">
-              <div className="flex items-center gap-2 sm:flex-col">
-                <Text size="s" as="p" className="flex self-end !font-satoshi !font-medium !text-white-A700">
-                  <span className="font-rubik font-normal text-white-A700">
-                    Sign up and get 10% off to your first order.&nbsp;
-                  </span>
-                  <a href="#" className="font-rubik font-normal text-white-A700 underline">
-                    Sign Up Now
-                  </a>
-                </Text>
-              </div>
-              <a href="#">
-                <Img src="../../../../public/images/img_close.svg" alt="close button" className="h-[20px] w-[20px] sm:w-full" />
-              </a>
-            </div>
-          </div> */}
-          {/* ------------------------------------------------------------------------------------------------------------------------------ */}
-          {/* navigation menu section */}
-          <div className="flex justify-center border-b border-solid border-gray-200_01 bg-white-A700 py-3">
-              <div className="container-xs flex items-center justify-between gap-5 md:flex-col md:p-5">
-                <Img src="../../../../public/images/img_header_logo.png" alt="header logo" className="h-[19px] w-[129px] object-contain" />
-                <ul className="flex items-center gap-11 sm:flex-col">
-                  <li>
-                    <a href="#">
-                      <Text size="s" as="p" className="!font-medium !text-black-900">
-                        Home
-                      </Text>
-                    </a>
-                  </li>
-                  <li
-                    onMouseLeave={() => {
-                      setMenuOpen(false);
-                    }}
-                    onMouseEnter={() => {
-                      setMenuOpen(true);
-                    }}
-                  >
-                    <div className="flex cursor-pointer pt-px">
-                      <Text size="s" as="p" className="cursor-pointer hover:font-medium hover:text-black-900">
-                        Shop
-                      </Text>
-                      <Img
-                        src="../../../../public/images/img_arrow_down_gray_600_01.svg"
-                        alt="dropdown icon"
-                        className="h-[16px] w-[16px]"
-                      />
-                    </div>
-                    {menuOpen ? <MegaMenu1 /> : null}
-                  </li>
-                  <li>
-                    <a href="#" className="cursor-pointer">
-                      <Text size="s" as="p" className="hover:font-medium hover:text-black-900">
-                        Offers
-                      </Text>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="cursor-pointer">
-                      <Text size="s" as="p" className="hover:font-medium hover:text-black-900">
-                        Contact us
-                      </Text>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="cursor-pointer">
-                      <Text size="s" as="p" className="hover:font-medium hover:text-black-900">
-                        Blog
-                      </Text>
-                    </a>
-                  </li>
-                </ul>
-          
-              </div>
-            </div>
-          {/* breadcrumb navigation section */}
           <div className="flex justify-center bg-gray-200_03 pb-6 pt-[23px] sm:py-5">
             <div className="container-xs flex flex-wrap items-center gap-1 md:p-5">
               <Text as="p" className="!text-black-900">

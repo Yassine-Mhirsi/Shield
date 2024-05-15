@@ -86,7 +86,7 @@ export default function Report() {
     };
 
     fetchContract(id);
-  }, [id]);
+  }, []);
 
   const [radioValue, setRadioValue] = useState(""); // State to track the selected radio button value
 
@@ -94,7 +94,7 @@ export default function Report() {
   const handleRadioChange = (event) => {
     setRadioValue(event.target.value);
   };
-  
+
 
 
   const handleConfirm = async () => {
@@ -105,6 +105,12 @@ export default function Report() {
       },
       contract: {
         id: id,
+      },
+      product: {
+        id: contract[0].product.id,
+        name: contract[0].product.name,
+        SN: contract[0].product.SN,
+        picture: contract[0].product.picture,
       },
       date: new Date(),
       desc: value,
