@@ -45,6 +45,21 @@ const navConfig = [
     path: '/repairshop',
     icon: icon('ic_repair'),
   },
+  {
+    title: 'Clients',
+    path: '/Client',
+    icon: icon('ic_client'),
+  },
+  {
+    title: 'Contracts',
+    path: '/contract',
+    icon: icon('ic_contract'),
+  },
+  {
+    title: 'Reports',
+    path: '/report',
+    icon: icon('ic_report'),
+  },
   // {
   //   title: 'logout',
   //   path: '/login',

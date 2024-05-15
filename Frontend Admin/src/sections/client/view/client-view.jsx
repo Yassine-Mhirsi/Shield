@@ -26,7 +26,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function UserView() {
+export default function ClientView() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -39,7 +39,7 @@ export default function UserView() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [userst, setUserst] = useState([]);
+  const [client, setClient] = useState([]);
   const navigate = useNavigate();
   const storedValue = localStorage.getItem('121211');
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function UserView() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = userst.map((n) => n.email);
+      const newSelecteds = client.map((n) => n.email);
       setSelected(newSelecteds);
       return;
     }
@@ -98,12 +98,12 @@ export default function UserView() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:7800/api/my/user", {
+    fetch("http://localhost:7800/client/fetchAll", {
       method: 'GET'
     })
       .then(response => response.json())
       .then(result => {
-        setUserst(result);
+        setClient(result);
       })
       .catch(error => {
         console.error('Error fetching users:', error);
@@ -111,7 +111,7 @@ export default function UserView() {
   }, []);
 
   const dataFiltered = applyFilter({
-    inputData: userst,
+    inputData: client,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -120,7 +120,7 @@ export default function UserView() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Users</Typography>
+        <Typography variant="h4">Clients</Typography>
         {/* 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
@@ -140,17 +140,17 @@ export default function UserView() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={userst.length}
+                rowCount={client.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'email', label: 'Email' },
+                  { id: 'company', label: 'Company' },
+                  { id: 'role', label: 'Phone' },
                   { id: 'key', label: '' },
-                  // { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: '' },
+                  // { id: 'status', label: 'City' },
+                  { id: 'isVerified', label: '', align: 'center' },
                   { id: '' },
                 ]}
               />
@@ -161,12 +161,12 @@ export default function UserView() {
                     <UserTableRow
                       key={row._id}
                       userId={row._id}
-                      name={row.email}
-                      role={row.role}
-                      // status={row.status}
-                      // company={row.company}
+                      name={row.user.email}
+                      role={row.phone}
+                      // status={row.state}
+                      company={row.city}
                       // avatarUrl={row.avatarUrl}
-                      isVerified={row.email_verified}
+                      // isVerified={row.city}
                       selected={selected.indexOf(row.email) !== -1}
                       handleClick={(event) => handleClick(event, row.email)}
                     />
@@ -175,7 +175,7 @@ export default function UserView() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, userst.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, client.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -187,7 +187,7 @@ export default function UserView() {
         <TablePagination
           page={page}
           component="div"
-          count={userst.length}
+          count={client.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
