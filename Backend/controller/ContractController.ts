@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Contract from "../model/contract";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 
 
@@ -82,8 +82,6 @@ export const fetchContractById = async (req: Request, res: Response) => {
         res.status(404).json({ message: error.message });
     }
 };
-
-
 
 
 

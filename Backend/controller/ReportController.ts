@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Report from "../model/report";
-import mongoose from "mongoose";
+import Contract from "../model/contract";
+import mongoose, { Types } from "mongoose";
 
 
 
@@ -47,42 +48,76 @@ export const fetchReportByUserId = async (req: Request, res: Response) => {
 };
 
 
-// export const fetchContractsByInsuranceId = async (req: Request, res: Response) => {
-//     const insuranceId = req.params.insuranceId;
+// Fetch all contracts by a specific insurance ID
+const getContractIdsByInsuranceId = async (insuranceId: string): Promise<Types.ObjectId[]> => {
+    // if (!mongoose.Types.ObjectId.isValid(insuranceId)) {
+    //     throw new Error('Invalid insurance ID format');
+    // }
 
-//     // Check if the insuranceId provided is a valid MongoDB ObjectId
-//     if (!insuranceId || !mongoose.Types.ObjectId.isValid(insuranceId)) {
-//         return res.status(400).send('Invalid Insurance ID');
-//     }
+    const contracts = await Contract.find({
+        'insurance.id': insuranceId  // Mongoose will handle casting to ObjectId automatically
+    }).select('_id');  // We only need the contract IDs
 
-//     try {
-//         const contracts = await Contract.find({ 'insurance.id': insuranceId }).exec();
-
-//         if (!contracts || contracts.length === 0) {
-//             return res.status(404).json({ message: 'No contracts found for this insurance ID' });
-//         }
-
-//         res.status(200).json(contracts);
-//     } catch (error: any) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
+    return contracts.map(contract => contract._id);
+};
 
 
-// export const fetchContractById = async (req: Request, res: Response) => {
-//     const id = req.params.id;
-//     try {
-//         const contracts = await Contract.find({ '_id': id });
-//         if (contracts.length === 0) {
-//             return res.status(404).json({ message: 'No contracts found for this id' });
-//         }
-//         res.status(200).json(contracts);
-//     } catch (error: any) {
-//         res.status(404).json({ message: error.message });
-//     }
-// };
+// Fetch all reports for given contract IDs
+const fetchReportsByContractIds = async (contractIds: Types.ObjectId[]): Promise<any[]> => {
+    const reports = await Report.find({ 'contract.id': { $in: contractIds } })
+        .populate('contract.id', 'user.id');  // Adjust populate as needed
+
+    return reports;
+};
 
 
+export const fetchReportsByInsuranceId = async (req: Request, res: Response) => {
+    const insuranceId = req.params.insuranceId;
+
+    try {
+        const contractIds = await getContractIdsByInsuranceId(insuranceId);
+
+        if (!contractIds.length) {
+            return res.status(404).json({ message: 'No contracts found for this insurance' });
+        }
+
+        const reports = await fetchReportsByContractIds(contractIds);
+
+        if (!reports.length) {
+            return res.status(404).json({ message: 'No reports found for these contracts' });
+        }
+
+        res.status(200).json(reports);
+    } catch (error: any) {
+        console.error('Error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const updateReportStatus = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { status, reason } = req.body;
+
+
+    try {
+        const existingReport = await Report.findById(id);
+
+        if (!existingReport) {
+            return res.status(404).json({ message: "Report not found" });
+        }
+
+        const updateData : any = {};
+        if (status) updateData.status = status;
+        if (reason) updateData.reason = reason;
+
+        const updateReport = await Report.findByIdAndUpdate(id, updateData, { new: true });
+
+        res.status(200).json(updateReport);
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
 
@@ -90,4 +125,6 @@ export default {
     createReport,
     fetchReport,
     fetchReportByUserId,
+    fetchReportsByInsuranceId,
+    updateReportStatus,
 };

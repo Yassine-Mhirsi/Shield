@@ -19,6 +19,19 @@ const reportSchema = new mongoose.Schema({
             required: true
         }
     },
+    product: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            // required: true
+        },
+        name: { type: String, required: true },
+        SN: {
+            type: String,
+            required: true
+        },
+        picture: { type: String, required: true }
+    },
     desc: {
         type: String,
         required: true
@@ -31,6 +44,9 @@ const reportSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: "waiting"
+    },
+    reason: {
+        type: String,
     },
     type: {
         type: String,
