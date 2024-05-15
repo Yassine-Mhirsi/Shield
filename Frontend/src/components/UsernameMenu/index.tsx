@@ -31,11 +31,11 @@ const UsernameMenu = () => {
             Manage
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        {/* <DropdownMenuItem>
           <Link to="/settings" className="font-bold text-[#ffffff]">
             User Profile
           </Link>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <Separator />
         <DropdownMenuItem>
           <Button

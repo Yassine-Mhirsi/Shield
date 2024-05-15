@@ -7,10 +7,13 @@ export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const ShopPage = lazy(() => import('src/pages/shop'));
 export const UserPage = lazy(() => import('src/pages/user'));
+export const ClientPage = lazy(() => import('src/pages/client'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const InsurancePage = lazy(() => import('src/pages/insurance'));
 export const RepairPage = lazy(() => import('src/pages/repair'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
+export const ContractsPage = lazy(() => import('src/pages/contract'));
+export const ReportsPage = lazy(() => import('src/pages/report'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
@@ -33,6 +36,9 @@ export default function Router() {
         { path: 'shop', element: <ShopPage /> },
         { path: 'insurance', element: <InsurancePage /> },
         { path: 'repairshop', element: <RepairPage /> },
+        { path: 'client', element: <ClientPage /> },
+        { path: 'contract', element: <ContractsPage /> },
+        { path: 'report', element: <ReportsPage /> },
       ],
     },
     {

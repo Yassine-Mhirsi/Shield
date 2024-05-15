@@ -145,7 +145,7 @@ export default function HomepageVOnePage() {
         <title>Shield</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
-      <div className="flex w-full flex-col items-center bg-white-A700">
+      <div className="flex w-full flex-col items-center bg-white-A700" id="top">
         <header className="flex items-center justify-center self-stretch bg-black py-[17px]">
           <div className="container-sm flex items-center justify-between gap-5 md:flex-col md:p-5">
             <Img
@@ -244,7 +244,7 @@ export default function HomepageVOnePage() {
             />
           </div>
         </div>
-        <div className="mt-[104px] flex flex-col items-center gap-[27px] self-stretch">
+        <div className="mt-[104px] flex flex-col items-center gap-[27px] self-stretch" id="about">
           <div className="container-xs flex flex-col items-center md:p-5">
             <Heading size="md" as="h2" className="!text-gray-800">
               About
@@ -476,10 +476,11 @@ export default function HomepageVOnePage() {
               <div className="flex w-full flex-col items-center gap-[82px] md:gap-[61px] sm:gap-[41px]">
                 <div className="flex items-start justify-between gap-5 self-stretch md:flex-col">
                   <div className="flex w-[28%] flex-col items-start gap-[30px] md:w-full">
-                    <a href="#">
-                      <Heading as="h4">Join our Newsletter</Heading>
+                    <a href="#top">
+                      <img src="/public/images/small-logo.png" alt="" height={'200px'} width={'200px'} />
+                      <Heading as="h1" style={{ marginLeft: '60px' }}> SHIELD</Heading>
                     </a>
-                    <Text as="p" className="!text-white-A700">
+                    {/* <Text as="p" className="!text-white-A700">
                       <>
                         Drop your email below to get update about us, <br />
                         lastest news, tips, and more!
@@ -494,16 +495,16 @@ export default function HomepageVOnePage() {
                       placeholder={`Enter your email`}
                       suffix={<Img src="images/img_arrow_gray_800.svg" alt="Arrow" className="h-[31px] w-[32px]" />}
                       className="w-[91%] gap-[35px] tracking-[0.36px] text-gray-500_7f sm:pl-5"
-                    />
+                    /> */}
                   </div>
                   <div className="flex items-start md:flex-col">
-                    <div className="flex flex-col items-start gap-[21px]">
-                      <Heading as="h4">Product Links</Heading>
+                    {/* <div className="flex flex-col items-start gap-[21px]">
+                      <Heading as="h4">Shops</Heading>
                       <ul className="flex flex-col items-start gap-[9px]">
                         <li>
                           <a href="#">
                             <Text as="p" className="!text-white-A700">
-                              Categories
+                              Visit Shop
                             </Text>
                           </a>
                         </li>
@@ -529,32 +530,32 @@ export default function HomepageVOnePage() {
                           </a>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                     <div className="ml-28 flex flex-col items-start gap-[21px] md:ml-0">
                       <Heading as="h4">Company</Heading>
                       <ul className="flex flex-col items-start">
                         <li>
-                          <a href="#">
+                          <a href="#about">
                             <Text as="p" className="!text-white-A700">
                               About
                             </Text>
                           </a>
                         </li>
                         <li>
-                          <a href="#" className="mt-3">
+                          <a href="/productlist" className="mt-3">
                             <Text as="p" className="!text-white-A700">
-                              Blog
+                              Visit Shop
                             </Text>
                           </a>
                         </li>
                         <li>
-                          <a href="#" className="mt-[7px]">
+                          <a href="/submitPartner" className="mt-[7px]">
                             <Text as="p" className="!text-white-A700">
-                              Careers
+                              Become a partner
                             </Text>
                           </a>
                         </li>
-                        <li>
+                        {/* <li>
                           <a href="#" className="mt-2.5">
                             <Text as="p" className="!text-white-A700">
                               Contact{" "}
@@ -567,7 +568,7 @@ export default function HomepageVOnePage() {
                               Services
                             </Text>
                           </a>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                     <div className="ml-[154px] flex flex-col items-start gap-[21px] md:ml-0">
@@ -607,14 +608,20 @@ export default function HomepageVOnePage() {
                   <div className="flex w-[10%] flex-col items-start gap-6 md:w-full">
                     <Heading as="h4">Get In Touch</Heading>
                     <div className="flex w-[78%] justify-between gap-5 md:w-full">
-                      <Img src="images/img_instagram.svg" alt="instagram_one" className="h-[24px] w-[24px]" />
-                      <Img src="images/img_trash.svg" alt="trash_one" className="h-[24px] w-[24px]" />
-                      <Img src="images/img_facebook.svg" alt="facebook_one" className="h-[24px] w-[24px]" />
+                      <a href="https://www.instagram.com/polytechinternationale/">
+                        <Img src="images/img_instagram.svg" alt="instagram_one" className="h-[24px] w-[24px]" />
+                      </a>
+                      <a href="https://www.linkedin.com/school/polytechnique-internationale/">
+                        <Img src="images/img_trash.svg" alt="trash_one" className="h-[24px] w-[24px]" />
+                      </a>
+                      <a href="https://www.facebook.com/polytechinternationale">
+                        <Img src="images/img_facebook.svg" alt="facebook_one" className="h-[24px] w-[24px]" />
+                      </a>
                     </div>
                   </div>
                 </div>
                 <Text size="xs" as="p" className="!text-white-A700">
-                  Copyright © 2021 Elliye. All Right Reseved
+                  Copyright © 2024 NQOLLEK. All Right Reseved
                 </Text>
               </div>
             </div>
