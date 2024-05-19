@@ -147,7 +147,7 @@ export default function TableListPage() {
                           <td><Text as="p" style={{ marginLeft: '100px' }}>{product.brand}</Text></td>
                           <td><Text as="p" style={{ marginLeft: '100px' }}>{product.model}</Text></td>
                           <td><Text as="p" style={{ marginLeft: '100px' }}>{product.category}</Text></td>
-                          <td><Text as="p" style={{ marginLeft: '100px' }}>${Number(product.price).toFixed(2)}</Text></td>
+                          <td><Text as="p" style={{ marginLeft: '100px' }}>{Number(product.price).toFixed(2)}TND</Text></td>
                           <td><Text as="p" style={{ marginLeft: '100px' }}>{product.quantity}</Text></td>
                           <td>
                             <div className="flex items-center" onClick={() => handleProductClick(product._id)}>

@@ -22,6 +22,7 @@ import Report from "pages/Report";
 import Contract from "pages/Contract";
 import ManageProfil from "pages/ManageProfile";
 import PaymentSuccessful from "pages/PaymentSuccessful";
+import OurPartners from "pages/OurPartners";
 
 
 const ProjectRoutes = () => {
@@ -107,6 +108,10 @@ const ProjectRoutes = () => {
     {
       path: "paymentsuccessful",
       element: <PaymentSuccessful />
+    },
+    {
+      path: "ourpartners",
+      element: <OurPartners />
     },
   ]);
 

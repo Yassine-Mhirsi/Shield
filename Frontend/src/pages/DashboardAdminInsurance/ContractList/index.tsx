@@ -21,9 +21,7 @@ export default function MenuListPage() {
             <Header />
             <div className="w-[93%] md:w-full">
               
-
               <ContractTable/>
-
 
             </div>
           </div>

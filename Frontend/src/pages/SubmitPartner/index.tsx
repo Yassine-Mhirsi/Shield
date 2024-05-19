@@ -3,6 +3,9 @@ import { Helmet } from "react-helmet";
 import { Button, Text, Input, SelectBox } from "../../components";
 import Header from "../../components/Header";
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+
 
 const options = [
   { value: 'repair-shop', label: 'Repair Shop' },
@@ -100,6 +103,10 @@ export default function SubmitPartner() {
     }));
   };
 
+
+  const navigate = useNavigate();
+
+
   const handleSubmit = async () => {
     try {
       const response = await fetch("http://localhost:7800/partner/submit", {
@@ -119,7 +126,18 @@ export default function SubmitPartner() {
         }),
       });
       if (response.ok) {
-        alert("Partner information submitted successfully");
+        Swal.fire({
+          icon: "success",
+          title: "Nice!!",
+          text: "Your request has been successfuly submited",
+          confirmButtonText: "Ok",
+          allowOutsideClick: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/');
+          }
+        });
+        // alert("Partner information submitted successfully");
       } else {
         const data = await response.json();
         alert(data.message);
@@ -137,7 +155,7 @@ export default function SubmitPartner() {
       <div className="w-full bg-gray-50">
         <div className="flex md:flex-col">
           <div className="flex flex-1 flex-col justify-center gap-[25px] md:self-stretch md:p-5 md:pb-5">
-            <Header className="flex items-center bg-white-A700_01 p-2.5" />
+            <Header/>
             <div className="flex w-[96%] flex-col items-start gap-[33px] pt-[50px] pb-[170px] md:w-full p-[700px]">
               <Text size="lg" className="text-[#09090b] !font-bold">
                 Become One Of Our Partner
