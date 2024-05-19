@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Text, Input, Img, Heading, Button, RatingBar, CheckBox } from "../../components";
+import { Text, Img, Heading, CheckBox } from "../../components";
 import Header from "../../components/Header";
 
 
@@ -147,7 +147,7 @@ export default function ProductListPage() {
                           {product.brand} {product.model}
                         </Text>
                         <Text as="p" className="!font-medium !text-gray-800">
-                          ${product.price}
+                          {product.price}TND
                         </Text>
                       </div>
                       <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', position: 'absolute', bottom: '10px', left: '10px', border: '2px solid #fff', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>

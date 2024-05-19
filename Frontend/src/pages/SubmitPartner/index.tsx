@@ -152,7 +152,7 @@ export default function SubmitPartner() {
       <Helmet>
         <title>Partner | Shield</title>
       </Helmet>
-      <div className="w-full bg-gray-50">
+      <div className="w-full">
         <div className="flex md:flex-col">
           <div className="flex flex-1 flex-col justify-center gap-[25px] md:self-stretch md:p-5 md:pb-5">
             <Header/>
@@ -263,6 +263,7 @@ export default function SubmitPartner() {
             </div>
           </div>
         </div>
+        
       </div>
     </>
   );
