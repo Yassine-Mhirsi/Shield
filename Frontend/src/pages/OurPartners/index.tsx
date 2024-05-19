@@ -27,7 +27,7 @@ export default function OurPartner() {
       <Helmet>
         <title>Partners | Shield</title>
       </Helmet>
-      <div className="w-full bg-gray-50">
+      <div className="w-full ">
         <div className="flex md:flex-col">
           <div className="flex flex-1 flex-col justify-center gap-[25px] md:self-stretch md:p-5 md:pb-5">
             <Header/>
@@ -39,7 +39,7 @@ export default function OurPartner() {
                     We work with a network of trusted partners to provide the best experience for our customers.
                   </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {partners.filter(partner => partner.status === 'accepted').length > 0 ? (
                     partners.filter(partner => partner.status === 'accepted').map(partner => (
                       <Card key={partner._id} className="bg-[#F3F4F6] dark:bg-[#1F2937]">
