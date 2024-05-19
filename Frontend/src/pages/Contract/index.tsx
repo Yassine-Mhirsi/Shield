@@ -40,8 +40,6 @@ interface Insurance {
 
 export default function Contract() {
 
-  const [menuOpen, setMenuOpen] = React.useState(false);
-  const [menuOpen1, setMenuOpen1] = React.useState(false);
 
   const navigate = useNavigate();
   const [insurances, setInsurances] = useState<Insurance[]>([]);

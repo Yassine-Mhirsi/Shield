@@ -57,23 +57,36 @@ export default function ManageProfile() {
   // --------------------------------------------------------------------------------------------------------------
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchReports = async () => {
       if (!userId) {
         setReports([]);
-        setContracts([]);
         return; // Exit early if userId is null
       }
 
       try {
-        // Fetch reports
         const reportResponse = await fetch(`http://localhost:7800/report/fetchReportByUserId/${userId}`);
         if (!reportResponse.ok) {
           throw new Error('Failed to fetch report data');
         }
         const reportData = await reportResponse.json();
         setReports(reportData);
+      } catch (error) {
+        console.error('Error fetching reports:', error);
+        setReports([]); // Set to empty array on error
+      }
+    };
 
-        // Fetch contracts
+    fetchReports();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchContracts = async () => {
+      if (!userId) {
+        setContracts([]);
+        return; // Exit early if userId is null
+      }
+
+      try {
         const contractResponse = await fetch(`http://localhost:7800/contract/fetchContractByUserId/${userId}`);
         if (!contractResponse.ok) {
           throw new Error('Failed to fetch contract data');
@@ -81,14 +94,14 @@ export default function ManageProfile() {
         const contractData = await contractResponse.json();
         setContracts(contractData);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setReports([]); // Set to empty array on error
+        console.error('Error fetching contracts:', error);
         setContracts([]); // Set to empty array on error
       }
     };
 
-    fetchData();
+    fetchContracts();
   }, [userId]);
+
 
   // console.log(contracts);
   // console.log(reports);
@@ -287,12 +300,12 @@ export default function ManageProfile() {
                                   <div className="flex justify-between gap-8">
                                     <div className="w-full">
                                       {/* <Heading as="h6" className="!text-gray-700"> */}
-                                        <ReactQuill
-                                          theme="snow"
-                                          value={report.desc}
-                                          readOnly={true}
-                                          modules={{ toolbar: false }}
-                                        />
+                                      <ReactQuill
+                                        theme="snow"
+                                        value={report.desc}
+                                        readOnly={true}
+                                        modules={{ toolbar: false }}
+                                      />
                                       {/* </Heading> */}
                                     </div>
                                   </div>

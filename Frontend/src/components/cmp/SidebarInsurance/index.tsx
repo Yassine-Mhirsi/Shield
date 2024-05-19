@@ -14,11 +14,13 @@ export default function SidebarInsurance({ ...props }: Props) {
       width="252px !important"
       className={`${props.className} flex flex-col h-screen top-0 py-6 md:p-5 sm:py-5 bg-white-A700 shadow-md !sticky overflow-auto md:hidden`}
     >
-      <Img
-        src="../../../../public/images/Untitled.png"
-        alt="sidebarlogo"
-        className="ml-7 h-[50px] w-[160px] object-contain md:ml-0"
-      />
+      <Link to="/" className="flex items-center">
+        <Img
+          src="../../../../public/images/Untitled.png"
+          alt="sidebarlogo"
+          className="ml-7 h-[50px] w-[160px] object-contain md:ml-0"
+        />
+      </Link>
       <Menu
         menuItemStyles={{
           button: {
