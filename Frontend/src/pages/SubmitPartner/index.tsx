@@ -54,6 +54,29 @@ export default function SubmitPartner() {
   const handleInputChang = (e) => {
     const { name, value } = e.target;
 
+    if (name === "TRN") {
+      const validPattern = /^[0-9]{0,7}[A-Z]{0,3}$/; // Regular expression for up to 7 digits followed by up to 3 uppercase letters
+
+      // If the value does not match or is longer than 10 characters, do nothing
+      if (!validPattern.test(value) || value.length > 10) {
+        return;
+      }
+    }
+
+    if (name === "companyName") {
+      const validPattern = /^[a-zA-Z]*$/; // Regular expression for alphabetic characters only
+      if (!validPattern.test(value)) {
+        return;
+      }
+    }
+
+    if (name === "phoneNumber") {
+      const validPattern = /^[0-9]{0,8}$/; // Regular expression for exactly 8 digits
+      if (!validPattern.test(value) || value.length > 8) {
+        return;
+      }
+    }
+
     // Update formValues for other inputs
     setFormValues((prev) => ({
       ...prev,
@@ -106,8 +129,47 @@ export default function SubmitPartner() {
 
   const navigate = useNavigate();
 
+  const validateInputs = () => {
+    const trnPattern = /^[0-9]{7}[A-Z]{3}$/;
+    const companyNamePattern = /^[a-zA-Z]+$/;
+    const phoneNumberPattern = /^[0-9]{8}$/;
+    // const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+
+    if (!trnPattern.test(formValues.TRN)) {
+      alert("Invalid TRN. Must be 7 digits followed by 3 uppercase letters.");
+      return false;
+    }
+
+    if (!companyNamePattern.test(formValues.companyName)) {
+      alert("Invalid Company Name. Must contain only alphabetic characters.");
+      return false;
+    }
+
+    if (!phoneNumberPattern.test(formValues.phoneNumber)) {
+      alert("Invalid Phone Number. Must be exactly 8 digits.");
+      return false;
+    }
+    
+    if (!formValues.newRole || !formValues.newRole.value) {
+      alert("Please select a valid role.");
+      return false;
+    }
+
+    // if (!urlPattern.test(formValues.picture)) {
+    //   alert("Invalid URL.");
+    //   return false;
+    // }
+
+
+    return true;
+  };
+
 
   const handleSubmit = async () => {
+
+    if (!validateInputs()) {
+      return;
+    }
     try {
       const response = await fetch("http://localhost:7800/partner/submit", {
         method: "POST",
@@ -155,7 +217,7 @@ export default function SubmitPartner() {
       <div className="w-full">
         <div className="flex md:flex-col">
           <div className="flex flex-1 flex-col justify-center gap-[25px] md:self-stretch md:p-5 md:pb-5">
-            <Header/>
+            <Header />
             <div className="flex w-[96%] flex-col items-start gap-[33px] pt-[50px] pb-[170px] md:w-full p-[700px]">
               <Text size="lg" className="text-[#09090b] !font-bold">
                 Become One Of Our Partner
@@ -169,7 +231,7 @@ export default function SubmitPartner() {
                           <Text as="p" className="text-[#09090b]">Tax Registration Number</Text>
                           <input
                             name="TRN"
-                            placeholder="1234567L"
+                            placeholder="1234567ABC"
                             className="self-stretch border-2 border-[#404040] font-semibold !text-blue_gray-800 sm:pr-5"
                             value={formValues.TRN}
                             onChange={handleInputChang}
@@ -263,7 +325,7 @@ export default function SubmitPartner() {
             </div>
           </div>
         </div>
-        
+
       </div>
     </>
   );

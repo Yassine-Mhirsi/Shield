@@ -13,6 +13,7 @@ import SidebarShop from "components/cmp/SidebarShop";
 
 export default function AddTablePage() {
   const [formData, setFormData] = useState({
+    SN:"",
     brand: "",
     model: "",
     category: "",
@@ -74,6 +75,7 @@ export default function AddTablePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          SN:"",
           brand: formData.brand,
           model: formData.model,
           category: formData.category,
@@ -113,9 +115,6 @@ export default function AddTablePage() {
           <Header />
           <div className="flex w-[93%] flex-col items-start gap-[37px] md:w-full">
             <div className="flex flex-col items-start gap-1.5">
-              <Text size="xl" as="p">
-                Add Table
-              </Text>
               <Text size="lg" as="p" className="!text-blue_gray-400">
                 Table /Add Product
               </Text>

@@ -15,7 +15,7 @@ export default function Report() {
   let { id } = useParams();
   const navigate = useNavigate();
   const [value, setValue] = useState('');
-  const { user, logout } = useAuth0();
+  const { user } = useAuth0();
   const [userr, setUserr] = useState(null);
 
 
@@ -59,18 +59,6 @@ export default function Report() {
     toolbar: toolbarOptions
   }
 
-  // interface Contract {
-  //   _id: string;
-  //   user: any;
-  //   product: any;
-  //   shop: any;
-  //   insurance: any;
-  //   date: string;
-  //   date_f: string;
-  //   protVol: boolean;
-  //   price: number;
-  //   type: string;
-  // }
 
   const [contract, setContract] = useState(null);
   useEffect(() => {
@@ -162,7 +150,7 @@ export default function Report() {
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="w-full bg-gray-100_06">
-        <Header className="flex items-center justify-center self-stretch bg-white-A700 py-6 sm:py-5" />
+        <Header/>
         <div className="flex md:flex-col">
           <Sidebar3 />
           <div className="flex flex-1 flex-col gap-8 pb-[90px] md:self-stretch md:p-5 md:pb-5">
@@ -195,7 +183,7 @@ export default function Report() {
                         </div>
                         <div className="flex flex-col items-start justify-center gap-2.5">
                           <Text as="p" className="!text-blue_gray-800">
-                            <span className="text-blue_gray-800">Serial number&nbsp;</span>
+                            <span className="text-blue_gray-800">Email&nbsp;</span>
                             <span className="text-red-600">*</span>
                           </Text>
                           <Input
